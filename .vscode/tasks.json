@@ -8,14 +8,16 @@
 			"args": [
 				"-fdiagnostics-color=always",
 				"-g",
-				"src/*.cpp",
+				"*.cpp",
 				"-o",
 				"${fileDirname}\\${fileBasenameNoExtension}.exe",
 				"-I${workspaceFolder}/SFML/include",
 				"-L${workspaceFolder}/SFML/lib",
 				"-lsfml-graphics",
                 "-lsfml-window",
-                "-lsfml-system"
+                "-lsfml-system",
+				// "&&",
+				// "${fileDirname}\\${fileBasenameNoExtension}.exe"
 			],
 			"options": {
 				"cwd": "${fileDirname}"
