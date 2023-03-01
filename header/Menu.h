@@ -3,8 +3,10 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
+#include "Animation.h"
+#include "LinkedList.h"
+
 class Menu {
-public:
-    sf::Vector2i localPosition;
+public: 
     Menu();
 };
