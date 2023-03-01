@@ -12,6 +12,8 @@ private:
     sf::Font TiltWarp;
     sf::Font GreatVibes;
     sf::Font ComfortaaRegular;
+    sf::Color lightBlue;
+    sf::Color whiteBlue;
 public: 
     const int maxWidth = sf::VideoMode::getDesktopMode().width;
     const int maxHeight = sf::VideoMode::getDesktopMode().height;

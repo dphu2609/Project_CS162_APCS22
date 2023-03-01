@@ -6,7 +6,6 @@ Menu::Menu() {
     window.create(sf::VideoMode(maxWidth - 100, maxHeight - 100), "Data Visual", sf::Style::Default);
     window.setPosition(sf::Vector2i(30, 30));
     window.setVerticalSyncEnabled(true);
-
     //----------------------------------------
 
     // Set Font
@@ -21,28 +20,36 @@ Menu::Menu() {
     }
     //----------------------------------------------
 
+    // Set color 
+    lightBlue.r = 145;
+    lightBlue.g = 174;
+    lightBlue.b = 226;
+    lightBlue.a = 255;
+    whiteBlue.r = 231;
+    whiteBlue.g = 237;
+    whiteBlue.b = 251;
+    whiteBlue.a = 255;
+    //------------------------------------------------
+
     // Set text
     sf::Text title;
-    anm::setText(title, GreatVibes, "Data Visual", 350, maxWidth/2 - 790, maxHeight/2 - 600, 145, 174, 226, 0);
+    anm::setText(title, GreatVibes, "Data Visual", 350, maxWidth/2 - 790, maxHeight/2 - 600, lightBlue);
     sf::Text option1, option2;
-    anm::setText(option1, ComfortaaRegular, "start", 200, maxWidth/2 - 250, maxHeight/2 - 50, 231, 237, 251, 255);
-    anm::setText(option2, ComfortaaRegular, "end", 200, maxWidth/2 - 200, maxHeight/2 + 200, 231, 237, 251, 255);
+    anm::setText(option1, ComfortaaRegular, "start", 200, maxWidth/2 - 250, maxHeight/2 - 50, whiteBlue);
+    anm::setText(option2, ComfortaaRegular, "end", 200, maxWidth/2 - 200, maxHeight/2 + 200, whiteBlue);
     // -----------------------------------
 
 
     //Loading image
-
     sf::Texture texture;
     if (!texture.loadFromFile("img/menu_background2.jpg"));
     sf::Sprite sprite(texture);
     sf::Vector2f scaleFactor(window.getSize().x / sprite.getLocalBounds().width, window.getSize().y / sprite.getLocalBounds().height);
     sprite.setScale(scaleFactor);
-
     // --------------------------------------------------------
 
 
     //Text appearance
-
     for (int i = 0; i < 255; i++) {
         title.setFillColor(sf::Color(145, 174, 226, i));
         option1.setFillColor(sf::Color(231, 237, 251, i));
@@ -54,7 +61,6 @@ Menu::Menu() {
         window.draw(option2);
         window.display();
     }
-
     //---------------------------------
 
     sf::Vector2i localPosition;
@@ -69,19 +75,11 @@ Menu::Menu() {
 
             // Hover 
 
-            if (anm::isHover(localPosition, 1192, 901, 1697, 1047)) {
-                option1.setFillColor(sf::Color(145, 174, 226, 255));
-            } else {
-                option1.setFillColor(sf::Color(231, 237, 251, 255));
-            }
-            if (anm::isHover(localPosition, 1239, 1143, 1636, 1305)) {
-                option2.setFillColor(sf::Color(145, 174, 226, 255));
-            } else {
-                option2.setFillColor(sf::Color(231, 237, 251, 255));
-            }
+            anm::hoverText(option1, localPosition, lightBlue, whiteBlue);
+            anm::hoverText(option2, localPosition, lightBlue, whiteBlue);
 
             //------------------------------------------------------------------
-            if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && anm::isHover(localPosition, 1192, 901, 1697, 1047)) 
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && anm::isHover(option1, localPosition)) 
                 nextPage();
         }
 
@@ -112,11 +110,11 @@ void Menu::nextPage() {
 
     // Set text
     sf::Text staticArray, dynamicArray, linkedList, stack, queue;
-    anm::setText(staticArray, ComfortaaRegular, "Static Array", 150, maxWidth/2 - 500, maxHeight/2 - 800, 231, 237, 251, 255);
-    anm::setText(dynamicArray, ComfortaaRegular, "Dynamic Array", 150, maxWidth/2 - 600, maxHeight/2 - 500, 231, 237, 251, 255);
-    anm::setText(linkedList, ComfortaaRegular, "Linked List", 150, maxWidth/2 - 450, maxHeight/2 - 200, 231, 237, 251, 255);
-    anm::setText(stack, ComfortaaRegular, "Stack", 150, maxWidth/2 - 240, maxHeight/2 + 100, 231, 237, 251, 255);
-    anm::setText(queue, ComfortaaRegular, "Queue", 150, maxWidth/2 - 290, maxHeight/2 + 400, 231, 237, 251, 255);
+    anm::setText(staticArray, ComfortaaRegular, "Static Array", 150, maxWidth/2 - 500, maxHeight/2 - 800, whiteBlue);
+    anm::setText(dynamicArray, ComfortaaRegular, "Dynamic Array", 150, maxWidth/2 - 600, maxHeight/2 - 500, whiteBlue);
+    anm::setText(linkedList, ComfortaaRegular, "Linked List", 150, maxWidth/2 - 450, maxHeight/2 - 200, whiteBlue);
+    anm::setText(stack, ComfortaaRegular, "Stack", 150, maxWidth/2 - 240, maxHeight/2 + 100, whiteBlue);
+    anm::setText(queue, ComfortaaRegular, "Queue", 150, maxWidth/2 - 290, maxHeight/2 + 400, whiteBlue);
     //-----------------------------------------------------------
 
     sf::Event event;
@@ -130,31 +128,11 @@ void Menu::nextPage() {
 
             //Hover
             
-            if (anm::isHover(localPosition, 942, 118, 1866, 288)) {
-                staticArray.setFillColor(sf::Color(145, 174, 226, 255));
-            } else {
-                staticArray.setFillColor(sf::Color(231, 237, 251, 255));
-            }
-            if (anm::isHover(localPosition, 846, 416, 1987, 587)) {
-                dynamicArray.setFillColor(sf::Color(145, 174, 226, 255));
-            } else {
-                dynamicArray.setFillColor(sf::Color(231, 237, 251, 255));
-            }
-            if (anm::isHover(localPosition, 980, 714, 1865, 857)) {
-                linkedList.setFillColor(sf::Color(145, 174, 226, 255));
-            } else {
-                linkedList.setFillColor(sf::Color(231, 237, 251, 255));
-            }
-            if (anm::isHover(localPosition, 1196, 1016, 1647, 1154)) {
-                stack.setFillColor(sf::Color(145, 174, 226, 255));
-            } else {
-                stack.setFillColor(sf::Color(231, 237, 251, 255));
-            }
-             if (anm::isHover(localPosition, 1140, 1317, 1694, 1446)) {
-                queue.setFillColor(sf::Color(145, 174, 226, 255));
-            } else {
-                queue.setFillColor(sf::Color(231, 237, 251, 255));
-            }
+            anm::hoverText(staticArray, localPosition, lightBlue, whiteBlue);
+            anm::hoverText(dynamicArray, localPosition, lightBlue, whiteBlue);
+            anm::hoverText(linkedList, localPosition, lightBlue, whiteBlue);
+            anm::hoverText(stack, localPosition, lightBlue, whiteBlue); 
+            anm::hoverText(queue, localPosition, lightBlue, whiteBlue);
 
             //------------------------------------------------------
             if (event.type == sf::Event::Closed) 
