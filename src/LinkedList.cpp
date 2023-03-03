@@ -1,4 +1,6 @@
-#include "../header/LinkedList.h"
+#include "../header/DataStructure.h"
+
+#include <iostream>
 
 template <typename T> 
 LinkedList<T> :: ~LinkedList() {

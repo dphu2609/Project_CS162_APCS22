@@ -50,7 +50,7 @@ Menu::Menu() {
 
 
     //Text appearance
-    for (int i = 0; i < 255; i++) {
+    for (int i = 150; i < 255; i++) {
         title.setFillColor(sf::Color(145, 174, 226, i));
         option1.setFillColor(sf::Color(231, 237, 251, i));
         option2.setFillColor(sf::Color(231, 237, 251, i));
@@ -74,24 +74,22 @@ Menu::Menu() {
             localPosition = sf::Mouse::getPosition(window);
 
             // Hover 
-
             anm::hoverText(option1, localPosition, lightBlue, whiteBlue);
             anm::hoverText(option2, localPosition, lightBlue, whiteBlue);
-
             //------------------------------------------------------------------
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && anm::isHover(option1, localPosition)) 
                 nextPage();
         }
 
         // Draw
-
         window.clear();
         window.draw(sprite);
         window.draw(title);
         window.draw(option1);
         window.draw(option2);
+        window.draw(typeBox.inputBox);
+        window.draw(typeBox.inputText);
         window.display();
-
         //-------------------
     }
 }
@@ -99,13 +97,11 @@ Menu::Menu() {
 void Menu::nextPage() {
 
      //Loading image
-
     sf::Texture menuBackgroundTexture;
     if (!menuBackgroundTexture.loadFromFile("img/menu_background2.jpg"));
     sf::Sprite menuBackgroundSprite(menuBackgroundTexture);
     sf::Vector2f scaleFactor(window.getSize().x / menuBackgroundSprite.getLocalBounds().width, window.getSize().y / menuBackgroundSprite.getLocalBounds().height);
     menuBackgroundSprite.setScale(scaleFactor);
-
     // --------------------------------------------------------
 
     // Set text

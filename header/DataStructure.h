@@ -1,6 +1,9 @@
 #pragma once
 
-#include <iostream>
+// class ListBase {
+// public:
+//     virtual 
+// };
 
 template <typename T> 
 class LinkedList {
