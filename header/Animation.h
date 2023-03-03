@@ -6,6 +6,12 @@
 
 namespace anm {
 
+const int maxWidth = sf::VideoMode::getDesktopMode().width;
+const int maxHeight = sf::VideoMode::getDesktopMode().height;
+
+const sf::Color lightBlue(145, 174, 226, 255);
+const sf::Color whiteBlue(231, 237, 251, 255);
+
 bool isHover(sf::Text text, sf::Vector2i pos);
 void setText(sf::Text &text, sf::Font &font, std::string string, int size, int posX, int posY, sf::Color color);
 void hoverText(sf::Text &text, sf::Vector2i pos, sf::Color newColor, sf::Color orginalColor);

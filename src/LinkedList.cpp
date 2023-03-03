@@ -1,40 +1,31 @@
 #include "../header/DataStructure.h"
 
-#include <iostream>
-
-template <typename T> 
-LinkedList<T> :: ~LinkedList() {
+template <typename T>
+LinkedList<T>::~LinkedList() {
     while (head) {
-        Node *temp = head;
+        Node<T> *temp = head;
         head = head->next;
         delete temp;
     }
 }
 
 template <typename T>
-void LinkedList<T> :: insertTail(T data) {
-    if (head == nullptr) {
-        head = new Node;
-        head->data = data;
-        head->next = nullptr;
-        tail = head;
+void LinkedList<T>::create(T *arr, int n) {
+    Node<T>* newNode = new Node<T>;
+    newNode->data = arr[0];
+    newNode->next = nullptr;
+    head = newNode;
+    tail = newNode;
+    for (int i = 0; i < n; i++) {
+        if (i) {
+            newNode = new Node<T>;
+            newNode->data = arr[i];
+            newNode->next = nullptr;
+            tail->next = newNode;
+            tail = newNode;
+        }
     }
-    else {
-        tail->next = new Node;
-        tail = tail->next;
-        tail->data = data;
-        tail->next = nullptr;
-    }
-}
-
-template <typename T>
-void LinkedList<T> :: display() {
-    Node *temp = head;
-    while (temp) {
-        std::cout << temp->data << ' ';
-        temp = temp->next;
-    }
-    std::cout << std::endl;
+    size = n;
 }
 
 template class LinkedList<int>;

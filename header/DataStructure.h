@@ -1,22 +1,31 @@
 #pragma once
 
-// class ListBase {
-// public:
-//     virtual 
-// };
+#include <SFML/Graphics.hpp>
+#include <iostream>
+#include <string>
 
-template <typename T> 
+#include "Animation.h"
+
+class GraphicalNode {
+public:
+    sf::Text number;
+    sf::RectangleShape box;
+    void init(std::string string, sf::Font &font, int posX, int posY, sf::Color numColor, sf::Color boxColor, sf::Color boxOutlineColor);
+};
+
+template <typename T>
+struct Node {
+    T data;
+    Node *next;
+};
+
+template <typename T>
 class LinkedList {
 private:
-    struct Node {
-        T data;
-        Node *next;
-    };
-    Node* head;
-    Node* tail;
-
+    Node<T>* head;
+    Node<T>* tail;
+    int size;
 public: 
     ~LinkedList();
-    void insertTail(T data);
-    void display();
+    void create(T *arr, int n);
 };

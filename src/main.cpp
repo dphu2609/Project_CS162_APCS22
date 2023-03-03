@@ -1,6 +1,6 @@
-#include "../header/Menu.h"
+#include "../header/Program.h"
 
 int main() {
-    Menu menu;
+    Program program;
     return 0;
 }
