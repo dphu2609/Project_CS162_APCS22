@@ -1,6 +1,7 @@
 #include "../header/Program.h"
 
-#include <vector>
+#include <bits/stdc++.h>
+
 
 Program::Program() {
 
@@ -69,7 +70,7 @@ Program::Program() {
 
     // sf::Font font;
     // GraphicalNode node;
-    // node.init("100", font, 10, 10, sf::Color::Black, sf::Color::White, anm::lightBlue);
+    // node.set("100", font, 10, 10, sf::Color::Black, sf::Color::White, anm::lightBlue);
 
     
     while (window.isOpen()) { // main loop
@@ -158,10 +159,44 @@ void Program::nextPage() {
     }
 }
 
+double funcX(double &x, double timeDelay) {
+    x -= timeDelay;
+    return x*x*x*x + 500;
+}
+
+double funcY(double &x, bool &way, double timeDelay) {
+    if (way) {
+        return std::sqrt(100*100 - (x-200)*(x-200)) + 200;
+    } else {
+        return -std::sqrt(100*100 - (x-200)*(x-200)) + 200;
+        // return -x*x;
+    }
+}
+
+void initHandle(bool isInit, bool &isOdd, int &timeIndex, int delayTime, int &nodeSize, int &arrowSize, int arrSize) {
+    if (isInit) {
+        timeIndex++;
+        if (timeIndex > delayTime) {
+            timeIndex = 0;
+            if (isOdd) {
+                arrowSize++;
+                isOdd = 0;
+            } else {
+                nodeSize++;
+                isOdd = 1;
+            }
+            if (nodeSize >= arrSize) nodeSize = arrSize;
+            if (arrowSize >= arrSize - 1) arrowSize = arrSize - 1;
+        }
+    }
+}
+
 void Program::linkedListPage() {
     //Page setup
     sf::Text createButton;
     anm::setText(createButton, ComfortaaRegular, "Create", 100, 10, maxHeight - 800, anm::whiteBlue);
+    sf::Text addButton;
+    anm::setText(addButton, ComfortaaRegular, "Add", 100, 10, maxHeight - 400, anm::whiteBlue);
     sf::Font FiraSansRegular;
     if (!FiraSansRegular.loadFromFile("fonts/FiraSans-Regular.ttf")) {
         std::cout << "Error when loading font FiraSans-Regular\n";
@@ -182,18 +217,24 @@ void Program::linkedListPage() {
     int arr[6] = {-1, 10, 20000, -5, 78, 1310};
     int n = 6;
     LinkedList<int> list;
-    list.create(arr, 6);
-    GraphicalNode *graphicalNode = new GraphicalNode[n];
+    list.create(arr, 1);
+    std::vector<GraphicalNode> graphicalNode(10);
 
     //Init variable for effect
     int nodeSize = 0;
     int arrowSize = 0;
-    int delayTime = 40;
+    int delayTime = 10;
     int timeIndex = 0;
     bool isInit = 0;
+    bool isAdd = 0;
     bool isOdd = 0;
-    
     //---------------------------
+
+    //Add variable
+    int addIndex = 4;
+    double pos;
+    GraphicalNode newNode;
+    //-----------------
 
     while (window.isOpen()) {
         sf::Event event;
@@ -201,13 +242,14 @@ void Program::linkedListPage() {
             localPosition = sf::Mouse::getPosition(window);
             //Hover
             anm::hoverText(createButton, localPosition, anm::lightBlue, anm::whiteBlue);
+            anm::hoverText(addButton, localPosition, anm::lightBlue, anm::whiteBlue);
             //--------------------------------------------------------------------------
 
-            //Init
+            //Init triggered
             if (anm::isHover(createButton, localPosition) && sf::Mouse::isButtonPressed(sf::Mouse::Left)) {      
                 for (int i = 0; i < n; i++) {
                     std::string str = std::to_string(arr[i]);
-                    graphicalNode[i].init(str, FiraSansRegular, anm::maxWidth/2 - (n/2)*250 + i*250, 250, sf::Color::Black, sf::Color::White, anm::lightBlue);
+                    graphicalNode[i].set(str, FiraSansRegular, anm::maxWidth/2 - (n/2)*250 + i*250, 250, sf::Color::Black, sf::Color::White, anm::lightBlue);
                     arrowSprite[i].setPosition(anm::maxWidth/2 - (n/2)*250 + i*250 + 130, 285);
                 }
                 isInit = 1;
@@ -217,35 +259,42 @@ void Program::linkedListPage() {
             }
             //-------------------------------------------
 
+            //Add triggered
+            if (anm::isHover(addButton, localPosition) && sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+                isAdd = 1;
+                pos = std::sqrt(std::sqrt(800));
+            }
+            //-------------------------------------------
+
             if (event.type == sf::Event::Closed) 
                 window.close();
         }
         window.clear();  
         window.draw(createButton);
-        for (int i = 0; i < nodeSize; i++) {
-            window.draw(graphicalNode[i].box);
-            window.draw(graphicalNode[i].number);
+        window.draw(addButton);
+        // graphicalNode[0].set(str, FiraSansRegular, funcX(x, way, 0.4), funcY(x, way, 0.4), sf::Color::Black, sf::Color::White, anm::lightBlue);
+        // window.draw(graphicalNode[0].box);
+        // window.draw(graphicalNode[0].number);
+
+        if (isInit) {
+            for (int i = 0; i < nodeSize; i++) {
+                window.draw(graphicalNode[i].box);
+                window.draw(graphicalNode[i].number);
+            }
+            for (int i = 0; i < arrowSize; i++) {
+                window.draw(arrowSprite[i]);
+            }
         }
-        for (int i = 0; i < arrowSize; i++) {
-            window.draw(arrowSprite[i]);
+
+        if (isAdd) {
+            if (pos >= 0) newNode.set("12", FiraSansRegular, anm::maxWidth/2 - (n/2)*250 + (addIndex - 1)*250, funcX(pos, 0.015), sf::Color::Black, sf::Color::White, anm::lightBlue);
+            window.draw(newNode.box);
+            window.draw(newNode.number);
         }
         window.display();
 
-        if (isInit) {
-            timeIndex++;
-            if (timeIndex > delayTime) {
-                timeIndex = 0;
-                if (isOdd) {
-                    arrowSize++;
-                    isOdd = 0;
-                } else {
-                    nodeSize++;
-                    isOdd = 1;
-                }
-                if (nodeSize >= n) nodeSize = n;
-                if (arrowSize >= n - 1) arrowSize = n - 1;
-            }
-        }
+        //Init handle
+        initHandle(isInit, isOdd, timeIndex, delayTime, nodeSize, arrowSize, n);
+        //---------------------------------------------------
     }
-    delete[] graphicalNode;
 }

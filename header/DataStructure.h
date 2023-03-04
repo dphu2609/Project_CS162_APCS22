@@ -10,7 +10,7 @@ class GraphicalNode {
 public:
     sf::Text number;
     sf::RectangleShape box;
-    void init(std::string string, sf::Font &font, int posX, int posY, sf::Color numColor, sf::Color boxColor, sf::Color boxOutlineColor);
+    void set(std::string string, sf::Font &font, int posX, int posY, sf::Color numColor, sf::Color boxColor, sf::Color boxOutlineColor);
 };
 
 template <typename T>

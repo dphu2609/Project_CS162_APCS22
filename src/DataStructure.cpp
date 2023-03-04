@@ -1,6 +1,6 @@
 #include "../header/DataStructure.h"
 
-void GraphicalNode::init(std::string string, sf::Font &font, int posX, int posY, sf::Color numColor, sf::Color boxColor, sf::Color boxOutlineColor) {
+void GraphicalNode::set(std::string string, sf::Font &font, int posX, int posY, sf::Color numColor, sf::Color boxColor, sf::Color boxOutlineColor) {
     int size = 80;
     switch (string.size())
     {

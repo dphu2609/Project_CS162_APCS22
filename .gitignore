@@ -1,4 +1,5 @@
 *.json
 *.exe
+*.dll
+
 SFML/
-bin/
