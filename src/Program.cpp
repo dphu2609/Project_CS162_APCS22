@@ -46,16 +46,24 @@ Program::Program() {
 
 
     //Text appearance
-    for (int i = 150; i < 255; i++) {
+    int i = 0;
+    while(window.isOpen() && i < 255) {
+        sf::Event event;
+        localPosition = sf::Mouse::getPosition(window);
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed) 
+                window.close();
+        }
         title.setFillColor(sf::Color(145, 174, 226, i));
-        option1.setFillColor(sf::Color(231, 237, 251, i));
-        option2.setFillColor(sf::Color(231, 237, 251, i));
+        anm::hoverText(option1, localPosition, sf::Color(145, 174, 226, i), sf::Color(231, 237, 251, i));
+        anm::hoverText(option2, localPosition, sf::Color(145, 174, 226, i), sf::Color(231, 237, 251, i));
         window.clear();
         window.draw(sprite);
         window.draw(title);
         window.draw(option1);
         window.draw(option2);
         window.display();
+        i++;
     }
     //---------------------------------
 
@@ -171,8 +179,6 @@ void Program::linkedListPage() {
     }
     //------------------------------
 
-
-
     int arr[6] = {-1, 10, 20000, -5, 78, 1310};
     int n = 6;
     LinkedList<int> list;
@@ -182,7 +188,7 @@ void Program::linkedListPage() {
     //Init variable for effect
     int nodeSize = 0;
     int arrowSize = 0;
-    int delayTime = 20;
+    int delayTime = 40;
     int timeIndex = 0;
     bool isInit = 0;
     bool isOdd = 0;
