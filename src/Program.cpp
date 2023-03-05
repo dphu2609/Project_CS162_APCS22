@@ -164,6 +164,11 @@ double funcX(double &x, double timeDelay) {
     return x*x*x*x + 500;
 }
 
+float arrowAnimation(float &angle, double timeDelay) {
+    angle += timeDelay;
+    return angle;
+}
+
 double funcY(double &x, bool &way, double timeDelay) {
     if (way) {
         return std::sqrt(100*100 - (x-200)*(x-200)) + 200;
@@ -206,19 +211,17 @@ void Program::linkedListPage() {
     //----------------------
     sf::Texture arrowTexture;
     if (!arrowTexture.loadFromFile("img/rightArrow.png"));
-    sf::Sprite arrowSprite[6];
-    for (int i = 0; i < 6; i++) {
+    std::vector<sf::Sprite> arrowSprite(15);
+    for (int i = 0; i < 7; i++) {
         arrowSprite[i].setTexture(arrowTexture);
-        sf::Vector2f scaleFactor(110 / arrowSprite[i].getLocalBounds().width, 50 / arrowSprite[i].getLocalBounds().height);
-        arrowSprite[i].setScale(scaleFactor);
     }
     //------------------------------
 
-    int arr[6] = {-1, 10, 20000, -5, 78, 1310};
-    int n = 6;
-    LinkedList<int> list;
-    list.create(arr, 1);
-    std::vector<GraphicalNode> graphicalNode(10);
+    std::vector arr = {-1, 10, 20000, -5, 78, 1310, -99};
+    int n = 7;
+    // LinkedList<int> list;
+    // list.create(arr, 1);
+    std::vector<GraphicalNode> graphicalNode(15);
 
     //Init variable for effect
     int nodeSize = 0;
@@ -231,9 +234,15 @@ void Program::linkedListPage() {
     //---------------------------
 
     //Add variable
-    int addIndex = 4;
+    int addIndex = 5;
+    bool isInsert = 0;
+    float initialAngle = 0;
+    float initialLength = 110;
     double pos;
+    double initialVal = 0;
     GraphicalNode newNode;
+    sf::Sprite newArrowSprite;
+    newArrowSprite.setTexture(arrowTexture);
     //-----------------
 
     while (window.isOpen()) {
@@ -251,6 +260,8 @@ void Program::linkedListPage() {
                     std::string str = std::to_string(arr[i]);
                     graphicalNode[i].set(str, FiraSansRegular, anm::maxWidth/2 - (n/2)*250 + i*250, 250, sf::Color::Black, sf::Color::White, anm::lightBlue);
                     arrowSprite[i].setPosition(anm::maxWidth/2 - (n/2)*250 + i*250 + 130, 285);
+                    arrowSprite[i].setRotation(0);
+                    arrowSprite[i].setScale(sf::Vector2f(110 / arrowSprite[0].getLocalBounds().width, 50 / arrowSprite[0].getLocalBounds().height));
                 }
                 isInit = 1;
                 nodeSize = 0;
@@ -262,7 +273,11 @@ void Program::linkedListPage() {
             //Add triggered
             if (anm::isHover(addButton, localPosition) && sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
                 isAdd = 1;
-                pos = std::sqrt(std::sqrt(800));
+                pos = std::sqrt(std::sqrt(400));
+                initialVal = std::sqrt(std::sqrt(66.8));
+                arrowSprite[addIndex - 1].setPosition(anm::maxWidth/2 - (n/2)*250 + (addIndex - 1)*250 + 130, 285);
+                arrowSprite[addIndex - 1].setRotation(0);
+                arrowSprite[addIndex - 1].setScale(sf::Vector2f(110 / arrowSprite[0].getLocalBounds().width, 50 / arrowSprite[0].getLocalBounds().height));
             }
             //-------------------------------------------
 
@@ -272,9 +287,6 @@ void Program::linkedListPage() {
         window.clear();  
         window.draw(createButton);
         window.draw(addButton);
-        // graphicalNode[0].set(str, FiraSansRegular, funcX(x, way, 0.4), funcY(x, way, 0.4), sf::Color::Black, sf::Color::White, anm::lightBlue);
-        // window.draw(graphicalNode[0].box);
-        // window.draw(graphicalNode[0].number);
 
         if (isInit) {
             for (int i = 0; i < nodeSize; i++) {
@@ -287,7 +299,44 @@ void Program::linkedListPage() {
         }
 
         if (isAdd) {
-            if (pos >= 0) newNode.set("12", FiraSansRegular, anm::maxWidth/2 - (n/2)*250 + (addIndex - 1)*250, funcX(pos, 0.015), sf::Color::Black, sf::Color::White, anm::lightBlue);
+            if (pos >= 0) newNode.set("12", FiraSansRegular, anm::maxWidth/2 - (n/2)*250 + (addIndex)*250, funcX(pos, 0.025), sf::Color::Black, sf::Color::White, anm::lightBlue);
+            else {
+                if (initialVal >= 0) {
+                    initialAngle = -std::pow(initialVal, 4) + 66.8;
+                    arrowSprite[addIndex - 1].setRotation(initialAngle);
+                    float temp = initialAngle*(std::atan(1)*4)/180;
+                    arrowSprite[addIndex - 1].setScale(sf::Vector2f((initialLength/std::cos(temp)) / newArrowSprite.getLocalBounds().width, 50 / newArrowSprite.getLocalBounds().height));
+                    arrowSprite[addIndex - 1].setPosition(anm::maxWidth/2 - (n/2)*250 + (addIndex-1)*250 + 130 + initialAngle*0.32934131737, 285 + initialAngle*0.19461077844);
+                    initialVal -= 0.0178679255;
+                }
+                // window.draw(newArrowSprite);
+            }
+            // else {
+            //     if (isInsert == 0) {
+            //         arr.insert(arr.begin() + addIndex, 12);
+            //         graphicalNode.insert(graphicalNode.begin() + addIndex, newNode);
+            //         arrowSprite.insert(arrowSprite.begin(), arrowSprite[0]);
+            //         nodeSize++;
+            //         arrowSize++;
+            //         n++;
+            //         for (int i = 0; i < n; i++) {
+            //             std::string str = std::to_string(arr[i]);
+            //             graphicalNode[i].set(str, FiraSansRegular, anm::maxWidth/2 - (n/2)*250 + i*250, 250, sf::Color::Black, sf::Color::White, anm::lightBlue);
+            //             arrowSprite[i].setPosition(anm::maxWidth/2 - (n/2)*250 + i*250 + 130, 285);
+            //         }
+            //         isInsert = 1;
+            //     } 
+            //     isInit = 0;
+            //     for (int i = 0; i < nodeSize; i++) {
+            //         if (i != addIndex) {
+            //             window.draw(graphicalNode[i].box);
+            //             window.draw(graphicalNode[i].number);
+            //         }
+            //     }
+            //     for (int i = 0; i < arrowSize; i++) {
+            //         window.draw(arrowSprite[i]);
+            //     }
+            // }
             window.draw(newNode.box);
             window.draw(newNode.number);
         }
