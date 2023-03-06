@@ -5,6 +5,7 @@
 
 #include "Animation.h"
 #include "DataStructure.h"
+#include "LinkedList.h"
 
 class Program {
 private: 
@@ -18,5 +19,4 @@ public:
     const int maxHeight = sf::VideoMode::getDesktopMode().height;
     Program();
     void nextPage();
-    void linkedListPage();
 };
