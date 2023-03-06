@@ -5,9 +5,13 @@
 
 class LinkedList {
 public:
-    bool isInit;
+    bool isInit = 0;
+    bool isAdd = 0;
+    bool addAgain = 0;
+    sf::Sprite newArrowSprite;
     sf::Font ComfortaaRegular;
     sf::Font FiraSansRegular;
+    GraphicalNode newNode;
     void init(sf::RenderWindow &window);
-    void addAnimation(sf::RenderWindow &window, std::vector<int> &arr, std::vector<GraphicalNode> &graphicalNode, std::vector<sf::Sprite> &arrowSprite, double &pos, int n, double &initialArrowLength, sf::Sprite &newArrowSprite, double &initialVal, int addIndex, double speed, bool &isInserted, bool &isInit, double &transitionVar, bool &isAnimation3Triggered);
+    void addAnimation(sf::RenderWindow &window, std::vector<int> &arr, std::vector<GraphicalNode> &graphicalNode, std::vector<AnimationVar> &addVar,  std::vector<sf::Sprite> &arrowSprite, int &arrSize, int addIndex, double speed);
 };
