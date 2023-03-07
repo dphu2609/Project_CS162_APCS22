@@ -143,8 +143,7 @@ void Program::nextPage() {
             anm::hoverText(queue, localPosition, lightBlue, whiteBlue);
 
             if (anm::isHover(linkedList, localPosition) && sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-                LinkedList linkedListPage;
-                linkedListPage.init(window);
+                LinkedList linkedListPage(window);
             }
 
             //------------------------------------------------------
