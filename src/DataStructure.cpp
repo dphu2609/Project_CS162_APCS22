@@ -57,5 +57,5 @@ void Pointer::set(std::string string, sf::Font &font, int posX, int posY, sf::Co
     this->box.setSize(sf::Vector2f(60, 60));
     this->box.setPosition(sf::Vector2f(posX, posY));
     this->box.setOutlineColor(boxOutlineColor);
-    this->box.setOutlineThickness(6);
+    this->box.setOutlineThickness(10);
 }

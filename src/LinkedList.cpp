@@ -29,6 +29,7 @@ void LinkedList::addTriggered(std::vector<GraphicalNode> &graphicalNode, std::ve
     addVar[10].initialVar = std::sqrt(std::sqrt(250));
     addVar[11].initialVar = std::sqrt(std::sqrt(69.19320899)); 
     addVar[12].initialVar = std::sqrt(250);
+    addVar[13].initialVar = std::sqrt(std::sqrt(110/std::cos(66.8*std::atan(1)*4/180)));
     for (int i = 1; i <= 15; i++) addVar[i].isTriggered = 0;
     for (int i = 0; i < arrSize; i++) {
         std::string str = std::to_string(arr[i]);
@@ -56,9 +57,9 @@ void LinkedList::addAnimation(sf::RenderWindow &window,
         addVar[1].initialVar -= 0.025*speed;
         newNode.set(str, FiraSansRegular, newPos.x, newPos.y, sf::Color::Black, sf::Color::White, anm::lightBlue);
     }
-    else if (addVar[2].initialVar >= 0 && addIndex != arrSize) { //animation 2
-        sf::Vector2f newScale((-std::pow(
-            addVar[2].initialVar, 2) + 120) / newArrowSprite.getLocalBounds().width, 
+    else if (addVar[2].initialVar >= 0 && addIndex != arrSize && !addVar[3].isTriggered) { //animation 2
+        sf::Vector2f newScale(
+            (-std::pow(addVar[2].initialVar, 2) + 120) / newArrowSprite.getLocalBounds().width, 
             50 / newArrowSprite.getLocalBounds().height
         );
         sf::Vector2f newPos(anm::maxWidth/2 - (arrSize/2)*250 + (addIndex)*250 + 35, 500);
@@ -69,24 +70,39 @@ void LinkedList::addAnimation(sf::RenderWindow &window,
         addVar[2].isTriggered = 1;
     }
     else if (addVar[3].initialVar >= 0 && !addVar[3].isTriggered && addIndex != 0) { //animation 3
-        double angleDegree = -std::pow(addVar[3].initialVar, 4) + 66.8;
-        double angleRadian = angleDegree*(std::atan(1)*4)/180;
-        sf::Vector2f newScale(
-            (110/std::cos(angleRadian)) / newArrowSprite.getLocalBounds().width, 
-            50 / newArrowSprite.getLocalBounds().height
-        );
-        sf::Vector2f newPos(
-            anm::maxWidth/2 - (arrSize/2)*250 + (addIndex-1)*250 + 130 + angleDegree*0.32934131737, 
-            285 + angleDegree*0.19461077844
-        );
-        arrowSprite[addIndex - 1].setRotation(angleDegree);
-        arrowSprite[addIndex - 1].setScale(newScale);
-        arrowSprite[addIndex - 1].setPosition(newPos);
-        addVar[3].initialVar -= (std::sqrt(std::sqrt(66.8))/100)*speed;
+        if (addIndex != arrSize) {
+            double angleDegree = -std::pow(addVar[3].initialVar, 4) + 66.8;
+            double angleRadian = angleDegree*(std::atan(1)*4)/180;
+            sf::Vector2f newScale(
+                (110/std::cos(angleRadian)) / newArrowSprite.getLocalBounds().width, 
+                50 / newArrowSprite.getLocalBounds().height
+            );
+            sf::Vector2f newPos(
+                anm::maxWidth/2 - (arrSize/2)*250 + (addIndex-1)*250 + 130 + angleDegree*0.32934131737, 
+                285 + angleDegree*0.19461077844
+            );
+            arrowSprite[addIndex - 1].setRotation(angleDegree);
+            arrowSprite[addIndex - 1].setScale(newScale);
+            arrowSprite[addIndex - 1].setPosition(newPos);
+            addVar[3].initialVar -= (std::sqrt(std::sqrt(66.8))/100)*speed;
+        } else {
+            double angleDegree = 66.8;
+            sf::Vector2f newScale(
+                ((-std::pow(addVar[13].initialVar, 4) +  279.2289861))/ newArrowSprite.getLocalBounds().width, 
+                50 / newArrowSprite.getLocalBounds().height
+            );
+            sf::Vector2f newPos(anm::maxWidth/2 - (arrSize/2)*250 + (addIndex-1)*250 + 150, 295);
+            arrowSprite[addIndex - 1].setRotation(66.8);
+            arrowSprite[addIndex - 1].setScale(newScale);
+            arrowSprite[addIndex - 1].setPosition(newPos);
+            window.draw(arrowSprite[addIndex - 1]);
+            if (addVar[13].initialVar >= 0) addVar[13].initialVar -= (std::sqrt(std::sqrt(110/std::cos(66.8*std::atan(1)*4/180)))/200)*speed;
+            else addVar[3].initialVar = -1;
+        }
     }
     else if (!addVar[4].isTriggered) {
         //animation 4.1
-        if (addVar[3].initialVar <= 0 && !addVar[3].isTriggered) {
+        if ((addVar[3].initialVar <= 0) && !addVar[3].isTriggered) {
             addVar[3].initialVar = std::sqrt(std::sqrt(66.8));
             addVar[3].isTriggered = 1;
         }
@@ -120,10 +136,12 @@ void LinkedList::addAnimation(sf::RenderWindow &window,
                 sf::Vector2f newPos(anm::maxWidth/2 - (arrSize/2)*250 + i*250 + 130 - std::pow(addVar[4].initialVar, 2) + 250, 285);
                 arrowSprite[i].setPosition(newPos);
             }
-            sf::Vector2f newHeadPos(anm::maxWidth/2 - (arrSize/2)*250 + 28 - std::pow(addVar[4].initialVar, 2) + 250, 80);
-            sf::Vector2f newArrowPos(anm::maxWidth/2 - (arrSize/2)*250 + 85 - std::pow(addVar[4].initialVar, 2) + 250, 145);
-            pHead.set("head", FiraSansRegular, newHeadPos.x, newHeadPos.y, sf::Color(22, 34, 41, 255), sf::Color(229, 184, 168, 255), sf::Color(168, 213, 229, 255));
-            pointerArrow.setPosition(newArrowPos);
+            if (addIndex == 0) {
+                sf::Vector2f newHeadPos(anm::maxWidth/2 - (arrSize/2)*250 + 28 - std::pow(addVar[4].initialVar, 2) + 250, 80);
+                sf::Vector2f newArrowPos(anm::maxWidth/2 - (arrSize/2)*250 + 85 - std::pow(addVar[4].initialVar, 2) + 250, 145);
+                pHead.set("head", FiraSansRegular, newHeadPos.x, newHeadPos.y, sf::Color(22, 34, 41, 255), sf::Color(229, 184, 168, 255), sf::Color(168, 213, 229, 255));
+                pointerArrow.setPosition(newArrowPos);
+            }
             addVar[4].initialVar -= (std::sqrt(250)/100)*speed;
         }
         //---------------------
@@ -163,6 +181,8 @@ void LinkedList::addAnimation(sf::RenderWindow &window,
             isInit = 1;
         }
         else isInit = 0;
+
+        if (addIndex == arrSize) window.draw(arrowSprite[addIndex - 1]);
     }
     else if (!addVar[9].isTriggered && addIndex == 0) {
         double angleDegree = -std::pow(addVar[9].initialVar, 4) + 69.19320899;
@@ -268,7 +288,7 @@ LinkedList::LinkedList(sf::RenderWindow &window) {
     Pointer pHead;
     sf::Sprite pointerArrow;
     int arrSize = arr.size();
-    int addIndex = 0;
+    int addIndex = 5;
     //---------------------------
 
     //Font
