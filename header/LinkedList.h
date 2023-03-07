@@ -14,7 +14,14 @@ public:
     sf::Vector2f defaultArrowScale;
     GraphicalNode newNode;
     LinkedList(sf::RenderWindow &window);
-    void initTriggered(std::vector<GraphicalNode> &graphicalNode, std::vector<sf::Sprite> &arrowSprite, std::vector<int> arr);
-    void addAnimation(sf::RenderWindow &window, std::vector<int> &arr, std::vector<GraphicalNode> &graphicalNode, std::vector<AnimationVar> &addVar,  std::vector<sf::Sprite> &arrowSprite, int &arrSize, int addIndex, double speed);
-    void addTriggered(std::vector<GraphicalNode> &graphicalNode, std::vector<AnimationVar> &addVar,  std::vector<sf::Sprite> &arrowSprite, std::vector<int> arr);
+    void initTriggered(std::vector<GraphicalNode> &graphicalNode, std::vector<sf::Sprite> &arrowSprite, std::vector<int> arr, Pointer &pHead, sf::Sprite &pointerArrow);
+    void addAnimation(
+        sf::RenderWindow &window, std::vector<int> &arr, 
+        std::vector<GraphicalNode> &graphicalNode, Pointer &pHead, sf::Sprite &pointerArrow,   std::vector<AnimationVar> &addVar,
+        std::vector<sf::Sprite> &arrowSprite, int &arrSize, int addIndex, int addValue, double speed
+    );
+    void addTriggered(
+        std::vector<GraphicalNode> &graphicalNode, std::vector<AnimationVar> &addVar,  
+        std::vector<sf::Sprite> &arrowSprite, std::vector<int> arr
+    );
 };

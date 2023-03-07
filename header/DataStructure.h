@@ -17,3 +17,10 @@ public:
     sf::RectangleShape box;
     void set(std::string string, sf::Font &font, int posX, int posY, sf::Color numColor, sf::Color boxColor, sf::Color boxOutlineColor);
 };
+
+class Pointer {
+public:
+    sf::Text text;
+    sf::RectangleShape box;
+    void set(std::string string, sf::Font &font, int posX, int posY, sf::Color numColor, sf::Color boxColor, sf::Color boxOutlineColor);
+};
