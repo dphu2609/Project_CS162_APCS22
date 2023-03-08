@@ -64,8 +64,8 @@ void LinkedList::addAnimation(sf::RenderWindow &window, int &addAnimationOrder,
         }
         case 2: {
             if (addIndex == arrSize) {
-                addAnimationOrder = 3;
-                return;
+                addAnimationOrder = 8;
+                break;
             }
             sf::Vector2f newScale(
                 (-std::pow(addVar[2].initialVar, 2) + 120) / newArrowSprite.getLocalBounds().width, 
@@ -83,7 +83,7 @@ void LinkedList::addAnimation(sf::RenderWindow &window, int &addAnimationOrder,
         case 3: {
             if (addIndex == 0) {
                 addAnimationOrder = 4;
-                return;
+                break;
             }
             addVar[2].isTriggered = 1;
             double angleDegree = -std::pow(addVar[3].initialVar, 4) + 66.8;
@@ -250,6 +250,24 @@ void LinkedList::addAnimation(sf::RenderWindow &window, int &addAnimationOrder,
             }
             break;
         }
+        case 8: {
+            addVar[13].isTriggered = 1;
+            double angleDegree = 66.8;
+            sf::Vector2f newScale(
+                ((-std::pow(addVar[13].initialVar, 4) +  279.2289861))/ arrowSprite[addIndex - 1].getLocalBounds().width, 
+                50 / arrowSprite[addIndex - 1].getLocalBounds().height
+            );
+            sf::Vector2f newPos(anm::maxWidth/2 - (arrSize/2)*250 + (addIndex-1)*250 + 150, 295);
+            arrowSprite[addIndex - 1].setRotation(66.8);
+            arrowSprite[addIndex - 1].setScale(newScale);
+            arrowSprite[addIndex - 1].setPosition(newPos);
+            if (addVar[13].initialVar >= 0) addVar[13].initialVar -= (std::sqrt(std::sqrt(110/std::cos(66.8*std::atan(1)*4/180)))/150)*speed;
+            else {
+                addAnimationOrder = 4;
+                addVar[3].initialVar = -1;
+            }
+            break;
+        }
         }
     }
     for (int i = 0; i < arrSize; i++) {
@@ -259,7 +277,7 @@ void LinkedList::addAnimation(sf::RenderWindow &window, int &addAnimationOrder,
     for (int i = 0; i < arrSize - 1; i++) {
         window.draw(arrowSprite[i]);
     }
-    if (addIndex == arrSize && addVar[2].isTriggered) window.draw(arrowSprite[addIndex - 1]);
+    if (addIndex == arrSize && ((addAnimationOrder > 3 && addAnimationOrder < 7) || addAnimationOrder == 8) && addVar[13].isTriggered) window.draw(arrowSprite[addIndex - 1]);
     if (!addVar[8].isTriggered) {
         window.draw(newNode.box);
         window.draw(newNode.number);
@@ -280,7 +298,7 @@ LinkedList::LinkedList(sf::RenderWindow &window) {
     Pointer pHead;
     sf::Sprite pointerArrow;
     int arrSize = arr.size();
-    int addIndex = 2;
+    int addIndex = 0;
     int addAnimationOrder = 1;
     //---------------------------
 
@@ -369,7 +387,7 @@ LinkedList::LinkedList(sf::RenderWindow &window) {
             }
         }
 
-        if (isAdd) addAnimation(window, addAnimationOrder, arr, graphicalNode, pHead, pointerArrow, addVar, arrowSprite, arrSize, addIndex, -231, 1);
+        if (isAdd) addAnimation(window, addAnimationOrder, arr, graphicalNode, pHead, pointerArrow, addVar, arrowSprite, arrSize, arr.size(), -231, 1);
         window.display();
     }
 }

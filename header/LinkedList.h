@@ -5,7 +5,7 @@
 
 class LinkedList {
 public:
-    bool isPause = 0;
+    bool isPause = 1;
     bool isInit = 0;
     bool isAdd = 0;
     bool addAgain = 0;
