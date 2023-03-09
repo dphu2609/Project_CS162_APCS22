@@ -1,14 +1,17 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include <iostream>
-#include <string>
+#include <bits/stdc++.h>
 
 #include "Animation.h"
 
-struct AnimationVar {
+class AnimationVar {
+public:
     double initialVar;
     bool isTriggered;
+    double forwardVal(double startPoint ,double endPoint);
+    double backwardVal(double startPoint);
+    void changeVar(double startPoint, double endPoint, double frame, double speed);
 };
 
 class GraphicalNode {

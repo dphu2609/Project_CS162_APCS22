@@ -25,6 +25,4 @@ public:
         std::vector<GraphicalNode> &graphicalNode, std::vector<AnimationVar> &addVar,  
         std::vector<sf::Sprite> &arrowSprite, std::vector<int> arr
     );
-    void playButtonHandler();
-    void pauseButtonHandler();
 };

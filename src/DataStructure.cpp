@@ -104,3 +104,21 @@ bool ImageButton::isClicked(sf::RenderWindow &window) {
         sf::Mouse::isButtonPressed(sf::Mouse::Left)
     );
 }
+
+
+
+
+
+double AnimationVar::forwardVal(double startPoint, double endPoint) {
+    return startPoint - std::pow(this->initialVar, 4) + endPoint;
+}
+
+double AnimationVar::backwardVal(double startPoint) {
+    return startPoint + std::pow(this->initialVar, 4);
+}
+
+void AnimationVar::changeVar(double startPoint, double endPoint, double frame, double speed) {
+    this->initialVar -= (std::sqrt(std::sqrt(std::abs(endPoint - startPoint)))/frame)*speed;
+}
+
+

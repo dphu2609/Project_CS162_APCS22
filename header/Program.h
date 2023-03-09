@@ -18,5 +18,4 @@ public:
     const int maxWidth = sf::VideoMode::getDesktopMode().width;
     const int maxHeight = sf::VideoMode::getDesktopMode().height;
     Program();
-    void nextPage();
 };
