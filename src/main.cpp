@@ -1,6 +1,7 @@
-#include "../header/Program.h"
+#include "../header/Program2.hpp"
 
 int main() {
-    Program program;
+    Program2 program;
+    program.run();
     return 0;
-}  
+}     

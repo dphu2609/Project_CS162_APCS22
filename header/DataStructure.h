@@ -19,6 +19,7 @@ public:
     sf::Text number;
     sf::RectangleShape box;
     void set(std::string string, sf::Font &font, int posX, int posY, sf::Color numColor, sf::Color boxColor, sf::Color boxOutlineColor);
+    void setPos(sf::Vector2f pos);
 };
 
 class Pointer {

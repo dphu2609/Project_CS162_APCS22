@@ -2,8 +2,7 @@
 
 void GraphicalNode::set(std::string string, sf::Font &font, int posX, int posY, sf::Color numColor, sf::Color boxColor, sf::Color boxOutlineColor) {
     int size = 80;
-    switch (string.size())
-    {
+    switch (string.size()) {
     case 1:
         anm::setText(number, font, string, size, posX + 40, posY + 6, numColor);
         break;
@@ -28,6 +27,32 @@ void GraphicalNode::set(std::string string, sf::Font &font, int posX, int posY, 
     this->box.setPosition(sf::Vector2f(posX, posY));
     this->box.setOutlineColor(boxOutlineColor);
     this->box.setOutlineThickness(10);
+}
+
+void GraphicalNode::setPos(sf::Vector2f pos) {
+    std::string str = this->number.getString();
+    switch (str.size()) {
+    case 1:
+        this->box.setPosition(pos);
+        this->number.setPosition(pos.x + 40, pos.y + 6);
+        break;
+    case 2:
+        this->box.setPosition(pos);
+        this->number.setPosition(pos.x + 20, pos.y + 6);
+        break;
+    case 3:
+        this->box.setPosition(pos);
+        this->number.setPosition(pos.x + 8, pos.y + 14);
+        break;
+    case 4:
+        this->box.setPosition(pos);
+        this->number.setPosition(pos.x + 8, pos.y + 26);
+        break;
+    case 5:
+        this->box.setPosition(pos);
+        this->number.setPosition(pos.x + 8, pos.y + 33);
+        break;
+    };
 }
 
 void Pointer::set(std::string string, sf::Font &font, int posX, int posY, sf::Color numColor, sf::Color boxColor, sf::Color boxOutlineColor) {

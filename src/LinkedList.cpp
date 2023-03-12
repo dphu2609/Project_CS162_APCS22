@@ -298,7 +298,7 @@ LinkedList::LinkedList(sf::RenderWindow &window) {
     Pointer pHead;
     sf::Sprite pointerArrow;
     int arrSize = arr.size();
-    int addIndex = 0;
+    int addIndex = 2;
     int addAnimationOrder = 1;
     //---------------------------
 
@@ -391,7 +391,7 @@ LinkedList::LinkedList(sf::RenderWindow &window) {
             }
         }
 
-        if (isAdd) addAnimation(window, addAnimationOrder, arr, graphicalNode, pHead, pointerArrow, addVar, arrowSprite, arrSize, 0, -231, 1);
+        if (isAdd) addAnimation(window, addAnimationOrder, arr, graphicalNode, pHead, pointerArrow, addVar, arrowSprite, arrSize, 2, -231, 1);
         window.display();
     }
 }
