@@ -1,4 +1,5 @@
 #include "../header/LinkedList.h"
+#include "../header/Button.hpp"
 
 void LinkedList::initTriggered(std::vector<GraphicalNode> &graphicalNode, std::vector<sf::Sprite> &arrowSprite, std::vector<int> arr, Pointer &pHead, sf::Sprite &pointerArrow) {
     const int arrSize = arr.size();
@@ -316,10 +317,10 @@ LinkedList::LinkedList(sf::RenderWindow &window) {
     anm::setText(createButton, ComfortaaRegular, "Create", 100, 10, anm::maxHeight/2 + 200, anm::whiteBlue);
     sf::Text addButton;
     anm::setText(addButton, ComfortaaRegular, "Add", 100, 10, anm::maxHeight/2 + 400, anm::whiteBlue);
-    ImageButton playButton("img/playButton.png", "img/playButtonHoverred.png", 100, 100, sf::Vector2f(anm::maxWidth/2 - 50, anm::maxHeight - 400));
-    ImageButton pauseButton("img/pauseButton.png", "img/pauseButtonHoverred.png", 100, 100, sf::Vector2f(anm::maxWidth/2 - 50, anm::maxHeight - 400));
-    ImageButton nextButton("img/nextButton.png", "img/nextButtonHoverred.png", 100, 100, sf::Vector2f(anm::maxWidth/2 + 100, anm::maxHeight - 400));
-    ImageButton prevButton("img/previousButton.png", "img/previousButtonHoverred.png", 100, 100, sf::Vector2f(anm::maxWidth/2 - 200, anm::maxHeight - 400));
+    // ImageButton playButton("img/playButton.png", "img/playButtonHoverred.png", 100, 100, sf::Vector2f(anm::maxWidth/2 - 50, anm::maxHeight - 400));
+    // ImageButton pauseButton("img/pauseButton.png", "img/pauseButtonHoverred.png", 100, 100, sf::Vector2f(anm::maxWidth/2 - 50, anm::maxHeight - 400));
+    // ImageButton nextButton("img/nextButton.png", "img/nextButtonHoverred.png", 100, 100, sf::Vector2f(anm::maxWidth/2 + 100, anm::maxHeight - 400));
+    // ImageButton prevButton("img/previousButton.png", "img/previousButtonHoverred.png", 100, 100, sf::Vector2f(anm::maxWidth/2 - 200, anm::maxHeight - 400));
     //------------------------
 
     //Arrow setup
@@ -340,58 +341,58 @@ LinkedList::LinkedList(sf::RenderWindow &window) {
     pointerArrow.setTexture(pointerArrowTexture);
     //---------------------------------------------------------------
 
-    sf::Vector2i localPosition;
-    while (window.isOpen()) {
-        sf::Event event;
-        while (window.pollEvent(event)) {
-            localPosition = sf::Mouse::getPosition(window);
-            //Hover
-            anm::hoverText(createButton, localPosition, anm::lightBlue, anm::whiteBlue);
-            anm::hoverText(addButton, localPosition, anm::lightBlue, anm::whiteBlue);
-            //--------------------------------------------------------------------------
+    // sf::Vector2i localPosition;
+    // while (window.isOpen()) {
+    //     sf::Event event;
+    //     while (window.pollEvent(event)) {
+    //         localPosition = sf::Mouse::getPosition(window);
+    //         //Hover
+    //         anm::hoverText(createButton, localPosition, anm::lightBlue, anm::whiteBlue);
+    //         anm::hoverText(addButton, localPosition, anm::lightBlue, anm::whiteBlue);
+    //         //--------------------------------------------------------------------------
 
-            //Init triggered
-            if (anm::isHover(createButton, localPosition) && sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-                isInit = 1;      
-                initTriggered(graphicalNode, arrowSprite, arr, pHead, pointerArrow);
-            }
-            //-------------------------------------------
+    //         //Init triggered
+    //         if (anm::isHover(createButton, localPosition) && sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+    //             isInit = 1;      
+    //             initTriggered(graphicalNode, arrowSprite, arr, pHead, pointerArrow);
+    //         }
+    //         //-------------------------------------------
 
-            //Add triggered
-            if (anm::isHover(addButton, localPosition) && sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-                isAdd = 1;
-                addTriggered(graphicalNode, addVar, arrowSprite, arr);
-            }
-            //------------------------------------------
-            if (playButton.isClicked(window) && isPause) isPause = 0;
-            else if (pauseButton.isClicked(window) && !isPause) isPause = 1;
-            if (event.type == sf::Event::Closed) 
-                window.close();
-        }
-        window.clear();  
-        if (!isPause) pauseButton.activate(window);
-        else playButton.activate(window);
-        nextButton.activate(window);
-        prevButton.activate(window);
-        window.draw(createButton);
-        window.draw(addButton);
+    //         //Add triggered
+    //         if (anm::isHover(addButton, localPosition) && sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+    //             isAdd = 1;
+    //             addTriggered(graphicalNode, addVar, arrowSprite, arr);
+    //         }
+    //         //------------------------------------------
+    //         if (playButton.isClicked(window) && isPause) isPause = 0;
+    //         else if (pauseButton.isClicked(window) && !isPause) isPause = 1;
+    //         if (event.type == sf::Event::Closed) 
+    //             window.close();
+    //     }
+    //     window.clear();  
+    //     if (!isPause) pauseButton.activate(window);
+    //     else playButton.activate(window);
+    //     nextButton.activate(window);
+    //     prevButton.activate(window);
+    //     window.draw(createButton);
+    //     window.draw(addButton);
 
-        if (isInit) {
-            for (int i = 0; i < arr.size(); i++) {
-                window.draw(graphicalNode[i].box);
-                window.draw(graphicalNode[i].number);
-            }
-            for (int i = 0; i < arr.size() - 1; i++) {
-                window.draw(arrowSprite[i]);
-            }
-            if (!isAdd) {
-                window.draw(pHead.box);
-                window.draw(pHead.text);
-                window.draw(pointerArrow);
-            }
-        }
+    //     if (isInit) {
+    //         for (int i = 0; i < arr.size(); i++) {
+    //             window.draw(graphicalNode[i].box);
+    //             window.draw(graphicalNode[i].number);
+    //         }
+    //         for (int i = 0; i < arr.size() - 1; i++) {
+    //             window.draw(arrowSprite[i]);
+    //         }
+    //         if (!isAdd) {
+    //             window.draw(pHead.box);
+    //             window.draw(pHead.text);
+    //             window.draw(pointerArrow);
+    //         }
+    //     }
 
-        if (isAdd) addAnimation(window, addAnimationOrder, arr, graphicalNode, pHead, pointerArrow, addVar, arrowSprite, arrSize, 2, -231, 1);
-        window.display();
-    }
+    //     if (isAdd) addAnimation(window, addAnimationOrder, arr, graphicalNode, pHead, pointerArrow, addVar, arrowSprite, arrSize, 2, -231, 1);
+    //     window.display();
+    // }
 }

@@ -9,9 +9,13 @@ namespace Textures {
         rightArrow,
         pointerArrow,
         nextButton,
+        nextButtonHoverred,
         prevButton,
+        prevButtonHoverred,
         playButton,
-        pauseButton
+        playButtonHoverred,
+        pauseButton,
+        pauseButtonHoverred
     };
 };
 

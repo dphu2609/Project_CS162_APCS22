@@ -11,10 +11,7 @@ void Program2::run() {
         processEvents();
         mWindow.clear();
         timeSinceLastUpdate += clock.restart();
-        if (!isAnimationTriggered) {
-            isAnimationTriggered = 1;
-            mMenu.activateAnimation(dt, 1);
-        }
+        mMenu.addAnimation(dt, 0.5);
         while (timeSinceLastUpdate > dt) {
             timeSinceLastUpdate -= dt;
             processEvents();

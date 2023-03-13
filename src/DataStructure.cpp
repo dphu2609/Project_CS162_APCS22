@@ -85,50 +85,6 @@ void Pointer::set(std::string string, sf::Font &font, int posX, int posY, sf::Co
     this->box.setOutlineThickness(10);
 }
 
-ImageButton::ImageButton(std::string originalButtonImagePath, std::string hoverredButtonImagePath, double width, double height, sf::Vector2f pos) {
-    if (!this->originalButtonTexture.loadFromFile(originalButtonImagePath)) {
-        std::cout << "Error when accessing " << originalButtonImagePath << std::endl;
-    }
-    if (!this->hoverredButtonTexture.loadFromFile(hoverredButtonImagePath)) {
-        std::cout << "Error when accessing " << hoverredButtonImagePath << std::endl;
-    }
-    this->originalButton.setTexture(this->originalButtonTexture);
-    this->hoverredButton.setTexture(this->hoverredButtonTexture);
-    this->originalButton.setPosition(pos);
-    this->hoverredButton.setPosition(pos);
-    sf::Vector2f originalButtonScale(width/this->originalButton.getGlobalBounds().width, height/this->originalButton.getGlobalBounds().height);
-    sf::Vector2f hoverredButtonScale(width/this->hoverredButton.getGlobalBounds().width, height/this->hoverredButton.getGlobalBounds().height);
-    this->originalButton.setScale(originalButtonScale);
-    this->hoverredButton.setScale(hoverredButtonScale);
-}
-
-void ImageButton::activate(sf::RenderWindow &window) {
-    sf::Vector2i localPosition(sf::Mouse::getPosition(window));
-    sf::FloatRect buttonBounds = this->originalButton.getGlobalBounds();
-    sf::Vector2f startPoint(buttonBounds.left, buttonBounds.top);
-    sf::Vector2f endPoint(buttonBounds.left + buttonBounds.width, buttonBounds.top + buttonBounds.height);
-    if (
-        localPosition.x >= buttonBounds.left && 
-        localPosition.x <= buttonBounds.left + buttonBounds.width && 
-        localPosition.y >= buttonBounds.top && 
-        localPosition.y <= buttonBounds.top + buttonBounds.height
-    ) window.draw(this->hoverredButton);
-    else window.draw(this->originalButton);
-}
-
-bool ImageButton::isClicked(sf::RenderWindow &window) {
-    sf::Vector2i localPosition(sf::Mouse::getPosition(window));
-    sf::FloatRect buttonBounds = this->originalButton.getGlobalBounds();
-    sf::Vector2f startPoint(buttonBounds.left, buttonBounds.top);
-    sf::Vector2f endPoint(buttonBounds.left + buttonBounds.width, buttonBounds.top + buttonBounds.height);
-    return (
-        localPosition.x >= buttonBounds.left && 
-        localPosition.x <= buttonBounds.left + buttonBounds.width && 
-        localPosition.y >= buttonBounds.top && 
-        localPosition.y <= buttonBounds.top + buttonBounds.height && 
-        sf::Mouse::isButtonPressed(sf::Mouse::Left)
-    );
-}
 
 
 

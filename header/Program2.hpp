@@ -9,9 +9,7 @@ public:
     void run();
 private:
     void processEvents();
-    void update();
-    void render();
 private:
-    MenuState mMenu;
+    LinkedListState mMenu;
     sf::RenderWindow mWindow;
 };

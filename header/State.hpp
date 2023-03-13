@@ -4,27 +4,7 @@
 #include <bits/stdc++.h>
 #include "ResourceHolder.hpp"
 #include "SceneGraph.hpp"
-
-// namespace Textures {
-//     enum ID {
-//         menuBackGround,
-//         rightArrow,
-//         pointerArrow,
-//         nextButton,
-//         prevButton,
-//         playButton,
-//         pauseButton
-//     };
-// };
-
-// namespace Fonts {
-//     enum ID {
-//         ComfortaaRegular,
-//         FiraSansRegular,
-//         GreateVibesRegular,
-//         TiltWarpRegular
-//     };
-// };
+#include "Event.hpp"
 
 class State : private sf::NonCopyable {
 public:
@@ -32,35 +12,35 @@ public:
     void update(sf::Time dt);
     void draw();
 public:
-    enum Layers {
-        Nodes,
-        LayerCount
-    };
-    std::vector<int> arr;
-    std::vector<std::unique_ptr<LinkedListNode>> nodes;
     sf::RenderWindow &mWindow;
-    std::array<SceneNode*, LayerCount> mSceneLayers;
+    std::array<SceneNode*, 20> mSceneLayers;
     SceneNode mSceneGraph;
     ResourceHolder<sf::Texture, Textures::ID> mTexturesHolder;
     ResourceHolder<sf::Font, Fonts::ID> mFontsHolder;
 private:
-    void loadTextures();
-    void loadFonts();
-    void buildScence();
+    virtual void loadTextures() = 0;
+    virtual void loadFonts() = 0;
+    virtual void buildScence() = 0;
 };
 
-class MenuState : public State {
+class LinkedListState : public State {
 public:
-    explicit MenuState(sf::RenderWindow &window);
+    explicit LinkedListState(sf::RenderWindow &window);
     void activateAnimation(sf::Time dt, double speed);
+    void addAnimation(sf::Time dt, double speed);
 private:
+    int animationOrder;
+    bool isAdd;
     std::vector<int> arr;
+    int addIndex;
     enum Layers {
+        Button,
         Nodes,
+        newNode,
         LayerCount
     };
 private:
-    void loadTextures();
-    void loadFonts();
-    void buildScence();
+    virtual void loadTextures();
+    virtual void loadFonts();
+    virtual void buildScence();
 };
