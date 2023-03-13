@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <bits/stdc++.h>
 
-#include "Animation.h"
+#include <Animation.h>
 
 class AnimationVar {
 public:

@@ -1,4 +1,4 @@
-#include "../header/Button.hpp"
+#include <Button.hpp>
 
 void ImageButton::set(sf::Texture &originalButtonTexture, sf::Texture &hoverredButtonTexture, double width, double height, sf::Vector2f pos) {
     this->originalButton.setTexture(originalButtonTexture);

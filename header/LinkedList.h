@@ -1,7 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <bits/stdc++.h>
-#include "Animation.h"
-#include "DataStructure.h"
+#include <Animation.h>
+#include <DataStructure.h>
 
 class LinkedList {
 public:

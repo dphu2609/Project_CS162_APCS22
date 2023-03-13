@@ -3,9 +3,10 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
-#include "Animation.h"
-#include "DataStructure.h"
-#include "LinkedList.h"
+#include <Animation.h>
+#include <DataStructure.h>
+#include <LinkedList.h>
+
 
 class Program {
 private: 

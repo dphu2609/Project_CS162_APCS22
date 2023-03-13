@@ -1,4 +1,4 @@
-#include "../header/Animation.h"
+#include <Animation.h>
 
 bool anm::isHover(sf::Text text, sf::Vector2i pos) {
     sf::FloatRect textBounds = text.getGlobalBounds();

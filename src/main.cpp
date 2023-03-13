@@ -1,4 +1,4 @@
-#include "../header/Program2.hpp"
+#include <Program2.hpp>
 
 int main() {
     Program2 program;

@@ -1,4 +1,4 @@
-#include "../header/Program.h"
+#include <Program.h>
 
 #include <bits/stdc++.h>
 

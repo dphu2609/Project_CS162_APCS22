@@ -1,6 +1,8 @@
-#include "../header/Program2.hpp"
+#include <Program2.hpp>
 
-Program2::Program2() : mWindow(sf::VideoMode(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height), "Data Visual"), mMenu(mWindow) {}
+Program2::Program2() : mWindow(sf::VideoMode(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height), "Data Visual"), mMenu(mWindow) {
+    mMenu.isAdd = 0;
+}
 
 void Program2::run() {
     const sf::Time dt = sf::seconds(1.0f / 120.0f);
@@ -11,10 +13,10 @@ void Program2::run() {
         processEvents();
         mWindow.clear();
         timeSinceLastUpdate += clock.restart();
-        mMenu.addAnimation(dt, 0.5);
         while (timeSinceLastUpdate > dt) {
             timeSinceLastUpdate -= dt;
             processEvents();
+            if (mMenu.isAdd) mMenu.addAnimation(dt, 0.5);
             mMenu.update(dt);
         }
         mMenu.draw();
@@ -26,6 +28,7 @@ void Program2::processEvents()
 {
     sf::Event event;
     while (mWindow.pollEvent(event)) {
+        mMenu.handleEvent();
         if (event.type == sf::Event::Closed)
             mWindow.close();
     }

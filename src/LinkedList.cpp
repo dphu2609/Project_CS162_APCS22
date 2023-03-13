@@ -1,5 +1,5 @@
-#include "../header/LinkedList.h"
-#include "../header/Button.hpp"
+#include <LinkedList.h>
+#include <Button.hpp>
 
 void LinkedList::initTriggered(std::vector<GraphicalNode> &graphicalNode, std::vector<sf::Sprite> &arrowSprite, std::vector<int> arr, Pointer &pHead, sf::Sprite &pointerArrow) {
     const int arrSize = arr.size();
