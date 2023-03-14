@@ -29,3 +29,4 @@ const Resource& ResourceHolder<Resource, Identifier>::operator [] (Identifier id
 template class ResourceHolder<sf::Texture, Textures::ID>;
 template class ResourceHolder<sf::Font, Fonts::ID>;
 
+

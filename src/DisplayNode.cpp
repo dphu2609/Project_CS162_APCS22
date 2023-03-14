@@ -21,6 +21,7 @@ void DisplayNode::updateCurrent(sf::Time dt) {
         else {
             this->mAnimationType["move"] = 0;
             this->mIsMoving = 0;
+            this->mIsDoneMoving = 1;
         }
     }
 }
@@ -33,4 +34,5 @@ void DisplayNode::triggerMoveAnimation(sf::Time dt, double speed, double moveDis
     this->mMovingDistance = moveDistance;
     this->mAnimationType.insert(std::make_pair("move", 1));
     this->mIsMoving = 1;
+    this->mIsDoneMoving = 0;
 }

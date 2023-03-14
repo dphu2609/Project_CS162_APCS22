@@ -16,7 +16,7 @@ void Program2::run() {
         while (timeSinceLastUpdate > dt) {
             timeSinceLastUpdate -= dt;
             processEvents();
-            if (mMenu.isAdd) mMenu.addAnimation(dt, 0.5);
+            if (mMenu.isAdd) mMenu.addAnimation(dt, 0.75);
             mMenu.update(dt);
         }
         mMenu.draw();

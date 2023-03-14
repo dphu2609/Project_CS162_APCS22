@@ -23,6 +23,7 @@ void SpriteNode::updateCurrent(sf::Time dt) {
         else {
             this->mAnimationType["move"] = 0;
             this->mIsMoving = 0;
+            this->mIsDoneMoving = 1;
         }
     }
     if (this->mAnimationType["rotate"]) {
@@ -32,6 +33,7 @@ void SpriteNode::updateCurrent(sf::Time dt) {
         else {
             this->mAnimationType["rotate"] = 0;
             this->mIsRotating = 0;
+            this->mIsDoneRotating = 1;
         }
     }
     if (this->mAnimationType["scale"]) {
@@ -45,6 +47,7 @@ void SpriteNode::updateCurrent(sf::Time dt) {
         if (this->mCurrentLengthScale <= 0 && this->mCurrentWidthScale <= 0) {
             this->mAnimationType["scale"] = 0;
             this->mIsScaling = 0; 
+            this->mIsDoneScaling = 1;
         }
     }
 }
@@ -55,8 +58,9 @@ void SpriteNode::triggerMoveAnimation(sf::Time dt, double speed, double moveDist
     this->mAngleMovement = angleMovement;
     this->mStartPos = this->mSprite.getPosition();
     this->mMovingDistance = moveDistance;
-    this->mAnimationType.insert(std::make_pair("move", 1));
+    this->mAnimationType["move"] = 1;
     this->mIsMoving = 1;
+    this->mIsDoneMoving = 0;
 }
 
 void SpriteNode::triggerRotateAnimation(sf::Time dt, double speed, double rotatingDistance) {
@@ -64,8 +68,9 @@ void SpriteNode::triggerRotateAnimation(sf::Time dt, double speed, double rotati
     this->mRotatingStep = this->mCurrentAngle*dt.asSeconds()*speed;
     this->mStartAngle = this->mSprite.getRotation();
     this->mRotatingDistance = rotatingDistance;
-    this->mAnimationType.insert(std::make_pair("rotate", 1));
+    this->mAnimationType["rotate"] = 1;
     this->mIsRotating = 1;
+    this->mIsDoneRotating = 0;
 }
 
 void SpriteNode::triggerScaleAnimation(sf::Time dt, double lengthSpeed, double scalingLengthDistance, double widthSpeed, double scalingWidthDistance) {
@@ -78,6 +83,7 @@ void SpriteNode::triggerScaleAnimation(sf::Time dt, double lengthSpeed, double s
     this->mScalingWidthDistance = scalingWidthDistance;
 
     this->mStartScale = this->mSprite.getScale();
-    this->mAnimationType.insert(std::make_pair("scale", 1));
+    this->mAnimationType["scale"] = 1;
     this->mIsScaling = 1;
+    this->mIsDoneScaling = 0;
 }

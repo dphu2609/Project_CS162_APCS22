@@ -35,6 +35,7 @@ public:
     double mMovingStep;
     double mAngleMovement;
     bool mIsMoving;
+    bool mIsDoneMoving;
     //--------------------------
     //rotate animation variables
     double mRotatingDistance;
@@ -42,6 +43,7 @@ public:
     double mCurrentAngle;
     double mRotatingStep;
     bool mIsRotating;
+    bool mIsDoneRotating;
     //-----------------------------
     //scale animation variables
     sf::Vector2f mStartScale;
@@ -52,6 +54,7 @@ public:
     double mCurrentLengthScale;
     double mScalingLengthStep;
     bool mIsScaling;
+    bool mIsDoneScaling;
     //-----------
 };
 

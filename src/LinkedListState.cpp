@@ -28,7 +28,7 @@ void LinkedListState::buildScence() {
         std::unique_ptr<DisplayNode> newNode = std::make_unique<DisplayNode>(
             arr[i], mFontsHolder[Fonts::FiraSansRegular], 
             sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (arr.size()/2)*250 + i*250, 250), 
-            sf::Color::Black, sf::Color::White, sf::Color::Blue
+            sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
         );
         mSceneLayers[Nodes]->attachChild(std::move(newNode));
     }
@@ -67,7 +67,7 @@ void LinkedListState::addAnimation(sf::Time dt, double speed) {
             std::unique_ptr<DisplayNode> addedNode = std::make_unique<DisplayNode>(
                 12, mFontsHolder[Fonts::FiraSansRegular], 
                 sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (arr.size()/2)*250 + (addIndex)*250, 750), 
-                sf::Color::Black, sf::Color::White, sf::Color::Blue
+                sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
             );
             addedNode->triggerMoveAnimation(dt, speed, 250, -90);
             mSceneLayers[newNode]->attachChild(std::move(addedNode));
@@ -75,19 +75,35 @@ void LinkedListState::addAnimation(sf::Time dt, double speed) {
         }
         case 2: {
             for (auto &child : this->mSceneLayers[tempArrow]->getChildren()) {
-                if (!child->mIsScaling) animationOrder = 3;
+                if (child->mIsDoneScaling) animationOrder = 3;
                 return;
             }
             std::unique_ptr<SpriteNode> newArrow = std::make_unique<SpriteNode>(
                 mTexturesHolder[Textures::rightArrow], sf::Vector2f(0, 50), 
                 sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (arr.size()/2)*250 + (addIndex)*250 + 35, 500), -90
             );
-            newArrow->triggerScaleAnimation(dt, 0.5, 110, 0, 0);
+            newArrow->triggerScaleAnimation(dt, speed, 110, 0, 0);
             mSceneLayers[tempArrow]->attachChild(std::move(newArrow));
+            break;
         }
-        // case 2: {
-            
-        // }
+        case 3: {
+            int index = 0;
+            for (auto &child : this->mSceneLayers[Arrow]->getChildren()) {
+                if (index == addIndex - 1) {
+                    if (!child->mIsScaling && !child->mIsDoneScaling) {
+                        child->triggerRotateAnimation(dt, speed*1.25, 66.8);
+                        child->triggerScaleAnimation(dt, speed*0.7, (110/std::cos(66.8*std::atan(1)*4/180)) - 110, 0, 0);
+                        child->triggerMoveAnimation(dt, speed*2, 25, 30);
+                    } 
+                    else if (!child->mIsScaling && child->mIsDoneScaling) {
+                        animationOrder = 4;
+                    }
+                    return;
+                }
+                index++;
+            }
+            break;
+        }
     }
 }
 
