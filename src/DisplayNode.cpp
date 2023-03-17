@@ -32,7 +32,7 @@ void DisplayNode::triggerMoveAnimation(sf::Time dt, double speed, double moveDis
     this->mAngleMovement = angleMovement;
     this->mStartPos = this->mNode.box.getPosition();
     this->mMovingDistance = moveDistance;
-    this->mAnimationType.insert(std::make_pair("move", 1));
+    this->mAnimationType["move"] = 1;
     this->mIsMoving = 1;
     this->mIsDoneMoving = 0;
 }

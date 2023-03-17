@@ -27,7 +27,12 @@ void SpriteNode::updateCurrent(sf::Time dt) {
         }
     }
     if (this->mAnimationType["rotate"]) {
-        double newAngle = this->mStartAngle - std::pow(this->mCurrentAngle, 4) + this->mRotatingDistance;
+        double newAngle;
+        if (this->mRotatingDistance >= 0) {
+            newAngle = this->mStartAngle - std::pow(this->mCurrentAngle, 4) + this->mRotatingDistance;
+        } else {
+            newAngle = this->mStartAngle + std::pow(this->mCurrentAngle, 4) + this->mRotatingDistance;
+        }
         this->mSprite.setRotation(newAngle);
         if (this->mCurrentAngle > 0) this->mCurrentAngle -= this->mRotatingStep;
         else {
@@ -37,10 +42,17 @@ void SpriteNode::updateCurrent(sf::Time dt) {
         }
     }
     if (this->mAnimationType["scale"]) {
-        sf::Vector2f newScale = this->mStartScale + sf::Vector2f(
-                (-std::pow(this->mCurrentLengthScale, 4) + this->mScalingLengthDistance) / this->mSprite.getLocalBounds().width, 
-                (-std::pow(this->mCurrentWidthScale, 4) + this->mScalingWidthDistance) / this->mSprite.getLocalBounds().height
-            );
+        sf::Vector2f newScale;
+        if (this->mScalingLengthDistance >= 0) {
+            newScale.x = this->mStartScale.x + (-std::pow(this->mCurrentLengthScale, 4) + this->mScalingLengthDistance) / this->mSprite.getLocalBounds().width;
+        } else {
+            newScale.x = this->mStartScale.x + (std::pow(this->mCurrentLengthScale, 4) + this->mScalingLengthDistance) / this->mSprite.getLocalBounds().width;
+        }
+        if (this->mScalingWidthDistance >= 0) {
+            newScale.y = this->mStartScale.y + (-std::pow(this->mCurrentWidthScale, 4) + this->mScalingWidthDistance) / this->mSprite.getLocalBounds().height;
+        } else {
+            newScale.y = this->mStartScale.y + (std::pow(this->mCurrentWidthScale, 4) + this->mScalingWidthDistance) / this->mSprite.getLocalBounds().height;
+        }
         this->mSprite.setScale(newScale);
         if (this->mCurrentLengthScale > 0) this->mCurrentLengthScale -= this->mScalingLengthStep;
         if (this->mCurrentWidthScale > 0) this->mCurrentWidthScale -= this->mScalingWidthStep;
@@ -53,7 +65,7 @@ void SpriteNode::updateCurrent(sf::Time dt) {
 }
 
 void SpriteNode::triggerMoveAnimation(sf::Time dt, double speed, double moveDistance, double angleMovement) {
-    this->mCurrentPos = std::sqrt(std::sqrt(moveDistance));
+    this->mCurrentPos = std::sqrt(std::sqrt(std::abs(moveDistance)));
     this->mMovingStep = this->mCurrentPos*dt.asSeconds()*speed;
     this->mAngleMovement = angleMovement;
     this->mStartPos = this->mSprite.getPosition();
@@ -64,7 +76,7 @@ void SpriteNode::triggerMoveAnimation(sf::Time dt, double speed, double moveDist
 }
 
 void SpriteNode::triggerRotateAnimation(sf::Time dt, double speed, double rotatingDistance) {
-    this->mCurrentAngle = std::sqrt(std::sqrt(rotatingDistance));
+    this->mCurrentAngle = std::sqrt(std::sqrt(std::abs(rotatingDistance)));
     this->mRotatingStep = this->mCurrentAngle*dt.asSeconds()*speed;
     this->mStartAngle = this->mSprite.getRotation();
     this->mRotatingDistance = rotatingDistance;
@@ -74,11 +86,11 @@ void SpriteNode::triggerRotateAnimation(sf::Time dt, double speed, double rotati
 }
 
 void SpriteNode::triggerScaleAnimation(sf::Time dt, double lengthSpeed, double scalingLengthDistance, double widthSpeed, double scalingWidthDistance) {
-    this->mCurrentLengthScale = std::sqrt(std::sqrt(scalingLengthDistance));
+    this->mCurrentLengthScale = std::sqrt(std::sqrt(std::abs(scalingLengthDistance)));
     this->mScalingLengthStep = this->mCurrentLengthScale*dt.asSeconds()*lengthSpeed;
     this->mScalingLengthDistance = scalingLengthDistance;
 
-    this->mCurrentWidthScale = std::sqrt(std::sqrt(scalingWidthDistance));
+    this->mCurrentWidthScale = std::sqrt(std::sqrt(std::abs(scalingWidthDistance)));
     this->mScalingWidthStep = this->mCurrentWidthScale*dt.asSeconds()*widthSpeed;
     this->mScalingWidthDistance = scalingWidthDistance;
 
