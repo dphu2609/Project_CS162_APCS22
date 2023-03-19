@@ -13,12 +13,12 @@ bool evn::isHoverred(sf::RenderWindow &window, Data &data) {
 }
 
 template <typename Data>
-bool evn::isLeftClicked(sf::RenderWindow &window, Data &data) {
-    return (evn::isHoverred(window, data) && sf::Mouse::isButtonPressed(sf::Mouse::Left));
+bool evn::isLeftClicked(sf::RenderWindow &window, sf::Event &event, Data &data) {
+    return (evn::isHoverred(window, data) && sf::Mouse::isButtonPressed(sf::Mouse::Left) && event.type == sf::Event::MouseButtonPressed);
 }
 
-template <typename Data>
-bool evn::isRightClicked(sf::RenderWindow &window, Data &data) {
-    return (evn::isHoverred(window, data) && sf::Mouse::isButtonPressed(sf::Mouse::Right));
+template <typename Data>    
+bool evn::isRightClicked(sf::RenderWindow &window,sf::Event &event, Data &data) {
+    return (evn::isHoverred(window, data) && sf::Mouse::isButtonPressed(sf::Mouse::Right) && event.type == sf::Event::MouseButtonPressed);
 }
 

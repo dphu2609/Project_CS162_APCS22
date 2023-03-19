@@ -33,7 +33,7 @@ void Program2::processEvents()
 {
     sf::Event event;
     while (mWindow.pollEvent(event)) {
-        // mMenu.handleEvent();
+        mSettings.handleEvent(event);
         if (event.type == sf::Event::Closed)
             mWindow.close();
     }

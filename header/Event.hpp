@@ -7,10 +7,10 @@ namespace evn {
     bool isHoverred(sf::RenderWindow &window, Data &data);
 
     template <typename Data>
-    bool isLeftClicked(sf::RenderWindow &window, Data &data);
+    bool isLeftClicked(sf::RenderWindow &window, sf::Event &event, Data &data);
 
     template <typename Data>
-    bool isRightClicked(sf::RenderWindow &window, Data &data);
+    bool isRightClicked(sf::RenderWindow &window, sf::Event &event ,Data &data);
 };
 
 #include "Event.inl"

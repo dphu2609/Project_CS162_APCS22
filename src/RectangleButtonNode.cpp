@@ -1,6 +1,6 @@
 #include <SceneGraph/RectangleButtonNode.hpp>
 
-RectangleButtonNode::RectangleButtonNode(sf::RenderWindow &window, const std::string text , const sf::Font &font, sf::Vector2f boxSize, 
+RectangleButtonNode::RectangleButtonNode(sf::RenderWindow &window, const std::string text, const sf::Font &font, sf::Vector2f boxSize, 
         double outlineSize, sf::Vector2f pos, sf::Color textColor, sf::Color boxColor, 
         sf::Color boxOutlineColor, sf::Color textColorHoverred, sf::Color boxColorHoverred, sf::Color boxOutlineColorHoverred
 ) : mWindow(window) {

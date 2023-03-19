@@ -13,6 +13,7 @@ public:
     void attachChild(Ptr child);
     Ptr detachChild(const SceneNode& node);
     void update (sf::Time dt);
+    void handleEvent(sf::Event &event);
     std::vector<std::unique_ptr<SceneNode>>& getChildren() { return mChildren; }
     virtual void triggerMoveAnimation(sf::Time dt, double speed, double movingDistance, double angleMovement);
     virtual void triggerRotateAnimation(sf::Time dt, double speed, double rotatingDistance);
@@ -22,7 +23,7 @@ private:
     virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
     virtual void drawCurrent(sf::RenderTarget &target, sf::RenderStates states) const;
     virtual void updateCurrent(sf::Time dt);
-    void updateChildren(sf::Time dt);
+    virtual void handleCurrentEvent(sf::Event &event);
 private:
     std::vector<Ptr> mChildren;
     SceneNode* mParent;
@@ -63,3 +64,4 @@ public:
 #include <SceneGraph/SpriteNode.hpp>
 #include <SceneGraph/RectangleButtonNode.hpp>
 #include <SceneGraph/ContainerNode.hpp>
+#include <SceneGraph/DropBoxNode.hpp>

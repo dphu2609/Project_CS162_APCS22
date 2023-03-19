@@ -34,15 +34,17 @@ void SceneNode::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) c
 
 void SceneNode::update(sf::Time dt) {
     updateCurrent(dt);
-    updateChildren(dt);
+    for (const auto& child : mChildren) child->update(dt);
 }
 
-void SceneNode::updateCurrent(sf::Time) {}
-
-void SceneNode::updateChildren(sf::Time dt) {
-    for (const auto& child : mChildren)
-        child->update(dt);
+void SceneNode::handleEvent(sf::Event &event) {
+    handleCurrentEvent(event);
+    for (const auto& child : mChildren) child->handleEvent(event);
 }
+
+void SceneNode::updateCurrent(sf::Time dt) {}
+
+void SceneNode::handleCurrentEvent(sf::Event &event) {}
 
 void SceneNode::triggerMoveAnimation(sf::Time dt, double speed, double moveDistance, double angleMovement) {}
 

@@ -11,7 +11,7 @@ public:
     explicit State(sf::RenderWindow &window);
     void update(sf::Time dt);
     void draw();
-    virtual void handleEvent() = 0;
+    void handleEvent(sf::Event &event);
 public:
     sf::RenderWindow &mWindow;
     std::array<SceneNode*, 20> mSceneLayers;

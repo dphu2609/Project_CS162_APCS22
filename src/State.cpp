@@ -9,3 +9,7 @@ void State::draw() {
 void State::update(sf::Time dt) {
     mSceneGraph.update(dt);
 } 
+
+void State::handleEvent(sf::Event &event) {
+    mSceneGraph.handleEvent(event);
+}
