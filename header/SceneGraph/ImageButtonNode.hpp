@@ -3,18 +3,13 @@
 
 namespace ButtonType {
     enum ID {
-        Create,
-        Insert,
-        Search,
-        Delete,
-        Return,
-        TypeCount
+        Create
     };
 };
 
-class ButtonNode : public SceneNode {
+class ImageButtonNode : public SceneNode {
 public:
-    ButtonNode(sf::RenderWindow &window, sf::Texture &originalButtonTexture, sf::Texture &hoverredButtonTexture, sf::Vector2f size, sf::Vector2f pos);
+    ImageButtonNode(sf::RenderWindow &window, sf::Texture &originalButtonTexture, sf::Texture &hoverredButtonTexture, sf::Vector2f size, sf::Vector2f pos);
     virtual bool isLeftClicked();
 private:
     ImageButton mButton;

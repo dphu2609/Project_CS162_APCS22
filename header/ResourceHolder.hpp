@@ -25,7 +25,8 @@ namespace Fonts {
         ComfortaaRegular,
         FiraSansRegular,
         GreateVibesRegular,
-        TiltWarpRegular
+        TiltWarpRegular,
+        RobotoRegular
     };
 };
 

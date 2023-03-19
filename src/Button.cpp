@@ -11,30 +11,31 @@ void ImageButton::set(sf::Texture &originalButtonTexture, sf::Texture &hoverredB
     this->hoverredButton.setScale(hoverredButtonScale);
 }
 
-void ImageButton::activate(sf::RenderWindow &window) {
-    sf::Vector2i localPosition(sf::Mouse::getPosition(window));
-    sf::FloatRect buttonBounds = this->originalButton.getGlobalBounds();
-    sf::Vector2f startPoint(buttonBounds.left, buttonBounds.top);
-    sf::Vector2f endPoint(buttonBounds.left + buttonBounds.width, buttonBounds.top + buttonBounds.height);
-    if (
-        localPosition.x >= buttonBounds.left && 
-        localPosition.x <= buttonBounds.left + buttonBounds.width && 
-        localPosition.y >= buttonBounds.top && 
-        localPosition.y <= buttonBounds.top + buttonBounds.height
-    ) window.draw(this->hoverredButton);
-    else window.draw(this->originalButton);
-}
+void RectangleButton::set(const std::string text , const sf::Font &font, sf::Vector2f boxSize, 
+    double outlineSize, sf::Vector2f pos, sf::Color textColor, sf::Color boxColor, 
+    sf::Color boxOutlineColor, sf::Color textColorHoverred, sf::Color boxColorHoverred, sf::Color boxOutlineColorHoverred
+) {
+    this->mText.setFont(font);
+    this->mText.setString(text);
+    this->mText.setCharacterSize(boxSize.y*0.6);
+    this->mText.setPosition(pos + sf::Vector2f(20, boxSize.y*0.1));
+    this->mText.setFillColor(textColor);
 
-bool ImageButton::isClicked(sf::RenderWindow &window) {
-    sf::Vector2i localPosition(sf::Mouse::getPosition(window));
-    sf::FloatRect buttonBounds = this->originalButton.getGlobalBounds();
-    sf::Vector2f startPoint(buttonBounds.left, buttonBounds.top);
-    sf::Vector2f endPoint(buttonBounds.left + buttonBounds.width, buttonBounds.top + buttonBounds.height);
-    return (
-        localPosition.x >= buttonBounds.left && 
-        localPosition.x <= buttonBounds.left + buttonBounds.width && 
-        localPosition.y >= buttonBounds.top && 
-        localPosition.y <= buttonBounds.top + buttonBounds.height && 
-        sf::Mouse::isButtonPressed(sf::Mouse::Left)
-    );
+    this->mBox.setSize(boxSize);
+    this->mBox.setPosition(pos);
+    this->mBox.setFillColor(boxColor);
+    this->mBox.setOutlineColor(boxOutlineColor);
+    this->mBox.setOutlineThickness(outlineSize);
+
+    this->mTextHoverred.setFont(font);
+    this->mTextHoverred.setString(text);
+    this->mTextHoverred.setCharacterSize(boxSize.y*0.6);
+    this->mTextHoverred.setPosition(pos + sf::Vector2f(20, boxSize.y*0.1));
+    this->mTextHoverred.setFillColor(textColorHoverred);
+
+    this->mBoxHoverred.setSize(boxSize);
+    this->mBoxHoverred.setPosition(pos);
+    this->mBoxHoverred.setFillColor(boxColorHoverred);
+    this->mBoxHoverred.setOutlineColor(boxOutlineColorHoverred);
+    this->mBoxHoverred.setOutlineThickness(outlineSize);  
 }

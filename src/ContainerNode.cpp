@@ -1,22 +1,24 @@
-#include <SceneGraph/DisplayNode.hpp>
+#include <SceneGraph/ContainerNode.hpp>
 
-DisplayNode::DisplayNode(int val, sf::Font &font, double size, sf::Vector2f pos, sf::Color numColor, sf::Color boxColor, sf::Color boxOutlineColor) {
-    std::string string = std::to_string(val);
-    this->mNode.set(string, font, size, pos, numColor, boxColor, boxOutlineColor);
+ContainerNode :: ContainerNode(sf::RenderWindow &window, sf::Vector2f size, double outlineSize, sf::Vector2f pos, sf::Color boxColor, sf::Color boxOutlineColor) : mWindow(window) {
+    this->mBox.setSize(size);
+    this->mBox.setPosition(pos);
+    this->mBox.setFillColor(boxColor);
+    this->mBox.setOutlineThickness(outlineSize);
+    this->mBox.setOutlineColor(boxOutlineColor);
 }
 
-void DisplayNode::drawCurrent(sf::RenderTarget &target, sf::RenderStates states) const {
-    target.draw(mNode.box);
-    target.draw(mNode.number);
+void ContainerNode::drawCurrent(sf::RenderTarget &target, sf::RenderStates states) const {
+    target.draw(this->mBox);
 }
 
-void DisplayNode::updateCurrent(sf::Time dt) {
+void ContainerNode::updateCurrent(sf::Time dt) {
     if (this->mAnimationType["move"]) {
         sf::Vector2f newPos(
             this->mStartPos.x + (-std::pow(this->mCurrentPos, 4) + this->mMovingDistance)*std::cos(this->mAngleMovement*std::atan(1)*4/180),
             this->mStartPos.y + (-std::pow(this->mCurrentPos, 4) + this->mMovingDistance)*std::sin(this->mAngleMovement*std::atan(1)*4/180)
         );
-        this->mNode.setPos(newPos);
+        this->mBox.setPosition(newPos);
         if (this->mCurrentPos > 0) this->mCurrentPos -= this->mMovingStep;
         else {
             this->mAnimationType["move"] = 0;
@@ -26,11 +28,11 @@ void DisplayNode::updateCurrent(sf::Time dt) {
     }
 }
 
-void DisplayNode::triggerMoveAnimation(sf::Time dt, double speed, double moveDistance, double angleMovement) {
+void ContainerNode::triggerMoveAnimation(sf::Time dt, double speed, double moveDistance, double angleMovement) {
     this->mCurrentPos = std::sqrt(std::sqrt(moveDistance));
     this->mMovingStep = this->mCurrentPos*dt.asSeconds()*speed;
     this->mAngleMovement = angleMovement;
-    this->mStartPos = this->mNode.box.getPosition();
+    this->mStartPos = this->mBox.getPosition();
     this->mMovingDistance = moveDistance;
     this->mAnimationType["move"] = 1;
     this->mIsMoving = 1;

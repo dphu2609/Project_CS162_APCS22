@@ -58,6 +58,8 @@ public:
     //-----------
 };
 
-#include <SceneGraph/ButtonNode.hpp>
+#include <SceneGraph/ImageButtonNode.hpp>
 #include <SceneGraph/DisplayNode.hpp>
 #include <SceneGraph/SpriteNode.hpp>
+#include <SceneGraph/RectangleButtonNode.hpp>
+#include <SceneGraph/ContainerNode.hpp>

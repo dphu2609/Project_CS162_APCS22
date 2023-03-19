@@ -54,8 +54,4 @@ bool SceneNode::isLeftClicked() {
     return 0;
 }
 
-#include <SceneGraph/ButtonNode.hpp>
-#include <SceneGraph/SpriteNode.hpp>
-#include <SceneGraph/DisplayNode.hpp>
-
 

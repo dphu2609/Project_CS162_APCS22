@@ -13,6 +13,7 @@ private:
     int animationOrder;
     std::vector<int> arr;
     int addIndex;
+    int addValue;
     enum Layers {
         Button,
         Nodes,

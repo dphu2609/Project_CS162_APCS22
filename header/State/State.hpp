@@ -23,3 +23,5 @@ private:
     virtual void loadFonts() = 0;
     virtual void buildScence() = 0;
 };
+
+
