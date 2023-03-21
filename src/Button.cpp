@@ -18,7 +18,7 @@ void RectangleButton::set(const std::string text , const sf::Font &font, sf::Vec
     this->mText.setFont(font);
     this->mText.setString(text);
     this->mText.setCharacterSize(boxSize.y*0.6);
-    this->mText.setPosition(pos + sf::Vector2f(20, boxSize.y*0.1));
+    this->mText.setPosition(pos + sf::Vector2f((boxSize.x - mText.getLocalBounds().width)/2, boxSize.y*0.1));
     this->mText.setFillColor(textColor);
 
     this->mBox.setSize(boxSize);
@@ -30,7 +30,7 @@ void RectangleButton::set(const std::string text , const sf::Font &font, sf::Vec
     this->mTextHoverred.setFont(font);
     this->mTextHoverred.setString(text);
     this->mTextHoverred.setCharacterSize(boxSize.y*0.6);
-    this->mTextHoverred.setPosition(pos + sf::Vector2f(20, boxSize.y*0.1));
+    this->mTextHoverred.setPosition(pos + sf::Vector2f((boxSize.x - mText.getLocalBounds().width)/2, boxSize.y*0.1));
     this->mTextHoverred.setFillColor(textColorHoverred);
 
     this->mBoxHoverred.setSize(boxSize);
@@ -38,4 +38,34 @@ void RectangleButton::set(const std::string text , const sf::Font &font, sf::Vec
     this->mBoxHoverred.setFillColor(boxColorHoverred);
     this->mBoxHoverred.setOutlineColor(boxOutlineColorHoverred);
     this->mBoxHoverred.setOutlineThickness(outlineSize);  
+}
+
+void RectangleButton::setPosition(sf::Vector2f pos) {
+    this->mBox.setPosition(pos);
+    this->mBoxHoverred.setPosition(pos);
+    this->mText.setPosition(pos + sf::Vector2f((mBox.getSize().x - mText.getLocalBounds().width)/2, this->mBox.getSize().y*0.1));
+    this->mTextHoverred.setPosition(pos + sf::Vector2f((mBox.getSize().x - mText.getLocalBounds().width)/2, this->mBox.getSize().y*0.1));
+}
+
+void InputBox::set(sf::Font &font, sf::Vector2f boxSize, double outlineThickness, sf::Vector2f pos, sf::Color textColor, sf::Color boxColor, sf::Color boxOutlineColor, sf::Color cursorColor) {
+    mContent = "";
+    mInputText.setString("");
+    mInputText.setFont(font);
+    mInputText.setCharacterSize(boxSize.y*0.7);
+    mInputText.setPosition(pos + sf::Vector2f(5, boxSize.y*0.05));
+    mInputText.setFillColor(textColor);
+    mBox.setSize(boxSize);
+    mBox.setPosition(pos);
+    mBox.setFillColor(boxColor);
+    mBox.setOutlineColor(boxOutlineColor);
+    mBox.setOutlineThickness(outlineThickness);
+    mCursor.setSize(sf::Vector2f(3, boxSize.y*0.9));
+    mCursor.setPosition(pos + sf::Vector2f(5 + mInputText.getLocalBounds().width, boxSize.y*0.1));
+    mCursor.setFillColor(cursorColor);
+}
+
+void InputBox::setPostion(sf::Vector2f pos) {
+    mBox.setPosition(pos);
+    mInputText.setPosition(pos + sf::Vector2f(5, mBox.getSize().y*0.05));
+    mCursor.setPosition(pos + sf::Vector2f(5 + mInputText.getLocalBounds().width, mBox.getSize().y*0.05));
 }

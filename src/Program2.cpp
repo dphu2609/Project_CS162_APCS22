@@ -13,17 +13,16 @@ void Program2::run() {
         processEvents();
         mWindow.clear();
         timeSinceLastUpdate += clock.restart();
-        // while (timeSinceLastUpdate > dt) {
-        //     timeSinceLastUpdate -= dt;
-        //     if (mMenu.isAdd) mMenu.addAnimation(dt, 0.75);
-        //     mMenu.update(dt);
-        // }
-        // mMenu.draw();
         while (timeSinceLastUpdate > dt) {
             timeSinceLastUpdate -= dt;
+            if (mSettings.mIsStateActivated[States::SinglyLinkedList]) {
+                if (mMenu.isAdd) mMenu.addAnimation(dt, 0.75);
+                mMenu.update(dt);
+            }
             mSettings.activeSettings(dt);
             mSettings.update(dt);
         }
+        if (mSettings.mIsStateActivated[States::SinglyLinkedList]) mMenu.draw();
         mSettings.draw();
         mWindow.display();
     }
@@ -34,6 +33,8 @@ void Program2::processEvents()
     sf::Event event;
     while (mWindow.pollEvent(event)) {
         mSettings.handleEvent(event);
+        mSettings.handleClick(event);
+        mMenu.handleClick(event);
         if (event.type == sf::Event::Closed)
             mWindow.close();
     }

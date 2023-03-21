@@ -11,6 +11,9 @@ void ImageButtonNode::drawCurrent(sf::RenderTarget &target, sf::RenderStates sta
     else target.draw(this->mButton.originalButton);
 }
 
-bool ImageButtonNode::isLeftClicked() {
-    return false;
+int ImageButtonNode::getClickedIndex(sf::Event &event) {
+    if (evn::isLeftClicked(mWindow, event, this->mButton.originalButton)) {
+        return 0;
+    }
+    return -1;
 }

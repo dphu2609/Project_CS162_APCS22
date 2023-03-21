@@ -52,17 +52,11 @@ void LinkedListState::buildScence() {
     isAdd = 1;
 }  
 
-void LinkedListState::activateAnimation(sf::Time dt, double speed) {
-    for (auto& child : mSceneLayers[Nodes]->getChildren()) {
-        child->triggerMoveAnimation(dt, speed, 250, 30);
-    }
-}
-
-void LinkedListState::handleEvent() {
+void LinkedListState::handleClick(sf::Event &event) {
     //Handle Button
     int index = 0;
     for (auto &child : this->mSceneLayers[Button]->getChildren()) {
-        if (child->isLeftClicked()) {
+        if (child->getClickedIndex(event) == 0) {
             switch (index) {
                 case ButtonType::Create : {
                     std::cout << "Button Create Clicked" << std::endl;

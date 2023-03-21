@@ -12,6 +12,7 @@ public:
     SceneNode();
     void attachChild(Ptr child);
     Ptr detachChild(const SceneNode& node);
+    void draw(sf::RenderTarget &target, sf::RenderStates states) const;
     void update (sf::Time dt);
     void handleEvent(sf::Event &event);
     std::vector<std::unique_ptr<SceneNode>>& getChildren() { return mChildren; }
@@ -19,8 +20,8 @@ public:
     virtual void triggerRotateAnimation(sf::Time dt, double speed, double rotatingDistance);
     virtual void triggerScaleAnimation(sf::Time dt, double lengthSpeed, double scalingLengthDistance, double widthSpeed, double scalingWidthDistance);
     virtual bool isLeftClicked();
+    virtual int getClickedIndex(sf::Event &event) {return 0;};
 private:
-    virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
     virtual void drawCurrent(sf::RenderTarget &target, sf::RenderStates states) const;
     virtual void updateCurrent(sf::Time dt);
     virtual void handleCurrentEvent(sf::Event &event);
@@ -65,3 +66,4 @@ public:
 #include <SceneGraph/RectangleButtonNode.hpp>
 #include <SceneGraph/ContainerNode.hpp>
 #include <SceneGraph/DropBoxNode.hpp>
+#include <SceneGraph/InputBoxNode.hpp>

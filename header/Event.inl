@@ -1,14 +1,16 @@
 template <typename Data>
 bool evn::isHoverred(sf::RenderWindow &window, Data &data) {
     sf::Vector2i localPosition(sf::Mouse::getPosition(window));
+    sf::Vector2f localPositionF(static_cast<float>(localPosition.x), static_cast<float>(localPosition.y));
+    localPositionF = window.mapPixelToCoords(localPosition);
     sf::FloatRect dataBounds = data.getGlobalBounds();
     sf::Vector2f startPoint(dataBounds.left, dataBounds.top);
     sf::Vector2f endPoint(dataBounds.left + dataBounds.width, dataBounds.top + dataBounds.height);
     return (
-        localPosition.x >= dataBounds.left && 
-        localPosition.x <= dataBounds.left + dataBounds.width && 
-        localPosition.y >= dataBounds.top && 
-        localPosition.y <= dataBounds.top + dataBounds.height
+        localPositionF.x >= dataBounds.left && 
+        localPositionF.x <= dataBounds.left + dataBounds.width && 
+        localPositionF.y >= dataBounds.top && 
+        localPositionF.y <= dataBounds.top + dataBounds.height
     );
 }
 

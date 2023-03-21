@@ -10,7 +10,7 @@ namespace ButtonType {
 class ImageButtonNode : public SceneNode {
 public:
     ImageButtonNode(sf::RenderWindow &window, sf::Texture &originalButtonTexture, sf::Texture &hoverredButtonTexture, sf::Vector2f size, sf::Vector2f pos);
-    virtual bool isLeftClicked();
+    virtual int getClickedIndex(sf::Event &event);
 private:
     ImageButton mButton;
     sf::RenderWindow &mWindow;

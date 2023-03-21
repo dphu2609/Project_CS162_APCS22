@@ -5,9 +5,9 @@
 class LinkedListState : public State {
 public:
     explicit LinkedListState(sf::RenderWindow &window);
-    void activateAnimation(sf::Time dt, double speed);
+    // void activateAnimation(sf::Time dt, double speed);
     void addAnimation(sf::Time dt, double speed);
-    virtual void handleEvent();
+    void handleClick(sf::Event &event);
     bool isAdd;
 private:
     int animationOrder;

@@ -25,4 +25,15 @@ public:
         double outlineSize, sf::Vector2f pos, sf::Color textColor, sf::Color boxColor, 
         sf::Color boxOutlineColor, sf::Color textColorHoverred, sf::Color boxColorHoverred, sf::Color boxOutlineColorHoverred
     );
+    void setPosition(sf::Vector2f pos);
+};
+
+class InputBox {
+public:
+    std::string mContent;
+    sf::Text mInputText;
+    sf::RectangleShape mBox;
+    sf::RectangleShape mCursor;
+    void set(sf::Font &font, sf::Vector2f boxSize, double outlineThickness, sf::Vector2f pos, sf::Color textColor, sf::Color boxColor, sf::Color boxOutlineColor, sf::Color cursorColor);
+    void setPostion(sf::Vector2f pos);
 };

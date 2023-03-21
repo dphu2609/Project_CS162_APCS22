@@ -12,12 +12,17 @@ public:
         sf::Color optionsTextColorHoverred, sf::Color optionsBoxColorHoverred, sf::Color optionsBoxOutlineColorHoverred
     );
     int size();
+    virtual void triggerMoveAnimation(sf::Time dt, double speed, double distance, double angleMovement);
+    virtual int getClickedIndex(sf::Event &event);
 private:
     sf::RenderWindow &mWindow;
+    std::vector<std::string> mOptionsContent;
     RectangleButton mLabel;
     std::vector<RectangleButton> mOptions;
+    std::string mLabelContent;
     bool mIsDropped;
 private:
     virtual void drawCurrent(sf::RenderTarget &target, sf::RenderStates states) const;
     virtual void handleCurrentEvent(sf::Event &event);
+    virtual void updateCurrent(sf::Time dt);
 };
