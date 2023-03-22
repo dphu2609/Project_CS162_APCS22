@@ -7,6 +7,7 @@ InputBoxNode::InputBoxNode(
 ) : mWindow(window) {
     this->mInputBox.set(font, boxSize, outlineThickness, pos, textColor, boxColor, boxOutlineColor, cursorColor);
     this->mIsActivated = 0;
+    this->mOverBoundChar = 0;
 }
 
 void InputBoxNode::drawCurrent(sf::RenderTarget &target, sf::RenderStates states) const {
@@ -54,9 +55,17 @@ void InputBoxNode::handleCurrentEvent(sf::Event &event) {
     }
     if (this->mIsActivated) {
         if (event.type == sf::Event::TextEntered) {
-            if (event.text.unicode < 128 && event.text.unicode != 8 && (this->mInputBox.mInputText.getLocalBounds().width < this->mInputBox.mBox.getSize().x - this->mInputBox.mInputText.getCharacterSize())) {
+            if (event.text.unicode < 128 && event.text.unicode != 8 && this->mInputBox.mContent.size() < 150) {
                 this->mInputBox.mContent += static_cast<char>(event.text.unicode);
-                this->mInputBox.mInputText.setString(this->mInputBox.mContent);
+                if ((this->mInputBox.mInputText.getLocalBounds().width >= this->mInputBox.mBox.getSize().x - this->mInputBox.mInputText.getCharacterSize()*1.2)) {
+                    mOverBoundChar++;
+                    std::string str = "";
+                    for (int i = mOverBoundChar; i < this->mInputBox.mContent.size(); i++) {
+                        str += this->mInputBox.mContent[i];
+                    }
+                    this->mInputBox.mInputText.setString(str);
+                }
+                else this->mInputBox.mInputText.setString(this->mInputBox.mContent);
                 mInputBox.mCursor.setPosition(mInputBox.mBox.getPosition() + sf::Vector2f(7 + mInputBox.mInputText.getLocalBounds().width, mInputBox.mBox.getSize().y*0.05));
                 this->mIsCursorOn = 1;
                 mElapsedTime = 0;
@@ -64,7 +73,15 @@ void InputBoxNode::handleCurrentEvent(sf::Event &event) {
         } else if (event.type == sf::Event::KeyPressed) {
             if (event.key.code == sf::Keyboard::Backspace && this->mInputBox.mInputText.getString().getSize() > 0) {
                 this->mInputBox.mContent.erase(this->mInputBox.mContent.size() - 1);
-                this->mInputBox.mInputText.setString(this->mInputBox.mContent);
+                if ((this->mInputBox.mInputText.getLocalBounds().width >= this->mInputBox.mBox.getSize().x - this->mInputBox.mInputText.getCharacterSize()*1.5)) {
+                    if (mOverBoundChar > 0) mOverBoundChar--;
+                    std::string str = "";
+                    for (int i = mOverBoundChar; i < this->mInputBox.mContent.size(); i++) {
+                        str += this->mInputBox.mContent[i];
+                    }
+                    this->mInputBox.mInputText.setString(str);
+                }
+                else this->mInputBox.mInputText.setString(this->mInputBox.mContent);
                 mInputBox.mCursor.setPosition(mInputBox.mBox.getPosition() + sf::Vector2f(7 + mInputBox.mInputText.getLocalBounds().width, mInputBox.mBox.getSize().y*0.05));
                 this->mIsCursorOn = 1;
                 mElapsedTime = 0;
@@ -82,4 +99,25 @@ void InputBoxNode::triggerMoveAnimation(sf::Time dt, double speed, double moveDi
     this->mAnimationType["move"] = 1;
     this->mIsMoving = 1;
     this->mIsDoneMoving = 0;
+}
+
+void InputBoxNode::resetContent(std::string &str) {
+    std::string temp = "";
+    this->mInputBox.mContent = str;
+    mOverBoundChar = 0;
+    for (int i = 0; i < str.size(); i++) {
+        if ((this->mInputBox.mInputText.getLocalBounds().width >= this->mInputBox.mBox.getSize().x - this->mInputBox.mInputText.getCharacterSize()*1.2)) {
+            std::string string = "";
+            mOverBoundChar++;
+            for (int i = mOverBoundChar; i < this->mInputBox.mContent.size(); i++) {
+                string += this->mInputBox.mContent[i];
+            }
+            this->mInputBox.mInputText.setString(str);
+        }
+        else {
+            this->mInputBox.mInputText.setString(temp);
+        }
+        temp += str[i];
+    }
+    mInputBox.mCursor.setPosition(mInputBox.mBox.getPosition() + sf::Vector2f(7 + mInputBox.mInputText.getLocalBounds().width, mInputBox.mBox.getSize().y*0.05));
 }

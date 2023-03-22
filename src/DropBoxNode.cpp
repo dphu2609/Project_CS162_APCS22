@@ -66,18 +66,19 @@ void DropBoxNode::handleCurrentEvent(sf::Event &event) {
         }
         else this->mIsDropped = 0;
     }
-    for (auto &child : this->mOptions) {
-        if (evn::isLeftClicked(this->mWindow, event, child.mBox)) {
-            std::string str = child.mText.getString();
-            for (int i = 0; i < str.size(); i++) {
-                std::transform(str.begin(), str.end(), str.begin(), ::toupper);  
+    if (this->mIsDropped) {
+        for (auto &child : this->mOptions) {
+            if (evn::isLeftClicked(this->mWindow, event, child.mBox)) {
+                std::string str = child.mText.getString();
+                for (int i = 0; i < str.size(); i++) {
+                    std::transform(str.begin(), str.end(), str.begin(), ::toupper);  
+                }
+                this->mLabel.mText.setString(str);
+                this->mLabel.mTextHoverred.setString(str);
+                sf::Vector2f newLabelPos = this->mLabel.mBox.getPosition() + sf::Vector2f((this->mLabel.mBox.getSize().x - this->mLabel.mText.getLocalBounds().width)/2, this->mLabel.mBox.getSize().y*0.1);
+                this->mLabel.mText.setPosition(newLabelPos);
+                this->mLabel.mTextHoverred.setPosition(newLabelPos);
             }
-            this->mLabel.mText.setString(str);
-            this->mLabel.mTextHoverred.setString(str);
-            sf::Vector2f newLabelPos = this->mLabel.mBox.getPosition() + sf::Vector2f((this->mLabel.mBox.getSize().x - this->mLabel.mText.getLocalBounds().width)/2, this->mLabel.mBox.getSize().y*0.1);
-            this->mLabel.mText.setPosition(newLabelPos);
-            this->mLabel.mTextHoverred.setPosition(newLabelPos);
-            this->mIsDropped = 0;
         }
     }
 }
@@ -118,12 +119,15 @@ int DropBoxNode::getClickedIndex(sf::Event &event) {
     if (evn::isLeftClicked(mWindow, event, this->mLabel.mBox)) {
         return 0;
     }
-    int index = 1;
-    for (auto &child : this->mOptions) {
-        if (evn::isLeftClicked(mWindow, event, child.mBox)) {
-            return index;
+    if (this->mIsDropped) {
+        int index = 1;
+        for (auto &child : this->mOptions) {
+            if (evn::isLeftClicked(mWindow, event, child.mBox)) {
+                this->mIsDropped = 0;
+                return index;
+            }
+            index++;
         }
-        index++;
     }
     return -1;
 }

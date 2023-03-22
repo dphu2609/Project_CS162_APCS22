@@ -3,6 +3,15 @@
 void LinkedListState::addAnimation(sf::Time dt, double speed) {
     switch (animationOrder) {
         case 1: {
+            if (mSceneLayers[newNode]->getChildren().size() == 0) {
+                std::unique_ptr<DisplayNode> addedNode = std::make_unique<DisplayNode>(
+                    addValue, mFontsHolder[Fonts::FiraSansRegular], 100,
+                    sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (arr.size()/2)*250 + (addIndex)*250, 750), 
+                    sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
+                );
+                addedNode->triggerMoveAnimation(dt, speed, 250, -90);
+                mSceneLayers[newNode]->attachChild(std::move(addedNode));
+            }
             for (auto &child : this->mSceneLayers[newNode]->getChildren()) {
                 if (!child->mIsMoving) {
                     child->mIsDoneMoving = 0;
@@ -11,35 +20,30 @@ void LinkedListState::addAnimation(sf::Time dt, double speed) {
                 }
                 return;
             }
-            std::unique_ptr<DisplayNode> addedNode = std::make_unique<DisplayNode>(
-                addValue, mFontsHolder[Fonts::FiraSansRegular], 100,
-                sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (arr.size()/2)*250 + (addIndex)*250, 750), 
-                sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
-            );
-            addedNode->triggerMoveAnimation(dt, speed, 250, -90);
-            mSceneLayers[newNode]->attachChild(std::move(addedNode));
             break;
         }
         case 2: {
+            if (mSceneLayers[tempArrow]->getChildren().size() == 0) {
+                std::unique_ptr<SpriteNode> newArrow = std::make_unique<SpriteNode>(
+                    mTexturesHolder[Textures::rightArrow], sf::Vector2f(0, 50), 
+                    sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (arr.size()/2)*250 + (addIndex)*250 + 35, 500), -90
+                );
+                mSceneLayers[tempArrow]->attachChild(std::move(newArrow));
+            }
             for (auto &child : this->mSceneLayers[tempArrow]->getChildren()) {
-                if (child->mIsDoneScaling) {
+                if (!child->mIsScaling && !child->mIsDoneScaling) {
+                    child->triggerScaleAnimation(dt, speed, 110, 0, 0);
+                } else if (!child->mIsScaling && child->mIsDoneScaling) {
                     child->mIsDoneScaling = 0;
                     if(addIndex != 0) animationOrder = 3;
                     else animationOrder = 4;
                 }
-                return;
             }
-            std::unique_ptr<SpriteNode> newArrow = std::make_unique<SpriteNode>(
-                mTexturesHolder[Textures::rightArrow], sf::Vector2f(0, 50), 
-                sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (arr.size()/2)*250 + (addIndex)*250 + 35, 500), -90
-            );
-            newArrow->triggerScaleAnimation(dt, speed, 110, 0, 0);
-            mSceneLayers[tempArrow]->attachChild(std::move(newArrow));
             break;
         }
         case 3: {
             int index = 0;
-            if (addIndex == arr.size()) {
+            if (addIndex == arr.size() && this->mSceneLayers[Arrow]->getChildren().size() == arr.size() - 1) {
                 std::unique_ptr<SpriteNode> newArrow = std::make_unique<SpriteNode>(
                     mTexturesHolder[Textures::rightArrow], sf::Vector2f(0, 50), 
                     sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (arr.size()/2)*250 + (addIndex - 1)*250 + 130, 285), 66.8
@@ -63,7 +67,7 @@ void LinkedListState::addAnimation(sf::Time dt, double speed) {
                         child->mIsDoneRotating = 0;
                         animationOrder = 4;
                     }
-                    return;
+                    break;
                 }
                 index++;
             }
@@ -116,13 +120,17 @@ void LinkedListState::addAnimation(sf::Time dt, double speed) {
             for (auto &child : this->mSceneLayers[newNode]->getChildren()) {
                 if (!child->mIsMoving && !child->mIsDoneMoving) {
                     child->triggerMoveAnimation(dt, speed, 250, -90);
+                } else if (!child->mIsMoving && child->mIsDoneMoving) {
+                    child->mIsDoneMoving = 0;
                 }
             }
             for (auto &child : this->mSceneLayers[tempArrow]->getChildren()) {
                 if (!child->mIsRotating && !child->mIsDoneRotating) {
                     child->triggerRotateAnimation(dt, speed, 90);
-                    child->triggerMoveAnimation(dt, speed, std::sqrt(215*215 + 95*95), -std::atan(215.0/95)*180/(std::atan(1)*4));
-                } 
+                    child->triggerMoveAnimation(dt, speed, 235.05318547, -66.16125981683);
+                } else if (!child->mIsRotating && child->mIsDoneRotating) {
+                    child->mIsDoneRotating = 0;
+                }
             }
             break;
         }
@@ -144,6 +152,8 @@ void LinkedListState::addAnimation(sf::Time dt, double speed) {
 
             mSceneLayers[tempArrow]->getChildren().clear();
             mSceneLayers[newNode]->getChildren().clear();
+            mSceneLayers[tempArrow]->getChildren().resize(0);
+            mSceneLayers[newNode]->getChildren().resize(0);
 
             if (arr.size()%2 == 0) animationOrder = 6;
             else isAdd = 0;

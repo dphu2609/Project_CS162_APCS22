@@ -23,7 +23,7 @@ void LinkedListState::buildScence() {
         mSceneGraph.attachChild(std::move(layer));
     }
     arr = {-6, 23, 49, 100, -35, 4433, -5000};
-    addIndex = 0;
+    addIndex = 2;
     addValue = 12;
     for (int i = 0; i < arr.size(); i++) {
         std::unique_ptr<DisplayNode> newNode = std::make_unique<DisplayNode>(
@@ -60,8 +60,10 @@ void LinkedListState::handleClick(sf::Event &event) {
             switch (index) {
                 case ButtonType::Create : {
                     std::cout << "Button Create Clicked" << std::endl;
-                    this->animationOrder = 1;
-                    this->isAdd = 1;
+                    if (!this->isAdd) {
+                        this->animationOrder = 1;
+                        this->isAdd = 1;
+                    }
                 }
             }
         }

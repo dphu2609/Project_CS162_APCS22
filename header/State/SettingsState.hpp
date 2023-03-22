@@ -11,17 +11,34 @@ namespace States {
     };
 };
 
+namespace Action {
+    enum ID {
+        ResetAction,
+        Create,
+        Insert,
+        Delete,
+        Update,
+        Search,
+        ActionCount
+    };
+};
+
 class SettingsState : public State {
 public:
     explicit SettingsState(sf::RenderWindow &window);
     void activeSettings(sf::Time dt);
     std::vector<bool> mIsStateActivated;
-    void handleClick(sf::Event &event);
+    std::vector<bool> mActionActivated;
+    void handleInput(sf::Event &event);
+    std::vector<int> mInputArr;
+    int mActionIndex;
+    void handleAction(sf::Event &event);
 private:
     enum Layers {
         Containers,
         DropBox,
         InputBox,
+        ActionButtons,
         LayerCount
     };
     sf::Clock clock;
@@ -31,4 +48,6 @@ private:
     virtual void loadTextures();
     virtual void loadFonts();
     virtual void buildScence();
+private:
+    void createRandomList();
 };

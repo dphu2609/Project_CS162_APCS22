@@ -11,17 +11,17 @@ void Program2::run() {
     bool isAnimationTriggered = 0;
     while (mWindow.isOpen()) {
         processEvents();
-        mWindow.clear();
         timeSinceLastUpdate += clock.restart();
         while (timeSinceLastUpdate > dt) {
             timeSinceLastUpdate -= dt;
             if (mSettings.mIsStateActivated[States::SinglyLinkedList]) {
-                if (mMenu.isAdd) mMenu.addAnimation(dt, 0.75);
+                if (mMenu.isAdd) mMenu.addAnimation(dt, 1);
                 mMenu.update(dt);
             }
             mSettings.activeSettings(dt);
             mSettings.update(dt);
         }
+        mWindow.clear();
         if (mSettings.mIsStateActivated[States::SinglyLinkedList]) mMenu.draw();
         mSettings.draw();
         mWindow.display();
@@ -33,7 +33,7 @@ void Program2::processEvents()
     sf::Event event;
     while (mWindow.pollEvent(event)) {
         mSettings.handleEvent(event);
-        mSettings.handleClick(event);
+        mSettings.handleInput(event);
         mMenu.handleClick(event);
         if (event.type == sf::Event::Closed)
             mWindow.close();
