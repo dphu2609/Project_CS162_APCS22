@@ -1,4 +1,4 @@
-#include <State/LinkedListState.hpp>
+#include <State/SinglyLinkedListState.hpp>
 
 LinkedListState::LinkedListState(sf::RenderWindow &window) : State(window) {
     loadTextures();

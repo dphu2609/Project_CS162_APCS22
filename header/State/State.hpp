@@ -24,4 +24,6 @@ private:
     virtual void buildScence() = 0;
 };
 
+#include <State/SinglyLinkedListState.hpp>
+#include <State/SettingsState.hpp>
 

@@ -1,8 +1,7 @@
 #pragma once
 
 // #include <State/State.hpp>
-#include <State/LinkedListState.hpp>
-#include <State/SettingsState.hpp>
+#include <State/State.hpp>
 
 
 class Program2 {

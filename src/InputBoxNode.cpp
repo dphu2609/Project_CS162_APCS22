@@ -57,7 +57,7 @@ void InputBoxNode::handleCurrentEvent(sf::Event &event) {
         if (event.type == sf::Event::TextEntered) {
             if (event.text.unicode < 128 && event.text.unicode != 8 && this->mInputBox.mContent.size() < 150) {
                 this->mInputBox.mContent += static_cast<char>(event.text.unicode);
-                if ((this->mInputBox.mInputText.getLocalBounds().width >= this->mInputBox.mBox.getSize().x - this->mInputBox.mInputText.getCharacterSize()*1.2)) {
+                if ((this->mInputBox.mInputText.getLocalBounds().width >= this->mInputBox.mBox.getSize().x - this->mInputBox.mInputText.getCharacterSize()*1)) {
                     mOverBoundChar++;
                     std::string str = "";
                     for (int i = mOverBoundChar; i < this->mInputBox.mContent.size(); i++) {
@@ -106,7 +106,8 @@ void InputBoxNode::resetContent(std::string &str) {
     this->mInputBox.mContent = str;
     mOverBoundChar = 0;
     for (int i = 0; i < str.size(); i++) {
-        if ((this->mInputBox.mInputText.getLocalBounds().width >= this->mInputBox.mBox.getSize().x - this->mInputBox.mInputText.getCharacterSize()*1.2)) {
+        temp += str[i];
+        if ((this->mInputBox.mInputText.getLocalBounds().width >= this->mInputBox.mBox.getSize().x - this->mInputBox.mInputText.getCharacterSize()*1)) {
             std::string string = "";
             mOverBoundChar++;
             for (int i = mOverBoundChar; i < this->mInputBox.mContent.size(); i++) {
@@ -117,7 +118,35 @@ void InputBoxNode::resetContent(std::string &str) {
         else {
             this->mInputBox.mInputText.setString(temp);
         }
-        temp += str[i];
     }
     mInputBox.mCursor.setPosition(mInputBox.mBox.getPosition() + sf::Vector2f(7 + mInputBox.mInputText.getLocalBounds().width, mInputBox.mBox.getSize().y*0.05));
+}
+
+std::string InputBoxNode::getStringData() {
+    return this->mInputBox.mContent;
+}
+
+bool InputBoxNode::isActivated() {
+    return this->mIsActivated;
+}
+
+std::vector<int> InputBoxNode::getIntArrayData() {
+    std::vector<int> result;
+    std::string temp = "";
+    bool isValid = 1;
+    for (int i = 0; i < this->mInputBox.mContent.size(); i++) {
+        if ((mInputBox.mContent[i] >= '0' && mInputBox.mContent[i] <= '9') || (mInputBox.mContent[i] == '-' && temp.size() == 0)) {
+            temp += mInputBox.mContent[i];
+            if (i == mInputBox.mContent.size() - 1 && !(temp.size() == 1 && temp[0] == '-') && isValid) {
+                result.push_back(std::stoi(temp));
+            }
+        } else if (mInputBox.mContent[i] == ',') {
+            if (isValid && !(temp.size() == 1 && temp[0] == '-')) result.push_back(std::stoi(temp));
+            temp = "";
+            isValid = 1;
+        } else if (mInputBox.mContent[i] != ' ' || (temp.size() == 1 && temp[0] == '-')) {
+            isValid = 0;
+        }
+    }
+    return result;
 }

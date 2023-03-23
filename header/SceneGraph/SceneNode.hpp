@@ -21,7 +21,10 @@ public:
     virtual void triggerScaleAnimation(sf::Time dt, double lengthSpeed, double scalingLengthDistance, double widthSpeed, double scalingWidthDistance);
     virtual bool isLeftClicked();
     virtual int getClickedIndex(sf::Event &event) {return 0;};
-    virtual void resetContent(std::string &str);
+    virtual void resetContent(std::string &str) {}
+    virtual std::string getStringData() {return "";}
+    virtual std::vector<int> getIntArrayData() {return {};}
+    virtual bool isActivated() {return 0;};
 private:
     virtual void drawCurrent(sf::RenderTarget &target, sf::RenderStates states) const;
     virtual void updateCurrent(sf::Time dt);

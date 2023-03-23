@@ -7,6 +7,9 @@ public:
     // virtual int getClickedIndex(sf::Event &event);
     virtual void triggerMoveAnimation(sf::Time dt, double speed, double movingDistance, double angleMovement);
     virtual void resetContent(std::string &str);
+    virtual std::string getStringData();
+    virtual bool isActivated();
+    virtual std::vector<int> getIntArrayData();
 private:
     sf::RenderWindow &mWindow;
     InputBox mInputBox;

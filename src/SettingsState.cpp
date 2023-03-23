@@ -60,37 +60,41 @@ void SettingsState::activeSettings(sf::Time dt) {
     sf::Vector2i localPosition(sf::Mouse::getPosition(this->mWindow));
     sf::Vector2f localPositionF(static_cast<float>(localPosition.x), static_cast<float>(localPosition.y));
     localPositionF = mWindow.mapPixelToCoords(localPosition);
-    if (localPositionF.x <= 20 && !this->mIsEmerged) {
+    bool isInputBoxActivated = 0;
+    for (auto &child : mSceneLayers[InputBox]->getChildren()) {
+        isInputBoxActivated |= child->isActivated();
+    }
+    if (localPositionF.x <= 40 && !this->mIsEmerged) {
         this->elapsedTime = 0.f;
         for (int i = 0; i < LayerCount; i++) {
             for (auto &child : this->mSceneLayers[i]->getChildren()) {
                 if (!child->mIsMoving) {
                     child->triggerMoveAnimation(dt, 1, 600, 0);
+                    this->mIsEmerged = 1;
                 }
             }
         }
-        this->mIsEmerged = 1;
     }
-    else if (localPositionF.x >= 520 && this->mIsEmerged) {
+    else if (localPositionF.x >= 520 && this->mIsEmerged && !isInputBoxActivated) {
         this->elapsedTime += clock.restart().asSeconds();
         if (elapsedTime >= 3.f) {
             for (int i = 0; i < LayerCount; i++) {
                 for (auto &child : this->mSceneLayers[i]->getChildren()) {
                     if (!child->mIsMoving) {
-                        child->triggerMoveAnimation(dt, 1.25, 600, 180);
+                        child->triggerMoveAnimation(dt, 1.5, 600, 180);
+                        this->mIsEmerged = 0;
                     }
                 }
             }
-            this->mIsEmerged = 0;
         }
     }
     else {
-        elapsedTime = 0.f;
+        this->elapsedTime = 0.f;
         clock.restart();
     }
 }
 
-void SettingsState::handleInput(sf::Event &event) {
+void SettingsState::handleActionDropBoxEvent(sf::Event &event) {
     int index = 0;
     for (auto &child : this->mSceneLayers[DropBox]->getChildren()) {
         switch (index) {
@@ -103,8 +107,8 @@ void SettingsState::handleInput(sf::Event &event) {
                     case Action::Create : {
                         if (this->mSceneLayers[InputBox]->getChildren().size() == 0) {
                             std::unique_ptr<InputBoxNode> newInputBox = std::make_unique<InputBoxNode>(
-                                mWindow, mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(250, 40), 2, 
-                                sf::Vector2f(125, sf::VideoMode::getDesktopMode().height - 280), 
+                                mWindow, mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(300, 40), 2, 
+                                sf::Vector2f(100, sf::VideoMode::getDesktopMode().height - 280), 
                                 sf::Color::Black, sf::Color::White, sf::Color::Black, sf::Color::Green
                             );
                             this->mSceneLayers[InputBox]->attachChild(std::move(newInputBox));
@@ -113,15 +117,15 @@ void SettingsState::handleInput(sf::Event &event) {
                                 mWindow, "Random", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(280, 50), 0,
                                 sf::Vector2f(110, sf::VideoMode::getDesktopMode().height - 400),
                                 sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
-                                sf::Color::White, sf::Color(85, 93, 120, 255), sf::Color(41, 58, 117, 255)
+                                sf::Color::White, sf::Color(41, 58, 117, 255), sf::Color::White
                             );
                             this->mSceneLayers[ActionButtons]->attachChild(std::move(newButton1));
 
                             std::unique_ptr<RectangleButtonNode> newButton2 = std::make_unique<RectangleButtonNode>(
-                                mWindow, "Custom", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(280, 50), 0,
-                                sf::Vector2f(110, sf::VideoMode::getDesktopMode().height - 340),
+                                mWindow, "Custom input: ", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(180, 45), 0,
+                                sf::Vector2f(100, sf::VideoMode::getDesktopMode().height - 330),
                                 sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
-                                sf::Color::White, sf::Color(85, 93, 120, 255), sf::Color(41, 58, 117, 255)
+                                sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255)
                             );
                             this->mSceneLayers[ActionButtons]->attachChild(std::move(newButton2));
                             this->mActionActivated[Action::Create] = 1;
@@ -141,7 +145,7 @@ void SettingsState::handleInput(sf::Event &event) {
                                 mWindow, "Insert Head", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(280, 50), 0,
                                 sf::Vector2f(110, sf::VideoMode::getDesktopMode().height - 420),
                                 sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
-                                sf::Color::White, sf::Color(85, 93, 120, 255), sf::Color(41, 58, 117, 255)
+                                sf::Color::White, sf::Color(41, 58, 117, 255), sf::Color::White
                             );
                             this->mSceneLayers[ActionButtons]->attachChild(std::move(newButton1));
 
@@ -149,7 +153,7 @@ void SettingsState::handleInput(sf::Event &event) {
                                 mWindow, "Insert Tail", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(280, 50), 0,
                                 sf::Vector2f(110, sf::VideoMode::getDesktopMode().height - 360),
                                 sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
-                                sf::Color::White, sf::Color(85, 93, 120, 255), sf::Color(41, 58, 117, 255)
+                                sf::Color::White, sf::Color(41, 58, 117, 255), sf::Color::White
                             );
                             this->mSceneLayers[ActionButtons]->attachChild(std::move(newButton2));
 
@@ -157,7 +161,7 @@ void SettingsState::handleInput(sf::Event &event) {
                                 mWindow, "Custom Index", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(280, 50), 0,
                                 sf::Vector2f(110, sf::VideoMode::getDesktopMode().height - 300),
                                 sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
-                                sf::Color::White, sf::Color(85, 93, 120, 255), sf::Color(41, 58, 117, 255)
+                                sf::Color::White, sf::Color(41, 58, 117, 255), sf::Color::White
                             );
                             this->mSceneLayers[ActionButtons]->attachChild(std::move(newButton3));
                             this->mActionActivated[Action::Insert] = 1;
@@ -177,7 +181,7 @@ void SettingsState::handleInput(sf::Event &event) {
                                 mWindow, "Delete Head", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(280, 50), 0,
                                 sf::Vector2f(110, sf::VideoMode::getDesktopMode().height - 420),
                                 sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
-                                sf::Color::White, sf::Color(85, 93, 120, 255), sf::Color(41, 58, 117, 255)
+                                sf::Color::White, sf::Color(41, 58, 117, 255), sf::Color::White
                             );
                             this->mSceneLayers[ActionButtons]->attachChild(std::move(newButton1));
 
@@ -185,7 +189,7 @@ void SettingsState::handleInput(sf::Event &event) {
                                 mWindow, "Delete Tail", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(280, 50), 0,
                                 sf::Vector2f(110, sf::VideoMode::getDesktopMode().height - 360),
                                 sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
-                                sf::Color::White, sf::Color(85, 93, 120, 255), sf::Color(41, 58, 117, 255)
+                                sf::Color::White, sf::Color(41, 58, 117, 255), sf::Color::White
                             );
                             this->mSceneLayers[ActionButtons]->attachChild(std::move(newButton2));
 
@@ -193,7 +197,7 @@ void SettingsState::handleInput(sf::Event &event) {
                                 mWindow, "Custom Index", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(280, 50), 0,
                                 sf::Vector2f(110, sf::VideoMode::getDesktopMode().height - 300),
                                 sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
-                                sf::Color::White, sf::Color(85, 93, 120, 255), sf::Color(41, 58, 117, 255)
+                                sf::Color::White, sf::Color(41, 58, 117, 255), sf::Color::White
                             );
                             this->mSceneLayers[ActionButtons]->attachChild(std::move(newButton3));
                             this->mActionActivated[Action::Delete] = 1;
@@ -220,7 +224,7 @@ void SettingsState::handleInput(sf::Event &event) {
                                 mWindow, "Index", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(130, 50), 0,
                                 sf::Vector2f(110, sf::VideoMode::getDesktopMode().height - 420),
                                 sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
-                                sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255)
+                                sf::Color::White, sf::Color(41, 58, 117, 255), sf::Color::White
                             );
                             this->mSceneLayers[ActionButtons]->attachChild(std::move(newButton1));
 
@@ -228,7 +232,7 @@ void SettingsState::handleInput(sf::Event &event) {
                                 mWindow, "Value", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(130, 50), 0,
                                 sf::Vector2f(250, sf::VideoMode::getDesktopMode().height - 420),
                                 sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
-                                sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255)
+                                sf::Color::White, sf::Color(41, 58, 117, 255), sf::Color::White
                             );
                             this->mSceneLayers[ActionButtons]->attachChild(std::move(newButton2));
                             this->mActionActivated[Action::Update] = 1;
@@ -248,7 +252,7 @@ void SettingsState::handleInput(sf::Event &event) {
                                 mWindow, "Random Value", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(280, 50), 0,
                                 sf::Vector2f(110, sf::VideoMode::getDesktopMode().height - 400),
                                 sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
-                                sf::Color::White, sf::Color(85, 93, 120, 255), sf::Color(41, 58, 117, 255)
+                                sf::Color::White, sf::Color(41, 58, 117, 255), sf::Color::White
                             );
                             this->mSceneLayers[ActionButtons]->attachChild(std::move(newButton1));
 
@@ -256,7 +260,7 @@ void SettingsState::handleInput(sf::Event &event) {
                                 mWindow, "Custom Value", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(280, 50), 0,
                                 sf::Vector2f(110, sf::VideoMode::getDesktopMode().height - 340),
                                 sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
-                                sf::Color::White, sf::Color(85, 93, 120, 255), sf::Color(41, 58, 117, 255)
+                                sf::Color::White, sf::Color(41, 58, 117, 255), sf::Color::White
                             );
                             this->mSceneLayers[ActionButtons]->attachChild(std::move(newButton2));
                             this->mActionActivated[Action::Search] = 1;
@@ -267,8 +271,8 @@ void SettingsState::handleInput(sf::Event &event) {
                         if (this->mSceneLayers[InputBox]->getChildren().size() > 0) {
                             this->mSceneLayers[InputBox]->getChildren().clear();
                             this->mSceneLayers[ActionButtons]->getChildren().clear();
-                            for (auto &action : mActionActivated) {
-                                action = 0;
+                            for (int i = 0; i < mActionActivated.size(); i++) {
+                                mActionActivated[i] = 0;
                             }
                         }
                         break;
@@ -307,13 +311,21 @@ void SettingsState::handleAction(sf::Event &event) {
                         if (child->getClickedIndex(event) == 0) {
                             createRandomList();
                             for (auto &child : mSceneLayers[InputBox]->getChildren()) {
-
+                                std::string str = "";
+                                for (int i = 0; i < mInputArr.size() - 1; i++) {
+                                    str += std::to_string(mInputArr[i]) + ", ";
+                                }
+                                str += std::to_string(mInputArr.back());
+                                child->resetContent(str);
+                                break;
                             }
                         }
+                        break;
                     }
                 }
                 btnIndex++;
             }
+            break;
         }
     }
 }

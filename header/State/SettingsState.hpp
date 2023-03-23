@@ -1,3 +1,5 @@
+#pragma once
+
 #include <State/State.hpp>
 
 namespace States {
@@ -29,7 +31,7 @@ public:
     void activeSettings(sf::Time dt);
     std::vector<bool> mIsStateActivated;
     std::vector<bool> mActionActivated;
-    void handleInput(sf::Event &event);
+    void handleActionDropBoxEvent(sf::Event &event);
     std::vector<int> mInputArr;
     int mActionIndex;
     void handleAction(sf::Event &event);

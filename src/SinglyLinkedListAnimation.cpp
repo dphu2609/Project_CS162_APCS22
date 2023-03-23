@@ -1,4 +1,4 @@
-#include <State/LinkedListState.hpp>
+#include <State/SinglyLinkedListState.hpp>
 
 void LinkedListState::addAnimation(sf::Time dt, double speed) {
     switch (animationOrder) {
