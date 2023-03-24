@@ -32,12 +32,11 @@ public:
     void activeSettings(sf::Time dt);
     std::vector<bool> mStateActivated;
     std::vector<bool> mActionActivated;
-    void handleActionDropBoxEvent(sf::Event &event);
     std::vector<int> mInputArr;
     int mActionIndex;
     int mInsertValue;
-    void handleAction(sf::Event &event);
     bool mIsActionActivating = 0;
+    void controlEvent(sf::Event &event);
 private:
     enum Layers {
         Containers,
@@ -59,4 +58,6 @@ private:
     void throwError(const std::string &errorMessage);
     void settingsIn(sf::Time dt);
     void settingsOut(sf::Time dt);
+    void handleAction(sf::Event &event);
+    void handleActionDropBoxEvent(sf::Event &event);
 };

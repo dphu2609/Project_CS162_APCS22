@@ -51,4 +51,10 @@ void GraphicalNode::setPos(sf::Vector2f pos) {
     };
 }
 
+void GraphicalNode::setColor(sf::Color textColor, sf::Color boxColor, sf::Color outlineColor) {
+    this->number.setFillColor(textColor);
+    this->box.setFillColor(boxColor);
+    this->box.setOutlineColor(outlineColor);
+}
+
 

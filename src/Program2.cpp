@@ -30,22 +30,30 @@ void Program2::run() {
                             break;
                         }
                         case Action::Insert : {
-                            if (mSinglyLinkedList.animationOrder == 0) {
+                            if (mSinglyLinkedList.mAnimationOrder == 0) {
                                 mSinglyLinkedList.mInsertActivated = 1;
-                                mSinglyLinkedList.animationOrder = 1;
+                                mSinglyLinkedList.mAnimationOrder = 1;
                             }
                             break;
                         }
+                        case Action::Delete : {
+                            if (mSinglyLinkedList.mAnimationOrder == 0) {
+                                mSinglyLinkedList.mDeleteActivated = 1;
+                                mSinglyLinkedList.mAnimationOrder = 1;
+                            }
+                        }
                     }
+                    // mSettings.activeSettings(dt);
                     mSettings.mActionActivated[Action::Play] = 0;
                 }
                 if (mSinglyLinkedList.mInsertActivated) mSinglyLinkedList.insertAnimation(dt, 1, mSettings.mActionIndex, mSettings.mInsertValue);
+                if (mSinglyLinkedList.mDeleteActivated) mSinglyLinkedList.deleteAnimation(dt, 1, mSettings.mActionIndex);
                 mSettings.mIsActionActivating = mSinglyLinkedList.mInsertActivated;
                 mSinglyLinkedList.update(dt);
             }
             mSettings.update(dt);
         }
-        mWindow.clear();
+        mWindow.clear(sf::Color(18, 18, 18, 255));
         if (mSettings.mStateActivated[States::SinglyLinkedList]) mSinglyLinkedList.draw();
         mSettings.draw();
         mWindow.display();
@@ -57,8 +65,7 @@ void Program2::processEvents()
     sf::Event event;
     while (mWindow.pollEvent(event)) {
         mSettings.handleEvent(event);
-        mSettings.handleActionDropBoxEvent(event);
-        mSettings.handleAction(event);
+        mSettings.controlEvent(event);
         mSinglyLinkedList.handleClick(event);
         if (event.type == sf::Event::Closed)
             mWindow.close();

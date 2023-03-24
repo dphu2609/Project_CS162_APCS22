@@ -24,6 +24,18 @@ void DisplayNode::updateCurrent(sf::Time dt) {
             this->mIsDoneMoving = 1;
         }
     }
+    if (this->mAnimationType["color"]) {
+        mStartTime += mClock.restart().asSeconds();
+        if (mStartTime > mTimeChange) {
+            this->mNode.setColor(mTextColorAfterChange, mBoxColorAfterChange, mOutlineColorAfterChange);
+            this->mIsColoring = 0;
+            this->mIsDoneColoring = 1;
+            this->mStartTime = 0;
+            this->mAnimationType["color"] = 0;
+        }
+    } else {
+        mClock.restart();
+    }
 }
 
 void DisplayNode::triggerMoveAnimation(sf::Time dt, double speed, double moveDistance, double angleMovement) {
@@ -35,4 +47,22 @@ void DisplayNode::triggerMoveAnimation(sf::Time dt, double speed, double moveDis
     this->mAnimationType["move"] = 1;
     this->mIsMoving = 1;
     this->mIsDoneMoving = 0;
+}
+
+void DisplayNode::triggerColorAnimation(
+    sf::Time dt, double speed, 
+    sf::Color textColorWhenChange, sf::Color boxColorWhenChange, sf::Color outlineColorWhenChange, 
+    sf::Color textColorAfterChange, sf::Color boxColorAfterChange, sf::Color outlineColorAfterChange
+) {
+    this->mTextColorWhenChange = textColorWhenChange;
+    this->mTextColorAfterChange = textColorAfterChange;
+    this->mBoxColorWhenChange = boxColorWhenChange;
+    this->mBoxColorAfterChange = boxColorAfterChange;
+    this->mOutlineColorWhenChange = outlineColorWhenChange;
+    this->mOutlineColorAfterChange = outlineColorAfterChange;
+    this->mTimeChange = 0.5/speed;
+    this->mIsColoring = 1;
+    this->mIsDoneColoring = 0;
+    this->mAnimationType["color"] = 1;
+    this->mNode.setColor(textColorWhenChange, boxColorWhenChange, outlineColorWhenChange);
 }

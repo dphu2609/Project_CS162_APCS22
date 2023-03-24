@@ -22,7 +22,7 @@ void LinkedListState::buildScence() {
         mSceneLayers[i] = layer.get();
         mSceneGraph.attachChild(std::move(layer));
     }
-    animationOrder = 0;
+    mAnimationOrder = 0;
 }  
 
 void LinkedListState::handleClick(sf::Event &event) {

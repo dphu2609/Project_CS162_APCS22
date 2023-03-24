@@ -19,6 +19,11 @@ public:
     virtual void triggerMoveAnimation(sf::Time dt, double speed, double movingDistance, double angleMovement);
     virtual void triggerRotateAnimation(sf::Time dt, double speed, double rotatingDistance);
     virtual void triggerScaleAnimation(sf::Time dt, double lengthSpeed, double scalingLengthDistance, double widthSpeed, double scalingWidthDistance);
+    virtual void triggerColorAnimation(
+        sf::Time dt, double speed, 
+        sf::Color textColorWhenChange, sf::Color boxColorWhenChange, sf::Color outlineColorWhenChange, 
+        sf::Color textColorAfterChange, sf::Color boxColorAfterChange, sf::Color outlineColorAfterChange
+    ) {}
     virtual bool isLeftClicked();
     virtual int getClickedIndex(sf::Event &event) {return 0;};
     virtual void resetContent(const std::string &str) {}
@@ -62,6 +67,19 @@ public:
     bool mIsScaling = 0;
     bool mIsDoneScaling = 0;
     //-----------
+    
+    //change color variable
+    sf::Clock mClock;
+    double mStartTime = 0;
+    double mTimeChange = 1.f;
+    sf::Color mTextColorWhenChange;
+    sf::Color mTextColorAfterChange;
+    sf::Color mBoxColorWhenChange;
+    sf::Color mBoxColorAfterChange;
+    sf::Color mOutlineColorWhenChange;
+    sf::Color mOutlineColorAfterChange;
+    bool mIsColoring = 0;
+    bool mIsDoneColoring = 0;
 };
 
 #include <SceneGraph/ImageButtonNode.hpp>
