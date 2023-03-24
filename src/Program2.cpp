@@ -14,6 +14,7 @@ void Program2::run() {
         timeSinceLastUpdate += clock.restart();
         while (timeSinceLastUpdate > dt) {
             timeSinceLastUpdate -= dt;
+            mSettings.activeSettings(dt);
             if (mSettings.mStateActivated[States::SinglyLinkedList]) {
                 if (mSettings.mActionActivated[Action::Play]) {
                     int index = 0;
@@ -39,9 +40,9 @@ void Program2::run() {
                     mSettings.mActionActivated[Action::Play] = 0;
                 }
                 if (mSinglyLinkedList.mInsertActivated) mSinglyLinkedList.insertAnimation(dt, 1, mSettings.mActionIndex, mSettings.mInsertValue);
+                mSettings.mIsActionActivating = mSinglyLinkedList.mInsertActivated;
                 mSinglyLinkedList.update(dt);
             }
-            mSettings.activeSettings(dt);
             mSettings.update(dt);
         }
         mWindow.clear();

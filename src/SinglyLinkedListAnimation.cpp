@@ -4,19 +4,29 @@ void LinkedListState::insertAnimation(sf::Time dt, double speed, int insertIndex
     switch (animationOrder) {
         case 1: {
             if (mSceneLayers[newNode]->getChildren().size() == 0) {
-                std::unique_ptr<DisplayNode> addedNode = std::make_unique<DisplayNode>(
-                    insertData, mFontsHolder[Fonts::FiraSansRegular], 100,
-                    sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + (insertIndex)*250, 750), 
-                    sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
-                );
-                mSceneLayers[newNode]->attachChild(std::move(addedNode));
+                if (mListData.size() > 0) {
+                    std::unique_ptr<DisplayNode> addedNode = std::make_unique<DisplayNode>(
+                        insertData, mFontsHolder[Fonts::FiraSansRegular], 100,
+                        sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + (insertIndex)*250, 750), 
+                        sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
+                    );
+                    mSceneLayers[newNode]->attachChild(std::move(addedNode));
+                } else {
+                    std::unique_ptr<DisplayNode> addedNode = std::make_unique<DisplayNode>(
+                        insertData, mFontsHolder[Fonts::FiraSansRegular], 100,
+                        sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + (insertIndex)*250, 500), 
+                        sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
+                    );
+                    mSceneLayers[newNode]->attachChild(std::move(addedNode));
+                }
             }
             for (auto &child : this->mSceneLayers[newNode]->getChildren()) {
                 if (!child->mIsMoving && !child->mIsDoneMoving) {
                     child->triggerMoveAnimation(dt, speed, 250, -90);
                 } else if (!child->mIsMoving && child->mIsDoneMoving) {
                     child->mIsDoneMoving = 0;
-                    if (insertIndex != mListData.size()) animationOrder = 2;
+                    if (mListData.size() == 0) animationOrder = 5;
+                    else if (insertIndex != mListData.size()) animationOrder = 2;
                     else animationOrder = 3;
                 }
             }
@@ -134,7 +144,6 @@ void LinkedListState::insertAnimation(sf::Time dt, double speed, int insertIndex
             break;
         }
         case 5: {
-            std::cout << 1;
             std::unique_ptr<DisplayNode> addedNode = std::make_unique<DisplayNode>(
                 insertData, mFontsHolder[Fonts::FiraSansRegular], 100,
                 sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + (insertIndex)*250, 250), 
@@ -142,17 +151,19 @@ void LinkedListState::insertAnimation(sf::Time dt, double speed, int insertIndex
             );
 
             mSceneLayers[Nodes]->getChildren().insert(mSceneLayers[Nodes]->getChildren().begin() + insertIndex, std::move(addedNode));
-            std::unique_ptr<SpriteNode> newArrow = std::make_unique<SpriteNode>(
-                mTexturesHolder[Textures::rightArrow], sf::Vector2f(110, 50), 
-                sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + insertIndex*250 + 130, 285), 0
-            );
-            if (insertIndex != mListData.size()) mSceneLayers[Arrow]->getChildren().insert(mSceneLayers[Arrow]->getChildren().begin() + insertIndex, std::move(newArrow));
+            if (mListData.size() > 0) {
+                std::unique_ptr<SpriteNode> newArrow = std::make_unique<SpriteNode>(
+                    mTexturesHolder[Textures::rightArrow], sf::Vector2f(110, 50), 
+                    sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + insertIndex*250 + 130, 285), 0
+                );
+                if (insertIndex != mListData.size()) mSceneLayers[Arrow]->getChildren().insert(mSceneLayers[Arrow]->getChildren().begin() + insertIndex, std::move(newArrow)); 
+            }
 
             mListData.insert(mListData.begin() + insertIndex, insertData);
 
             mSceneLayers[tempArrow]->getChildren().clear();
             mSceneLayers[newNode]->getChildren().clear();
-            
+
             if (mListData.size()%2 == 0) animationOrder = 6;
             else {
                 mInsertActivated = 0;

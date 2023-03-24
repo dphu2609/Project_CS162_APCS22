@@ -37,6 +37,7 @@ public:
     int mActionIndex;
     int mInsertValue;
     void handleAction(sf::Event &event);
+    bool mIsActionActivating = 0;
 private:
     enum Layers {
         Containers,
@@ -56,4 +57,6 @@ private:
 private:
     void createRandomList();
     void throwError(const std::string &errorMessage);
+    void settingsIn(sf::Time dt);
+    void settingsOut(sf::Time dt);
 };

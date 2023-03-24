@@ -66,36 +66,46 @@ void SettingsState::activeSettings(sf::Time dt) {
     }
     if (localPositionF.x <= 40 && !this->mIsEmerged) {
         this->elapsedTime = 0.f;
-        for (int i = 0; i < LayerCount - 1; i++) {
-            for (auto &child : this->mSceneLayers[i]->getChildren()) {
-                if (!child->mIsMoving) {
-                    child->triggerMoveAnimation(dt, 1, 600, 0);
-                    this->mIsEmerged = 1;
-                }
-            }
-        }
+        settingsIn(dt);
+    }
+    else if (mActionActivated[Action::Insert] && mActionActivated[Action::Play]) {
+        settingsOut(dt);
     }
     else if (localPositionF.x >= 520 && this->mIsEmerged && !isInputBoxActivated) {
         this->elapsedTime += clock.restart().asSeconds();
-        if (elapsedTime >= 3.f) {
-            for (int i = 0; i < LayerCount - 1; i++) {
-                for (auto &child : this->mSceneLayers[i]->getChildren()) {
-                    if (!child->mIsMoving) {
-                        child->triggerMoveAnimation(dt, 1.5, 600, 180);
-                        this->mIsEmerged = 0;
-                    }
-                }
-            }
-            for (auto &child : this->mSceneLayers[Error]->getChildren()) {
-                if (!child->mIsMoving) {
-                    child->triggerMoveAnimation(dt, 1.5, 200, 90);
-                }
-            }
-        }
+        if (elapsedTime >= 3.f)
+            settingsOut(dt);
     }
     else {
         this->elapsedTime = 0.f;
         clock.restart();
+    }
+}
+
+void SettingsState::settingsIn(sf::Time dt) {
+    for (int i = 0; i < LayerCount - 1; i++) {
+        for (auto &child : this->mSceneLayers[i]->getChildren()) {
+            if (!child->mIsMoving) {
+                child->triggerMoveAnimation(dt, 1, 600, 0);
+                this->mIsEmerged = 1;
+            }
+        }
+    }
+}
+
+void SettingsState::settingsOut(sf::Time dt) {
+    for (int i = 0; i < LayerCount - 1; i++) {
+        for (auto &child : this->mSceneLayers[i]->getChildren()) {
+            if (!child->mIsMoving) {
+                child->triggerMoveAnimation(dt, 1.6, 600, 180);
+                this->mIsEmerged = 0;
+            }
+        }
+    }
+    for (auto &child : this->mSceneLayers[Error]->getChildren()) {
+        if (!child->mIsMoving) {
+            child->triggerMoveAnimation(dt, 1.6, 200, 90);
+        }
     }
 }
 
@@ -370,10 +380,12 @@ void SettingsState::handleAction(sf::Event &event) {
                         break;
                     }
                     case 2 : {
-                        if (child->getClickedIndex(event) == 0) {
-                            mActionActivated[Action::Play] = 1;
+                        if (child->getClickedIndex(event) == 0 && mInputArr.size() > 0) {
                             for (auto &child : mSceneLayers[InputBox]->getChildren()) {
                                 this->mInputArr = child->getIntArrayData();
+                            }
+                            if (mInputArr.size() <= 10) {
+                                mActionActivated[Action::Play] = 1;
                             }
                         }
                         break;
@@ -430,12 +442,17 @@ void SettingsState::handleAction(sf::Event &event) {
                                 throwError(message);
                             } else if (dataInput.size() != 1) {
                                 throwError("Error: Invalid value!");
-                            } else {
+                            } else if (mInputArr.size() >= 10) {
+                                throwError("Sorry, the maximum size is 10.");
+                            } 
+                            else if (!mIsActionActivating) {
                                 mActionActivated[Action::Play] = 1;
                                 mActionIndex = indexInput[0];
                                 mInsertValue = dataInput[0];
                                 mSceneLayers[Error]->getChildren().clear();
                                 mInputArr.insert(mInputArr.begin() + mActionIndex, mInsertValue);
+                                mIsEmerged = 0;
+                                std::cout << mInputArr.size() << ' ';
                             }
                         }
                         break;
