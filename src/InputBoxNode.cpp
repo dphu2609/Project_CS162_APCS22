@@ -101,7 +101,7 @@ void InputBoxNode::triggerMoveAnimation(sf::Time dt, double speed, double moveDi
     this->mIsDoneMoving = 0;
 }
 
-void InputBoxNode::resetContent(std::string &str) {
+void InputBoxNode::resetContent(const std::string &str) {
     std::string temp = "";
     this->mInputBox.mContent = str;
     mOverBoundChar = 0;

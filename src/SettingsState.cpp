@@ -6,7 +6,7 @@ SettingsState::SettingsState(sf::RenderWindow &window) : State(window) {
     buildScence();
     this->mIsEmerged = 0;
     for (int i = 0; i < States::StatesCount; i++) {
-        mIsStateActivated.push_back(0);
+        mStateActivated.push_back(0);
     }
     for (int i = 0; i < Action::ActionCount; i++) {
         mActionActivated.push_back(0);
@@ -66,7 +66,7 @@ void SettingsState::activeSettings(sf::Time dt) {
     }
     if (localPositionF.x <= 40 && !this->mIsEmerged) {
         this->elapsedTime = 0.f;
-        for (int i = 0; i < LayerCount; i++) {
+        for (int i = 0; i < LayerCount - 1; i++) {
             for (auto &child : this->mSceneLayers[i]->getChildren()) {
                 if (!child->mIsMoving) {
                     child->triggerMoveAnimation(dt, 1, 600, 0);
@@ -78,12 +78,17 @@ void SettingsState::activeSettings(sf::Time dt) {
     else if (localPositionF.x >= 520 && this->mIsEmerged && !isInputBoxActivated) {
         this->elapsedTime += clock.restart().asSeconds();
         if (elapsedTime >= 3.f) {
-            for (int i = 0; i < LayerCount; i++) {
+            for (int i = 0; i < LayerCount - 1; i++) {
                 for (auto &child : this->mSceneLayers[i]->getChildren()) {
                     if (!child->mIsMoving) {
                         child->triggerMoveAnimation(dt, 1.5, 600, 180);
                         this->mIsEmerged = 0;
                     }
+                }
+            }
+            for (auto &child : this->mSceneLayers[Error]->getChildren()) {
+                if (!child->mIsMoving) {
+                    child->triggerMoveAnimation(dt, 1.5, 200, 90);
                 }
             }
         }
@@ -99,7 +104,7 @@ void SettingsState::handleActionDropBoxEvent(sf::Event &event) {
     for (auto &child : this->mSceneLayers[DropBox]->getChildren()) {
         switch (index) {
             case 0: {
-                if (child->getClickedIndex(event) == 2) mIsStateActivated[States::SinglyLinkedList] = 1;
+                if (child->getClickedIndex(event) == 2) mStateActivated[States::SinglyLinkedList] = 1;
                 break;
             }
             case 1: {
@@ -128,18 +133,33 @@ void SettingsState::handleActionDropBoxEvent(sf::Event &event) {
                                 sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255)
                             );
                             this->mSceneLayers[ActionButtons]->attachChild(std::move(newButton2));
+
+                            std::unique_ptr<RectangleButtonNode> newButton3 = std::make_unique<RectangleButtonNode>(
+                                mWindow, "Go", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(80, 40), 0,
+                                sf::Vector2f(420, sf::VideoMode::getDesktopMode().height - 280),
+                                sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
+                                sf::Color::White, sf::Color(41, 58, 117, 255), sf::Color::White
+                            );
+                            this->mSceneLayers[ActionButtons]->attachChild(std::move(newButton3));
                             this->mActionActivated[Action::Create] = 1;
                         }
                         break;
                     }
                     case Action::Insert : {
                         if (this->mSceneLayers[InputBox]->getChildren().size() == 0) {
-                            std::unique_ptr<InputBoxNode> newInputBox = std::make_unique<InputBoxNode>(
-                                mWindow, mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(250, 40), 2, 
-                                sf::Vector2f(125, sf::VideoMode::getDesktopMode().height - 230), 
+                            std::unique_ptr<InputBoxNode> newInputBox1 = std::make_unique<InputBoxNode>(
+                                mWindow, mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(120, 40), 2, 
+                                sf::Vector2f(120, sf::VideoMode::getDesktopMode().height - 230), 
                                 sf::Color::Black, sf::Color::White, sf::Color::Black, sf::Color::Green
                             );
-                            this->mSceneLayers[InputBox]->attachChild(std::move(newInputBox));
+                            this->mSceneLayers[InputBox]->attachChild(std::move(newInputBox1));
+
+                            std::unique_ptr<InputBoxNode> newInputBox2 = std::make_unique<InputBoxNode>(
+                                mWindow, mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(120, 40), 2, 
+                                sf::Vector2f(260, sf::VideoMode::getDesktopMode().height - 230), 
+                                sf::Color::Black, sf::Color::White, sf::Color::Black, sf::Color::Green
+                            );
+                            this->mSceneLayers[InputBox]->attachChild(std::move(newInputBox2));
 
                             std::unique_ptr<RectangleButtonNode> newButton1 = std::make_unique<RectangleButtonNode>(
                                 mWindow, "Insert Head", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(280, 50), 0,
@@ -158,12 +178,28 @@ void SettingsState::handleActionDropBoxEvent(sf::Event &event) {
                             this->mSceneLayers[ActionButtons]->attachChild(std::move(newButton2));
 
                             std::unique_ptr<RectangleButtonNode> newButton3 = std::make_unique<RectangleButtonNode>(
-                                mWindow, "Custom Index", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(280, 50), 0,
+                                mWindow, "Index", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(130, 50), 0,
                                 sf::Vector2f(110, sf::VideoMode::getDesktopMode().height - 300),
                                 sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
                                 sf::Color::White, sf::Color(41, 58, 117, 255), sf::Color::White
                             );
                             this->mSceneLayers[ActionButtons]->attachChild(std::move(newButton3));
+
+                            std::unique_ptr<RectangleButtonNode> newButton4 = std::make_unique<RectangleButtonNode>(
+                                mWindow, "Value", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(130, 50), 0,
+                                sf::Vector2f(250, sf::VideoMode::getDesktopMode().height - 300),
+                                sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
+                                sf::Color::White, sf::Color(41, 58, 117, 255), sf::Color::White
+                            );
+                            this->mSceneLayers[ActionButtons]->attachChild(std::move(newButton4));
+
+                            std::unique_ptr<RectangleButtonNode> newButton5 = std::make_unique<RectangleButtonNode>(
+                                mWindow, "Go", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(80, 40), 0,
+                                sf::Vector2f(420, sf::VideoMode::getDesktopMode().height - 230),
+                                sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
+                                sf::Color::White, sf::Color(41, 58, 117, 255), sf::Color::White
+                            );
+                            this->mSceneLayers[ActionButtons]->attachChild(std::move(newButton5));
                             this->mActionActivated[Action::Insert] = 1;
                         }
                         break;
@@ -294,6 +330,17 @@ void SettingsState::createRandomList() {
     }
 }
 
+void SettingsState::throwError(const std::string &errorMessage) {
+    mSceneLayers[Error]->getChildren().clear();
+    std::unique_ptr<RectangleButtonNode> newError = std::make_unique<RectangleButtonNode>(
+        mWindow, errorMessage, mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(errorMessage.size()*20, 40), 0,
+        sf::Vector2f((sf::VideoMode::getDesktopMode().width - errorMessage.size()*20)/2, sf::VideoMode::getDesktopMode().height - 100),
+        sf::Color(201, 52, 112, 255), sf::Color(52, 53, 59, 255), sf::Color::White,
+        sf::Color(201, 52, 112, 255), sf::Color(41, 58, 117, 255), sf::Color::White
+    );
+    this->mSceneLayers[Error]->attachChild(std::move(newError));
+}
+
 void SettingsState::handleAction(sf::Event &event) {
     int index = 0;
     for (int i = 0; i < Action::ActionCount; i++) {
@@ -318,6 +365,77 @@ void SettingsState::handleAction(sf::Event &event) {
                                 str += std::to_string(mInputArr.back());
                                 child->resetContent(str);
                                 break;
+                            }
+                        }
+                        break;
+                    }
+                    case 2 : {
+                        if (child->getClickedIndex(event) == 0) {
+                            mActionActivated[Action::Play] = 1;
+                            for (auto &child : mSceneLayers[InputBox]->getChildren()) {
+                                this->mInputArr = child->getIntArrayData();
+                            }
+                        }
+                        break;
+                    }
+                }
+                btnIndex++;
+            }
+            break;
+        }
+
+        case Action::Insert : {
+            int btnIndex = 0;
+            for (auto &child : mSceneLayers[ActionButtons]->getChildren()) {
+                switch (btnIndex) {
+                    case 0: {
+                        if (child->getClickedIndex(event) == 0) {
+                            mActionIndex = 0;
+                            for (auto &child : mSceneLayers[InputBox]->getChildren()) {
+                                child->resetContent("0");
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                    case 1: {
+                        if (child->getClickedIndex(event) == 0) {
+                            mActionIndex = mInputArr.size();
+                            for (auto &child : mSceneLayers[InputBox]->getChildren()) {
+                                child->resetContent(std::to_string(mActionIndex));
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                    case 4: {
+                        if (child->getClickedIndex(event) == 0) {
+                            std::vector<int> indexInput;
+                            std::vector<int> dataInput;
+                            int inputBoxIndex = 0;
+                            for (auto &child : mSceneLayers[InputBox]->getChildren()) {
+                                if (inputBoxIndex == 0) {
+                                    indexInput = child->getIntArrayData();
+                                } else if (inputBoxIndex == 1) {
+                                    dataInput = child->getIntArrayData();
+                                }
+                                inputBoxIndex++;
+                            } 
+                            if (indexInput.size() != 1) {
+                                throwError("Error: Invalid index!");
+                            } else if (indexInput[0] > mInputArr.size() || indexInput[0] < 0) {
+                                std::string message = "";
+                                if (mInputArr.size() == 0) message = "Error: List is empty! Index must be 0!";
+                                else message = "Error: Index must be in range from 0 to " + std::to_string(mInputArr.size()) + "!";
+                                throwError(message);
+                            } else if (dataInput.size() != 1) {
+                                throwError("Error: Invalid value!");
+                            } else {
+                                mActionActivated[Action::Play] = 1;
+                                mActionIndex = indexInput[0];
+                                mInsertValue = dataInput[0];
+                                mSceneLayers[Error]->getChildren().clear();
+                                mInputArr.insert(mInputArr.begin() + mActionIndex, mInsertValue);
                             }
                         }
                         break;

@@ -21,7 +21,7 @@ public:
     virtual void triggerScaleAnimation(sf::Time dt, double lengthSpeed, double scalingLengthDistance, double widthSpeed, double scalingWidthDistance);
     virtual bool isLeftClicked();
     virtual int getClickedIndex(sf::Event &event) {return 0;};
-    virtual void resetContent(std::string &str) {}
+    virtual void resetContent(const std::string &str) {}
     virtual std::string getStringData() {return "";}
     virtual std::vector<int> getIntArrayData() {return {};}
     virtual bool isActivated() {return 0;};
@@ -40,16 +40,16 @@ public:
     double mCurrentPos;
     double mMovingStep;
     double mAngleMovement;
-    bool mIsMoving;
-    bool mIsDoneMoving;
+    bool mIsMoving = 0;
+    bool mIsDoneMoving = 0;
     //--------------------------
     //rotate animation variables
     double mRotatingDistance;
     double mStartAngle;
     double mCurrentAngle;
     double mRotatingStep;
-    bool mIsRotating;
-    bool mIsDoneRotating;
+    bool mIsRotating = 0;
+    bool mIsDoneRotating = 0;
     //-----------------------------
     //scale animation variables
     sf::Vector2f mStartScale;
@@ -59,8 +59,8 @@ public:
     double mScalingLengthDistance;
     double mCurrentLengthScale;
     double mScalingLengthStep;
-    bool mIsScaling;
-    bool mIsDoneScaling;
+    bool mIsScaling = 0;
+    bool mIsDoneScaling = 0;
     //-----------
 };
 

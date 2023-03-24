@@ -12,6 +12,6 @@ private:
     void processEvents();
 private:
     SettingsState mSettings;
-    LinkedListState mMenu;
+    LinkedListState mSinglyLinkedList;
     sf::RenderWindow mWindow;
 };

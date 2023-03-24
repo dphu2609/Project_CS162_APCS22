@@ -21,6 +21,7 @@ namespace Action {
         Delete,
         Update,
         Search,
+        Play,
         ActionCount
     };
 };
@@ -29,11 +30,12 @@ class SettingsState : public State {
 public:
     explicit SettingsState(sf::RenderWindow &window);
     void activeSettings(sf::Time dt);
-    std::vector<bool> mIsStateActivated;
+    std::vector<bool> mStateActivated;
     std::vector<bool> mActionActivated;
     void handleActionDropBoxEvent(sf::Event &event);
     std::vector<int> mInputArr;
     int mActionIndex;
+    int mInsertValue;
     void handleAction(sf::Event &event);
 private:
     enum Layers {
@@ -41,6 +43,7 @@ private:
         DropBox,
         InputBox,
         ActionButtons,
+        Error,
         LayerCount
     };
     sf::Clock clock;
@@ -52,4 +55,5 @@ private:
     virtual void buildScence();
 private:
     void createRandomList();
+    void throwError(const std::string &errorMessage);
 };

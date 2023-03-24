@@ -6,7 +6,7 @@ public:
     InputBoxNode(sf::RenderWindow &window, sf::Font &font, sf::Vector2f boxSize, double outlineThickness, sf::Vector2f pos, sf::Color textColor, sf::Color boxColor, sf::Color boxOutlineColor, sf::Color cursorColor);
     // virtual int getClickedIndex(sf::Event &event);
     virtual void triggerMoveAnimation(sf::Time dt, double speed, double movingDistance, double angleMovement);
-    virtual void resetContent(std::string &str);
+    virtual void resetContent(const std::string &str);
     virtual std::string getStringData();
     virtual bool isActivated();
     virtual std::vector<int> getIntArrayData();
