@@ -276,7 +276,7 @@ void LinkedListState::deleteAnimation(sf::Time dt, double speed, int deleteIndex
                 } else if (index == this->mColorIndex) {
                     if (!child->mIsColoring && !child->mIsDoneColoring) {
                         child->triggerColorAnimation(
-                            dt, speed, 
+                            dt, 100, 
                             sf::Color::White, sf::Color(31, 224, 205, 255), sf::Color(31, 224, 205, 255),
                             sf::Color(31, 224, 205, 255), sf::Color::White, sf::Color(31, 224, 205, 255)
                         );
@@ -285,8 +285,9 @@ void LinkedListState::deleteAnimation(sf::Time dt, double speed, int deleteIndex
                         this->mColorIndex++;
                         if (this->mColorIndex > deleteIndex) {
                             this->mColorIndex = 0;
-                            if (deleteIndex == 0) mAnimationOrder = 3;
-                            else mAnimationOrder = 4;
+                            if (deleteIndex == 0) mAnimationOrder = 4;
+                            else if (deleteIndex == mListData.size()) mAnimationOrder = 4;
+                            else mAnimationOrder = 3;
                         }
                     }  
                 }
@@ -295,9 +296,6 @@ void LinkedListState::deleteAnimation(sf::Time dt, double speed, int deleteIndex
             break;
         }
         case 3: {
-            break;
-        }
-        case 4: {
             int index = 0;
             for (auto &child : mSceneLayers[Arrow]->getChildren()) {
                 if (index == deleteIndex - 1) {
@@ -316,7 +314,7 @@ void LinkedListState::deleteAnimation(sf::Time dt, double speed, int deleteIndex
                         child->mIsDoneScaling = 0;
                         child->mIsDoneMoving = 0;
                         child->mIsDoneRotating = 0;
-                        mAnimationOrder = 5;
+                        mAnimationOrder = 4;
                     }
                 }
                 index++;
@@ -334,6 +332,31 @@ void LinkedListState::deleteAnimation(sf::Time dt, double speed, int deleteIndex
             }
             break;
         }
+
+        case 4: {
+            int index = 0;
+            for (auto &child : mSceneLayers[Arrow]->getChildren()) {
+                if (index == deleteIndex) {
+                    if (!child->mIsScaling && !child->mIsDoneScaling) {
+                        child->triggerScaleAnimation(dt, speed*2, -(110/std::cos(66.8*std::atan(1)*4/180)), speed, -50);
+                    } else if (!child->mIsScaling && child->mIsDoneScaling) {
+                        mAnimationOrder = 5;
+                    }
+                }
+                index++;
+            }
+            index = 0;
+            for (auto &child : mSceneLayers[Nodes]->getChildren()) {
+                if (index == deleteIndex) {
+                    if (!child->mIsScaling && !child->mIsDoneScaling) {
+                        child->triggerScaleAnimation(dt, speed*1.5, -100, 0, 0);
+                    }
+                }
+                index++;
+            }
+            break;
+        }
+
         default:
             break;
     }

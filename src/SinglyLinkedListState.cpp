@@ -49,8 +49,6 @@ void LinkedListState::createList(std::vector<int> &list) {
         mSceneLayers[i]->getChildren().clear();
     }
     mListData = list;
-    // mActionIndex = 2;
-    // mInsertValue = 12;
     for (int i = 0; i < mListData.size(); i++) {
         std::unique_ptr<DisplayNode> newNode = std::make_unique<DisplayNode>(
             mListData[i], mFontsHolder[Fonts::FiraSansRegular], 100, 

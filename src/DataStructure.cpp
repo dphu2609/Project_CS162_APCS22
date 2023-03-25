@@ -3,19 +3,19 @@
 void GraphicalNode::set(std::string string, sf::Font &font, double size , sf::Vector2f pos, sf::Color numColor, sf::Color boxColor, sf::Color boxOutlineColor) {
     switch (string.size()) {
     case 1:
-        anm::setText(number, font, string, size*0.8, pos.x + 40, pos.y + 6, numColor);
+        anm::setText(number, font, string, size*0.8, pos.x + size*0.4, pos.y + size*0.06, numColor);
         break;
     case 2:
-        anm::setText(number, font, string, size*0.8, pos.x + 20, pos.y + 6, numColor);
+        anm::setText(number, font, string, size*0.8, pos.x + size*0.2, pos.y + size*0.06, numColor);
         break;
     case 3:
-        anm::setText(number, font, string, size*0.7, pos.x + 8, pos.y + 14, numColor);
+        anm::setText(number, font, string, size*0.7, pos.x + size*0.08, pos.y + size*0.14, numColor);
         break;
     case 4:
-        anm::setText(number, font, string, size*0.5, pos.x + 8, pos.y + 26, numColor);
+        anm::setText(number, font, string, size*0.5, pos.x + size*0.08, pos.y + size*0.26, numColor);
         break;
     case 5:
-        anm::setText(number, font, string, size*0.4, pos.x + 8, pos.y + 33, numColor);
+        anm::setText(number, font, string, size*0.4, pos.x + size*0.08, pos.y + size*0.33, numColor);
         break;
     };
     this->box.setFillColor(boxColor);
@@ -55,6 +55,45 @@ void GraphicalNode::setColor(sf::Color textColor, sf::Color boxColor, sf::Color 
     this->number.setFillColor(textColor);
     this->box.setFillColor(boxColor);
     this->box.setOutlineColor(outlineColor);
+}
+
+void GraphicalNode::setSize(double size) {
+    std::string string = this->number.getString();
+    double oldSize = this->box.getSize().x/1.2;
+    sf::Vector2f newPos = this->box.getPosition() + sf::Vector2f(oldSize - size, oldSize - size);
+    this->box.setSize(sf::Vector2f(size*1.2, size*1.2));
+    this->box.setPosition(newPos);
+    this->box.setOutlineThickness(size*0.1);
+    double textSize;
+    switch (string.size()) {
+    case 1:
+        textSize = size*0.8;
+        newPos.x += size*0.4;
+        newPos.y += size*0.06;  
+        break;
+    case 2:
+        textSize = size*0.8;
+        newPos.x += size*0.2;
+        newPos.y += size*0.06;
+        break;
+    case 3:
+        textSize = size*0.7;
+        newPos.x += size*0.08;
+        newPos.y += size*0.14;
+        break;
+    case 4:
+        textSize = size*0.5;
+        newPos.x += size*0.08;
+        newPos.y += size*0.26;
+        break;
+    case 5:
+        textSize = size*0.4;
+        newPos.x += size*0.08;
+        newPos.y += size*0.33;
+        break;
+    };
+    this->number.setPosition(newPos);
+    this->number.setCharacterSize(textSize);
 }
 
 

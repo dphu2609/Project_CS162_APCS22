@@ -24,6 +24,22 @@ void DisplayNode::updateCurrent(sf::Time dt) {
             this->mIsDoneMoving = 1;
         }
     }
+
+    if (this->mAnimationType["scale"]) {
+        double newSize;
+        if (this->mScalingLengthDistance >= 0) 
+            newSize = this->mStartScale.x - std::pow(this->mCurrentLengthScale, 4) + this->mScalingLengthDistance;
+        else    
+            newSize = this->mStartScale.x + std::pow(this->mCurrentLengthScale, 4) + this->mScalingLengthDistance;
+        this->mNode.setSize(newSize);
+        if (this->mCurrentLengthScale > 0) this->mCurrentLengthScale -= this->mScalingLengthStep;
+        else {
+            this->mAnimationType["scale"] = 0;
+            this->mIsScaling = 0;
+            this->mIsDoneScaling = 1;
+        }
+    }
+
     if (this->mAnimationType["color"]) {
         mStartTime += mClock.restart().asSeconds();
         if (mStartTime > mTimeChange) {
@@ -47,6 +63,23 @@ void DisplayNode::triggerMoveAnimation(sf::Time dt, double speed, double moveDis
     this->mAnimationType["move"] = 1;
     this->mIsMoving = 1;
     this->mIsDoneMoving = 0;
+}
+
+void DisplayNode::triggerScaleAnimation(sf::Time dt, double lengthSpeed, double scalingLengthDistance, double widthSpeed, double scalingWidthDistance) {
+    this->mCurrentLengthScale = std::sqrt(std::sqrt(std::abs(scalingLengthDistance)));
+    this->mScalingLengthStep = this->mCurrentLengthScale*dt.asSeconds()*lengthSpeed;
+    this->mScalingLengthDistance = scalingLengthDistance;
+
+    this->mCurrentWidthScale = std::sqrt(std::sqrt(std::abs(scalingWidthDistance)));
+    this->mScalingWidthStep = this->mCurrentWidthScale*dt.asSeconds()*widthSpeed;
+    this->mScalingWidthDistance = scalingWidthDistance;
+
+    sf::Vector2f startScale = this->mNode.box.getSize();
+    startScale.x /= 1.2;
+    this->mStartScale = startScale;
+    this->mAnimationType["scale"] = 1;
+    this->mIsScaling = 1;
+    this->mIsDoneScaling = 0;
 }
 
 void DisplayNode::triggerColorAnimation(
