@@ -14,6 +14,16 @@ SettingsState::SettingsState(sf::RenderWindow &window) : State(window) {
 }
 
 void SettingsState::loadTextures() {
+    this->mTexturesHolder.load(Textures::playButton, "img/playButton.png");
+    this->mTexturesHolder.load(Textures::playButtonHoverred, "img/playButtonHoverred.png");
+    this->mTexturesHolder.load(Textures::pauseButton, "img/pauseButton.png");
+    this->mTexturesHolder.load(Textures::pauseButtonHoverred, "img/pauseButtonHoverred.png");
+    this->mTexturesHolder.load(Textures::replayButton, "img/replayButton.png");
+    this->mTexturesHolder.load(Textures::replayButtonHoverred, "img/replayButtonHoverred.png");
+    this->mTexturesHolder.load(Textures::nextButton, "img/nextButton.png");
+    this->mTexturesHolder.load(Textures::nextButtonHoverred, "img/nextButtonHoverred.png");
+    this->mTexturesHolder.load(Textures::prevButton, "img/prevButton.png");
+    this->mTexturesHolder.load(Textures::prevButtonHoverred, "img/prevButtonHoverred.png");
 }
 
 void SettingsState::loadFonts() {
@@ -54,6 +64,30 @@ void SettingsState::buildScence() {
         sf::Color::White, sf::Color(41, 58, 117, 255), sf::Color::White
     );
     mSceneLayers[DropBox]->attachChild(std::move(newActionDropBox));
+
+    std::unique_ptr<ContainerNode> controlBoxContainer = std::make_unique<ContainerNode>(
+        mWindow, sf::Vector2f(500, 150), 0,
+        sf::Vector2f((sf::VideoMode::getDesktopMode().width - 500)/2, sf::VideoMode::getDesktopMode().height - 200), sf::Color(52, 53, 59, 255), sf::Color::Black
+    );
+    mSceneLayers[ControlBoxContainer]->attachChild(std::move(controlBoxContainer));
+
+    std::unique_ptr<ImageButtonNode> pauseButton = std::make_unique<ImageButtonNode>(
+        mWindow, this->mTexturesHolder[Textures::pauseButton], this->mTexturesHolder[Textures::pauseButtonHoverred],
+        sf::Vector2f(30, 30), sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2, sf::VideoMode::getDesktopMode().height - 150)
+    );
+    mSceneLayers[ControlBoxButtons]->attachChild(std::move(pauseButton));
+
+    std::unique_ptr<ImageButtonNode> nextButton = std::make_unique<ImageButtonNode>(
+        mWindow, this->mTexturesHolder[Textures::nextButton], this->mTexturesHolder[Textures::nextButtonHoverred],
+        sf::Vector2f(30, 30), sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 + 70, sf::VideoMode::getDesktopMode().height - 150)
+    );
+    mSceneLayers[ControlBoxButtons]->attachChild(std::move(nextButton));
+
+    std::unique_ptr<ImageButtonNode> prevButton = std::make_unique<ImageButtonNode>(
+        mWindow, this->mTexturesHolder[Textures::prevButton], this->mTexturesHolder[Textures::prevButtonHoverred],
+        sf::Vector2f(30, 30), sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 - 70, sf::VideoMode::getDesktopMode().height - 150)
+    );
+    mSceneLayers[ControlBoxButtons]->attachChild(std::move(prevButton));
 }
 
 void SettingsState::activeSettings(sf::Time dt) {
@@ -68,7 +102,7 @@ void SettingsState::activeSettings(sf::Time dt) {
         this->elapsedTime = 0.f;
         settingsIn(dt);
     }
-    else if (mActionActivated[Action::Insert] && mActionActivated[Action::Play]) {
+    else if (mActionActivated[Action::Play] && this->mIsEmerged) {
         settingsOut(dt);
     }
     else if (localPositionF.x >= 520 && this->mIsEmerged && !isInputBoxActivated) {
@@ -83,7 +117,7 @@ void SettingsState::activeSettings(sf::Time dt) {
 }
 
 void SettingsState::settingsIn(sf::Time dt) {
-    for (int i = 0; i < LayerCount - 1; i++) {
+    for (int i = 0; i < Error; i++) {
         for (auto &child : this->mSceneLayers[i]->getChildren()) {
             if (!child->mIsMoving) {
                 child->triggerMoveAnimation(dt, 1, 600, 0);
@@ -94,7 +128,7 @@ void SettingsState::settingsIn(sf::Time dt) {
 }
 
 void SettingsState::settingsOut(sf::Time dt) {
-    for (int i = 0; i < LayerCount - 1; i++) {
+    for (int i = 0; i < Error; i++) {
         for (auto &child : this->mSceneLayers[i]->getChildren()) {
             if (!child->mIsMoving) {
                 child->triggerMoveAnimation(dt, 1.6, 600, 180);
@@ -112,4 +146,5 @@ void SettingsState::settingsOut(sf::Time dt) {
 void SettingsState::controlEvent(sf::Event &event) {
     handleActionDropBoxEvent(event);
     handleAction(event);
+    handleControlBoxEvent(event);
 }

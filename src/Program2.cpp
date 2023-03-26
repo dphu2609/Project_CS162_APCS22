@@ -30,28 +30,34 @@ void Program2::run() {
                             break;
                         }
                         case Action::Insert : {
-                            if (mSinglyLinkedList.mAnimationOrder == 0) {
-                                mSinglyLinkedList.mInsertActivated = 1;
-                                mSinglyLinkedList.mAnimationOrder = 1;
-                            }
+                            mSinglyLinkedList.mInsertActivated = 1;
+                            mSinglyLinkedList.mAnimationOrder = 1;
                             break;
                         }
                         case Action::Delete : {
-                            if (mSinglyLinkedList.mAnimationOrder == 0) {
-                                mSinglyLinkedList.mDeleteActivated = 1;
-                                mSinglyLinkedList.mAnimationOrder = 1;
-                            }
+                            mSinglyLinkedList.mDeleteActivated = 1;
+                            mSinglyLinkedList.mAnimationOrder = 1;
+                            break;
                         }
                     }
-                    // mSettings.activeSettings(dt);
+                    if (mSettings.mIsReplayAction) {
+                        mSinglyLinkedList.createList(mSettings.mInputArr);
+                        mSettings.mIsReplayAction = 0;
+                    }
                     mSettings.mActionActivated[Action::Play] = 0;
                 }
                 if (mSinglyLinkedList.mInsertActivated) mSinglyLinkedList.insertAnimation(dt, 1, mSettings.mActionIndex, mSettings.mInsertValue);
                 if (mSinglyLinkedList.mDeleteActivated) mSinglyLinkedList.deleteAnimation(dt, 1, mSettings.mActionIndex);
+                mSettings.mAnimationOrder = mSinglyLinkedList.mAnimationOrder;
                 mSettings.mIsActionActivating = mSinglyLinkedList.mInsertActivated;
+                mSinglyLinkedList.mIsActionPaused = mSettings.mIsActionPaused;
+                mSettings.mColorIndex = mSinglyLinkedList.mColorIndex;
+                mSettings.mIsEndAnimation.first = mSinglyLinkedList.mIsEndAnimation;
+                mSettings.mInputArr = mSinglyLinkedList.mListData;
                 mSinglyLinkedList.update(dt);
             }
             mSettings.update(dt);
+            mSettings.controlBoxUpdate();
         }
         mWindow.clear(sf::Color(18, 18, 18, 255));
         if (mSettings.mStateActivated[States::SinglyLinkedList]) mSinglyLinkedList.draw();

@@ -93,7 +93,7 @@ void DisplayNode::triggerColorAnimation(
     this->mBoxColorAfterChange = boxColorAfterChange;
     this->mOutlineColorWhenChange = outlineColorWhenChange;
     this->mOutlineColorAfterChange = outlineColorAfterChange;
-    this->mTimeChange = 0.5/speed;
+    this->mTimeChange = 0.75/speed;
     this->mIsColoring = 1;
     this->mIsDoneColoring = 0;
     this->mAnimationType["color"] = 1;

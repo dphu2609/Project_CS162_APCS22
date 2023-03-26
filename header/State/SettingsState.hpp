@@ -30,13 +30,29 @@ class SettingsState : public State {
 public:
     explicit SettingsState(sf::RenderWindow &window);
     void activeSettings(sf::Time dt);
+    void controlEvent(sf::Event &event);
+    void controlBoxUpdate();
     std::vector<bool> mStateActivated;
     std::vector<bool> mActionActivated;
     std::vector<int> mInputArr;
     int mActionIndex;
     int mInsertValue;
+    int mDeleteValue;
+
+    int mTypeOfAction = 0;
+
     bool mIsActionActivating = 0;
-    void controlEvent(sf::Event &event);
+
+    bool mIsActionPaused = 0;
+    bool mIsPrevious = 0;
+    bool mIsNext = 0;
+    int mPrevAnimationOrder = 1;
+    int mAnimationOrder = 1;
+    int mPrevColorIndex = 0;
+    int mColorIndex = 0;
+
+    bool mIsReplayAction = 0;
+    std::pair<bool, bool> mIsEndAnimation = {0, 0};
 private:
     enum Layers {
         Containers,
@@ -44,6 +60,8 @@ private:
         InputBox,
         ActionButtons,
         Error,
+        ControlBoxContainer,
+        ControlBoxButtons,
         LayerCount
     };
     sf::Clock clock;
@@ -60,4 +78,5 @@ private:
     void settingsOut(sf::Time dt);
     void handleAction(sf::Event &event);
     void handleActionDropBoxEvent(sf::Event &event);
+    void handleControlBoxEvent(sf::Event &event);
 };

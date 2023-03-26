@@ -280,7 +280,7 @@ void SettingsState::handleAction(sf::Event &event) {
                         break;
                     }
                     case 2 : {
-                        if (child->getClickedIndex(event) == 0 && mInputArr.size() > 0) {
+                        if (child->getClickedIndex(event) == 0) {
                             for (auto &child : mSceneLayers[InputBox]->getChildren()) {
                                 this->mInputArr = child->getIntArrayData();
                             }
@@ -350,7 +350,7 @@ void SettingsState::handleAction(sf::Event &event) {
                                 mActionIndex = indexInput[0];
                                 mInsertValue = dataInput[0];
                                 mSceneLayers[Error]->getChildren().clear();
-                                mInputArr.insert(mInputArr.begin() + mActionIndex, mInsertValue);
+                                mTypeOfAction = Action::Insert;
                             }
                         }
                         break;
@@ -377,7 +377,7 @@ void SettingsState::handleAction(sf::Event &event) {
                     }
                     case 1: {
                         if (child->getClickedIndex(event) == 0) {
-                            mActionIndex = mInputArr.size();
+                            mActionIndex = mInputArr.size() - 1;
                             for (auto &child : mSceneLayers[InputBox]->getChildren()) {
                                 child->resetContent(std::to_string(mActionIndex));
                                 break;
@@ -393,10 +393,10 @@ void SettingsState::handleAction(sf::Event &event) {
                             } 
                             if (indexInput.size() != 1) {
                                 throwError("Error: Invalid index!");
-                            } else if (indexInput[0] > mInputArr.size() || indexInput[0] < 0) {
+                            } else if (indexInput[0] > mInputArr.size() - 1 || indexInput[0] < 0) {
                                 std::string message = "";
                                 if (mInputArr.size() == 0) message = "Error: List is empty! Can not perform this action.";
-                                else message = "Error: Index must be in range from 0 to " + std::to_string(mInputArr.size()) + "!";
+                                else message = "Error: Index must be in range from 0 to " + std::to_string(mInputArr.size() - 1) + "!";
                                 throwError(message);
                             } else if (mInputArr.size() == 0) {
                                 throwError("Error: List is empty! Can not perform this action.");
@@ -404,8 +404,9 @@ void SettingsState::handleAction(sf::Event &event) {
                             else if (!mIsActionActivating) {
                                 mActionActivated[Action::Play] = 1;
                                 mActionIndex = indexInput[0];
+                                mDeleteValue = mInputArr[mActionIndex];
                                 mSceneLayers[Error]->getChildren().clear();
-                                mInputArr.erase(mInputArr.begin() + mActionIndex);
+                                mTypeOfAction = Action::Delete;
                             }
                         }
                         break;
@@ -413,6 +414,89 @@ void SettingsState::handleAction(sf::Event &event) {
                 }
                 btnIndex++;
             }
+        }
+    }
+}
+
+void SettingsState::handleControlBoxEvent(sf::Event &event) {
+    int index = 0;
+    for (auto &child : mSceneLayers[ControlBoxButtons]->getChildren()) {
+        switch (index) {
+            case 0: {
+                if (child->getClickedIndex(event) == 0) {
+                    if (mIsEndAnimation.first && mIsEndAnimation.second) {
+                        switch (mTypeOfAction) {
+                            case Action::Insert: {
+                                mInputArr.erase(mInputArr.begin() + mActionIndex);
+                                break;
+                            }
+                            case Action::Delete: {
+                                mInputArr.insert(mInputArr.begin() + mActionIndex, mDeleteValue);
+                                break;
+                            }
+                        }
+                        mActionActivated[Action::Play] = 1;
+                        mIsReplayAction = 1;
+                        mIsActionPaused = 1;
+                        mIsEndAnimation.second = 0;
+                        mIsEndAnimation.first = 0;
+                    }
+                    if (!mIsActionPaused) mIsActionPaused = 1;
+                    else mIsActionPaused = 0;
+                    if (mIsActionPaused) {
+                        std::unique_ptr<ImageButtonNode> playButton = std::make_unique<ImageButtonNode>(
+                            mWindow, this->mTexturesHolder[Textures::playButton], this->mTexturesHolder[Textures::playButtonHoverred],
+                            sf::Vector2f(30, 30), sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2, sf::VideoMode::getDesktopMode().height - 150)
+                        );
+                        mSceneLayers[ControlBoxButtons]->getChildren()[0] = std::move(playButton);
+                    } else {
+                        std::unique_ptr<ImageButtonNode> pauseButton = std::make_unique<ImageButtonNode>(
+                            mWindow, this->mTexturesHolder[Textures::pauseButton], this->mTexturesHolder[Textures::pauseButtonHoverred],
+                            sf::Vector2f(30, 30), sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2, sf::VideoMode::getDesktopMode().height - 150)
+                        );
+                        mSceneLayers[ControlBoxButtons]->getChildren()[0] = std::move(pauseButton);
+                        mIsNext = 0;
+                    }
+                }
+                break;
+            }
+            case 1: {
+                if (child->getClickedIndex(event) == 0) {
+                    if (!mIsActionPaused) {
+                        std::unique_ptr<ImageButtonNode> playButton = std::make_unique<ImageButtonNode>(
+                            mWindow, this->mTexturesHolder[Textures::playButton], this->mTexturesHolder[Textures::playButtonHoverred],
+                            sf::Vector2f(30, 30), sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2, sf::VideoMode::getDesktopMode().height - 150)
+                        );
+                        mSceneLayers[ControlBoxButtons]->getChildren()[0] = std::move(playButton);
+                    }
+                    if (!mIsNext) mIsNext = 1;
+                    mIsActionPaused = 0;
+                }
+                break;
+            }
+        }
+        index++;
+    }
+}
+
+void SettingsState::controlBoxUpdate() {
+    if (mIsEndAnimation.first && !mIsEndAnimation.second) {
+        std::unique_ptr<ImageButtonNode> replayButton = std::make_unique<ImageButtonNode>(
+            mWindow, this->mTexturesHolder[Textures::replayButton], this->mTexturesHolder[Textures::replayButtonHoverred],
+            sf::Vector2f(30, 30), sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2, sf::VideoMode::getDesktopMode().height - 150)
+        );
+        mSceneLayers[ControlBoxButtons]->getChildren()[0] = std::move(replayButton);
+        mIsEndAnimation.second = 1;
+    }
+
+    if (mIsNext) {
+        if (mPrevColorIndex != mColorIndex && mColorIndex != 0) {
+            mPrevColorIndex = mColorIndex;
+            mIsActionPaused = 1;
+        } 
+        if (mAnimationOrder != mPrevAnimationOrder) {
+            mPrevAnimationOrder = mAnimationOrder;
+            mIsActionPaused = 1;
         }
     }
 }

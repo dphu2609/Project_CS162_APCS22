@@ -1,6 +1,7 @@
 #include <State/SinglyLinkedListState.hpp>
 
 void LinkedListState::insertAnimation(sf::Time dt, double speed, int insertIndex, int insertData) {
+    mIsEndAnimation = 0;
     switch (mAnimationOrder) {
         case 1: {
             for (auto &child : mSceneLayers[Nodes]->getChildren()) {
@@ -10,7 +11,7 @@ void LinkedListState::insertAnimation(sf::Time dt, double speed, int insertIndex
                         sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255),
                         sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
                     );
-                } else if (!child->mIsColoring && child->mIsDoneColoring) {
+                } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
                     child->mIsDoneColoring = 0;
                     mAnimationOrder = 2;
                 }
@@ -31,10 +32,11 @@ void LinkedListState::insertAnimation(sf::Time dt, double speed, int insertIndex
                             sf::Color::White, sf::Color(237, 139, 26, 255), sf::Color(237, 139, 26, 255),
                             sf::Color(237, 139, 26, 255), sf::Color::White, sf::Color(237, 139, 26, 255)
                         );
-                    } else if (!child->mIsColoring && child->mIsDoneColoring) {
+                    } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
                         child->mIsDoneColoring = 0;
-                        this->mColorIndex++;
-                        if (this->mColorIndex >= insertIndex) {
+                        if (this->mColorIndex >= insertIndex) this->mColorIndex = insertIndex;
+                        else this->mColorIndex++;
+                        if (this->mColorIndex >= insertIndex && !mIsActionPaused) {
                             this->mColorIndex = 0;
                             mAnimationOrder = 3;
                         }
@@ -65,7 +67,7 @@ void LinkedListState::insertAnimation(sf::Time dt, double speed, int insertIndex
             for (auto &child : this->mSceneLayers[newNode]->getChildren()) {
                 if (!child->mIsMoving && !child->mIsDoneMoving) {
                     child->triggerMoveAnimation(dt, speed, 250, -90);
-                } else if (!child->mIsMoving && child->mIsDoneMoving) {
+                } else if (!child->mIsMoving && child->mIsDoneMoving && !mIsActionPaused) {
                     child->mIsDoneMoving = 0;
                     if (mListData.size() == 0) mAnimationOrder = 7;
                     else if (insertIndex != mListData.size()) mAnimationOrder = 4;
@@ -85,7 +87,7 @@ void LinkedListState::insertAnimation(sf::Time dt, double speed, int insertIndex
             for (auto &child : this->mSceneLayers[tempArrow]->getChildren()) {
                 if (!child->mIsScaling && !child->mIsDoneScaling) {
                     child->triggerScaleAnimation(dt, speed, 110, 0, 0);
-                } else if (!child->mIsScaling && child->mIsDoneScaling) {
+                } else if (!child->mIsScaling && child->mIsDoneScaling && !mIsActionPaused) {
                     child->mIsDoneScaling = 0;
                     if(insertIndex != 0) mAnimationOrder = 5;
                     else mAnimationOrder = 6;
@@ -114,7 +116,7 @@ void LinkedListState::insertAnimation(sf::Time dt, double speed, int insertIndex
                         }
                         child->triggerMoveAnimation(dt, speed*2, 25, 30);
                     } 
-                    else if (!child->mIsScaling && child->mIsDoneScaling) {
+                    else if (!child->mIsScaling && child->mIsDoneScaling && !mIsActionPaused) {
                         child->mIsDoneScaling = 0;
                         child->mIsDoneRotating = 0;
                         mAnimationOrder = 6;
@@ -135,7 +137,7 @@ void LinkedListState::insertAnimation(sf::Time dt, double speed, int insertIndex
                             child->triggerRotateAnimation(dt, speed, -66.8);
                             child->triggerScaleAnimation(dt, speed*0.99, -(110/std::cos(66.8*std::atan(1)*4/180)) + 110, 0, 0);
                             child->triggerMoveAnimation(dt, speed*2, 25, -150);
-                        } else if (!child->mIsScaling && child->mIsDoneScaling) {
+                        } else if (!child->mIsScaling && child->mIsDoneScaling && !mIsActionPaused) {
                             child->mIsDoneMoving = 0;
                             child->mIsDoneScaling = 0;
                             child->mIsDoneRotating = 0;
@@ -150,7 +152,7 @@ void LinkedListState::insertAnimation(sf::Time dt, double speed, int insertIndex
                 if (index >= insertIndex) {
                     if (!child->mIsMoving && !child->mIsDoneMoving) {
                         child->triggerMoveAnimation(dt, speed, 250, 0);
-                    } else if (!child->mIsMoving && child->mIsDoneMoving) {
+                    } else if (!child->mIsMoving && child->mIsDoneMoving && !mIsActionPaused) {
                         child->mIsDoneMoving = 0;
                     }
                 }
@@ -161,7 +163,7 @@ void LinkedListState::insertAnimation(sf::Time dt, double speed, int insertIndex
                 if (index >= insertIndex) {
                     if (!child->mIsMoving && !child->mIsDoneMoving) {
                         child->triggerMoveAnimation(dt, speed, 250, 0);
-                    } else if (!child->mIsMoving && child->mIsDoneMoving) {
+                    } else if (!child->mIsMoving && child->mIsDoneMoving && !mIsActionPaused) {
                         child->mIsDoneMoving = 0;
                     }
                 }
@@ -170,7 +172,7 @@ void LinkedListState::insertAnimation(sf::Time dt, double speed, int insertIndex
             for (auto &child : this->mSceneLayers[newNode]->getChildren()) {
                 if (!child->mIsMoving && !child->mIsDoneMoving) {
                     child->triggerMoveAnimation(dt, speed, 250, -90);
-                } else if (!child->mIsMoving && child->mIsDoneMoving) {
+                } else if (!child->mIsMoving && child->mIsDoneMoving && !mIsActionPaused) {
                     child->mIsDoneMoving = 0;
                     mAnimationOrder = 7;
                 }
@@ -179,7 +181,7 @@ void LinkedListState::insertAnimation(sf::Time dt, double speed, int insertIndex
                 if (!child->mIsRotating && !child->mIsDoneRotating) {
                     child->triggerRotateAnimation(dt, speed, 90);
                     child->triggerMoveAnimation(dt, speed, 225.05318547, -66.16125981683);
-                } else if (!child->mIsRotating && child->mIsDoneRotating) {
+                } else if (!child->mIsRotating && child->mIsDoneRotating && !mIsActionPaused) {
                     child->mIsDoneRotating = 0;
                 }
             }
@@ -209,7 +211,7 @@ void LinkedListState::insertAnimation(sf::Time dt, double speed, int insertIndex
             if (mListData.size()%2 == 0) mAnimationOrder = 8;
             else {
                 mInsertActivated = 0;
-                mAnimationOrder = 0;
+                mIsEndAnimation = 1;
             }
             break;
         }
@@ -218,17 +220,17 @@ void LinkedListState::insertAnimation(sf::Time dt, double speed, int insertIndex
             for (auto &child : this->mSceneLayers[Nodes]->getChildren()) {
                 if (!child->mIsMoving && !child->mIsDoneMoving) {
                     child->triggerMoveAnimation(dt, speed, 250, 180);
-                } else if (!child->mIsMoving && child->mIsDoneMoving) {
+                } else if (!child->mIsMoving && child->mIsDoneMoving && !mIsActionPaused) {
                     child->mIsDoneMoving = 0;
                 }
             }
             for (auto &child : this->mSceneLayers[Arrow]->getChildren()) {
                 if (!child->mIsMoving && !child->mIsDoneMoving) {
                     child->triggerMoveAnimation(dt, speed, 250, 180);
-                } else if (!child->mIsMoving && child->mIsDoneMoving) {
+                } else if (!child->mIsMoving && child->mIsDoneMoving && !mIsActionPaused) {
                     child->mIsDoneMoving = 0;
-                    mAnimationOrder = 0;
                     mInsertActivated = 0;
+                    mIsEndAnimation = 1;
                 }
             }
         }
@@ -239,6 +241,7 @@ void LinkedListState::insertAnimation(sf::Time dt, double speed, int insertIndex
 }
 
 void LinkedListState::deleteAnimation(sf::Time dt, double speed, int deleteIndex) {
+    mIsEndAnimation = 0;
     switch (mAnimationOrder) {
         case 1: {
             for (auto &child : mSceneLayers[Nodes]->getChildren()) {
@@ -248,7 +251,7 @@ void LinkedListState::deleteAnimation(sf::Time dt, double speed, int deleteIndex
                         sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255),
                         sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
                     );
-                } else if (!child->mIsColoring && child->mIsDoneColoring) {
+                } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
                     child->mIsDoneColoring = 0;
                     mAnimationOrder = 2;
                 }
@@ -256,10 +259,6 @@ void LinkedListState::deleteAnimation(sf::Time dt, double speed, int deleteIndex
             break;
         }
         case 2: {
-            if (mListData.size() == 0 || deleteIndex == 0) {
-                mAnimationOrder = 3;
-                break;
-            }
             int index = 0;
             for (auto &child : mSceneLayers[Nodes]->getChildren()) {
                 if (index == this->mColorIndex && index < deleteIndex) {
@@ -269,7 +268,7 @@ void LinkedListState::deleteAnimation(sf::Time dt, double speed, int deleteIndex
                             sf::Color::White, sf::Color(237, 139, 26, 255), sf::Color(237, 139, 26, 255),
                             sf::Color(237, 139, 26, 255), sf::Color::White, sf::Color(237, 139, 26, 255)
                         );
-                    } else if (!child->mIsColoring && child->mIsDoneColoring) {
+                    } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
                         child->mIsDoneColoring = 0;
                         this->mColorIndex++;
                     }
@@ -277,16 +276,15 @@ void LinkedListState::deleteAnimation(sf::Time dt, double speed, int deleteIndex
                     if (!child->mIsColoring && !child->mIsDoneColoring) {
                         child->triggerColorAnimation(
                             dt, 100, 
-                            sf::Color::White, sf::Color(31, 224, 205, 255), sf::Color(31, 224, 205, 255),
-                            sf::Color(31, 224, 205, 255), sf::Color::White, sf::Color(31, 224, 205, 255)
+                            sf::Color::White, sf::Color(150, 0, 25, 255), sf::Color(150, 0, 25, 255),
+                             sf::Color::White, sf::Color(150, 0, 25, 255), sf::Color(150, 0, 25, 255)
                         );
-                    } else if (!child->mIsColoring && child->mIsDoneColoring) {
+                    } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
                         child->mIsDoneColoring = 0;
                         this->mColorIndex++;
                         if (this->mColorIndex > deleteIndex) {
                             this->mColorIndex = 0;
-                            if (deleteIndex == 0) mAnimationOrder = 4;
-                            else if (deleteIndex == mListData.size()) mAnimationOrder = 4;
+                            if (deleteIndex == 0  || deleteIndex == mListData.size() - 1) mAnimationOrder = 6;
                             else mAnimationOrder = 3;
                         }
                     }  
@@ -301,7 +299,7 @@ void LinkedListState::deleteAnimation(sf::Time dt, double speed, int deleteIndex
                 if (index == deleteIndex - 1) {
                     if (!child->mIsScaling && !child->mIsDoneScaling) {
                         child->triggerScaleAnimation(dt, speed, 250, 0, 0);
-                    } else if (!child->mIsScaling && child->mIsDoneScaling) {
+                    } else if (!child->mIsScaling && child->mIsDoneScaling && !mIsActionPaused) {
                         child->mIsDoneScaling = 0;
                     }
                 }
@@ -310,7 +308,7 @@ void LinkedListState::deleteAnimation(sf::Time dt, double speed, int deleteIndex
                         child->triggerRotateAnimation(dt, speed, -66.8);
                         child->triggerScaleAnimation(dt, speed, (110/std::cos(66.8*std::atan(1)*4/180)) - 110, 0, 0);
                         child->triggerMoveAnimation(dt, speed, 270, 94.5);
-                    } else if (!child->mIsScaling && child->mIsDoneScaling) {
+                    } else if (!child->mIsScaling && child->mIsDoneScaling && !mIsActionPaused) {
                         child->mIsDoneScaling = 0;
                         child->mIsDoneMoving = 0;
                         child->mIsDoneRotating = 0;
@@ -324,7 +322,7 @@ void LinkedListState::deleteAnimation(sf::Time dt, double speed, int deleteIndex
                 if (index == deleteIndex) {
                     if (!child->mIsMoving && !child->mIsDoneMoving) {
                         child->triggerMoveAnimation(dt, speed, 250, 90);
-                    } else if (!child->mIsMoving && child->mIsDoneMoving) {
+                    } else if (!child->mIsMoving && child->mIsDoneMoving && !mIsActionPaused) {
                         child->mIsDoneMoving = 0;
                     }
                 }
@@ -339,7 +337,7 @@ void LinkedListState::deleteAnimation(sf::Time dt, double speed, int deleteIndex
                 if (index == deleteIndex) {
                     if (!child->mIsScaling && !child->mIsDoneScaling) {
                         child->triggerScaleAnimation(dt, speed*2, -(110/std::cos(66.8*std::atan(1)*4/180)), speed, -50);
-                    } else if (!child->mIsScaling && child->mIsDoneScaling) {
+                    } else if (!child->mIsScaling && child->mIsDoneScaling && !mIsActionPaused) {
                         mAnimationOrder = 5;
                     }
                 }
@@ -354,6 +352,170 @@ void LinkedListState::deleteAnimation(sf::Time dt, double speed, int deleteIndex
                 }
                 index++;
             }
+            break;
+        }
+
+        case 5: {
+            int index = 0;
+            for (auto &child : mSceneLayers[Arrow]->getChildren()) {
+                if (index == deleteIndex - 1) {
+                    if (!child->mIsScaling && !child->mIsDoneScaling) {
+                        child->triggerScaleAnimation(dt, speed, -250, 0, 0);
+                    } else if (!child->mIsScaling && child->mIsDoneScaling && !mIsActionPaused) {
+                        child->mIsDoneScaling = 0;
+                        mAnimationOrder = 8;
+                    }
+                }
+                index++;
+            }
+            index = 0;
+            for (auto &child : mSceneLayers[Nodes]->getChildren()) {
+                if (index > deleteIndex && mListData.size()%2 != 0) {
+                    if (!child->mIsMoving && !child->mIsDoneMoving) {
+                        child->triggerMoveAnimation(dt, speed, 250, 180);
+                    } else if (!child->mIsMoving && child->mIsDoneMoving && !mIsActionPaused) {
+                        child->mIsDoneMoving = 0;
+                    }
+                } else if (index < deleteIndex && mListData.size()%2 == 0) {
+                    if (!child->mIsMoving && !child->mIsDoneMoving) {
+                        child->triggerMoveAnimation(dt, speed, 250, 0);
+                    } else if (!child->mIsMoving && child->mIsDoneMoving && !mIsActionPaused) {
+                        child->mIsDoneMoving = 0;
+                    }
+                }
+                index++;
+            }
+            index = 0;
+            for (auto &child : mSceneLayers[Arrow]->getChildren()) {
+                if (index > deleteIndex && mListData.size()%2 != 0) {
+                    if (!child->mIsMoving && !child->mIsDoneMoving) {
+                        child->triggerMoveAnimation(dt, speed, 250, 180);
+                    } else if (!child->mIsMoving && child->mIsDoneMoving && !mIsActionPaused) {
+                        child->mIsDoneMoving = 0;
+                    }
+                } else if (index < deleteIndex && mListData.size()%2 == 0) {
+                    if (!child->mIsMoving && !child->mIsDoneMoving) {
+                        child->triggerMoveAnimation(dt, speed, 250, 0);
+                    } else if (!child->mIsMoving && child->mIsDoneMoving && !mIsActionPaused) {
+                        child->mIsDoneMoving = 0;
+                    }
+                }
+                index++;
+            }
+            break;
+        }
+
+        case 6: {
+            if (deleteIndex == 0) {
+                for (auto &child : mSceneLayers[Nodes]->getChildren()) {
+                    if (!child->mIsScaling && !child->mIsDoneScaling) {
+                        child->triggerScaleAnimation(dt, speed*1.5, -100, 0, 0);
+                    }
+                    break;
+                }
+                for (auto &child : mSceneLayers[Arrow]->getChildren()) {
+                    if (!child->mIsScaling && !child->mIsDoneScaling) {
+                        child->triggerScaleAnimation(dt, speed*2, -110, speed, -50);
+                        child->triggerMoveAnimation(dt, speed*2, 30, 45);
+                    } else if (!child->mIsScaling && child->mIsDoneScaling && !mIsActionPaused) {
+                        mAnimationOrder = 7;
+                    }
+                    break;
+                }
+            } else if (deleteIndex == mListData.size() - 1) {
+                int index = 0;
+                for (auto &child : mSceneLayers[Nodes]->getChildren()) {
+                    if (index == mListData.size() - 1) {
+                        if (!child->mIsScaling && !child->mIsDoneScaling) {
+                            child->triggerScaleAnimation(dt, speed*1.5, -100, 0, 0);
+                        }
+                    }
+                    index++;
+                }
+                index = 0;
+                for (auto &child : mSceneLayers[Arrow]->getChildren()) {
+                    if (index == deleteIndex - 1) {
+                        if (!child->mIsScaling && !child->mIsDoneScaling) {
+                            child->triggerScaleAnimation(dt, speed*2, -110, speed, -50);
+                            child->triggerMoveAnimation(dt, speed*2, 30, 45);
+                        } else if (!child->mIsScaling && child->mIsDoneScaling && !mIsActionPaused) {
+                            mAnimationOrder = 7;
+                        }
+                    }
+                    index++;
+                }
+
+            }
+            break;
+        }
+
+        case 7: {
+            if (deleteIndex == 0 && mListData.size()%2 != 0) {
+                int index = 0;
+                for (auto &child : mSceneLayers[Nodes]->getChildren()) {
+                    if (index > 0) {
+                        if (!child->mIsMoving && !child->mIsDoneMoving) {
+                            child->triggerMoveAnimation(dt, speed, 250, 180);
+                        } else if (!child->mIsMoving && child->mIsDoneMoving && !mIsActionPaused) {
+                            child->mIsDoneMoving = 0;
+                            mAnimationOrder = 8;
+                        }
+                    }
+                    index++;
+                }
+                index = 0;
+                for (auto &child : mSceneLayers[Arrow]->getChildren()) {
+                    if (index > 0) {
+                        if (!child->mIsMoving && !child->mIsDoneMoving) {
+                            child->triggerMoveAnimation(dt, speed, 250, 180);
+                        } else if (!child->mIsMoving && child->mIsDoneMoving && !mIsActionPaused) {
+                            child->mIsDoneMoving = 0;
+                        }
+                    }
+                    index++;
+                }
+            } else if (deleteIndex == mListData.size() - 1 && mListData.size()%2 == 0) {
+                int index = 0;
+                for (auto &child : mSceneLayers[Nodes]->getChildren()) {
+                    if (index < deleteIndex) {
+                        if (!child->mIsMoving && !child->mIsDoneMoving) {
+                            child->triggerMoveAnimation(dt, speed, 250, 0);
+                        } else if (!child->mIsMoving && child->mIsDoneMoving && !mIsActionPaused) {
+                            child->mIsDoneMoving = 0;
+                            mAnimationOrder = 8;
+                        }
+                    }
+                    index++;
+                }
+                index = 0;
+                for (auto &child : mSceneLayers[Arrow]->getChildren()) {
+                    if (index < deleteIndex - 1) {
+                        if (!child->mIsMoving && !child->mIsDoneMoving) {
+                            child->triggerMoveAnimation(dt, speed, 250, 0);
+                        } else if (!child->mIsMoving && child->mIsDoneMoving && !mIsActionPaused) {
+                            child->mIsDoneMoving = 0;
+                        }
+                    }
+                    index++;
+                }
+            } else {
+                mAnimationOrder = 8;
+            }
+            break;
+        }
+
+        case 8: {
+            if (deleteIndex < mListData.size() - 1) {
+                mSceneLayers[Nodes]->getChildren().erase(mSceneLayers[Nodes]->getChildren().begin() + deleteIndex);
+                mSceneLayers[Arrow]->getChildren().erase(mSceneLayers[Arrow]->getChildren().begin() + deleteIndex);
+                mListData.erase(mListData.begin() + deleteIndex);
+            } else {
+                mSceneLayers[Nodes]->getChildren().pop_back();
+                mSceneLayers[Arrow]->getChildren().pop_back();
+                mListData.pop_back();
+            }
+            mDeleteActivated = 0;
+            mIsEndAnimation = 1;
             break;
         }
 

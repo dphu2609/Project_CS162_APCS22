@@ -13,8 +13,12 @@ public:
     bool mInsertActivated = 0;
     bool mDeleteActivated = 0;
     int mAnimationOrder = 0;
-private:
+    bool mIsActionPaused = 0;
+    int mAnimationStep = 0;
+    int mColorIndex = 0;
+    bool mIsEndAnimation = 0;
     std::vector<int> mListData;
+private:
     enum Layers {
         Button,
         Nodes,
@@ -23,7 +27,6 @@ private:
         tempArrow,
         LayerCount
     };
-    int mColorIndex = 0;
 private:
     virtual void loadTextures();
     virtual void loadFonts();

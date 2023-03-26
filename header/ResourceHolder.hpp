@@ -16,7 +16,9 @@ namespace Textures {
         playButton,
         playButtonHoverred,
         pauseButton,
-        pauseButtonHoverred
+        pauseButtonHoverred,
+        replayButton,
+        replayButtonHoverred
     };
 };
 
