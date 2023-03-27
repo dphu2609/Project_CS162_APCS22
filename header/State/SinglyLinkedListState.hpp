@@ -7,6 +7,7 @@ public:
     explicit LinkedListState(sf::RenderWindow &window);
     // void activateAnimation(sf::Time dt, double speed);
     void insertAnimation(sf::Time dt, double speed, int insertIndex, int insertData);
+    void insertAnimationReversed(sf::Time dt, double speed, int insertIndex, int insertData);
     void deleteAnimation(sf::Time dt, double speed, int deleteIndex);
     void createList(std::vector<int> &list);
     void handleClick(sf::Event &event);
@@ -18,6 +19,8 @@ public:
     int mColorIndex = 0;
     bool mIsEndAnimation = 0;
     std::vector<int> mListData;
+    void resetNodeState();
+    bool isProcessing();
 private:
     enum Layers {
         Button,

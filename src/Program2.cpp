@@ -30,30 +30,71 @@ void Program2::run() {
                             break;
                         }
                         case Action::Insert : {
+                            mSettings.mIsEndAnimation.first = 0;
+                            mSinglyLinkedList.createList(mSettings.mInputArr);
                             mSinglyLinkedList.mInsertActivated = 1;
+                            mSinglyLinkedList.mColorIndex = 0;
                             mSinglyLinkedList.mAnimationOrder = 1;
                             break;
                         }
                         case Action::Delete : {
+                            mSinglyLinkedList.resetNodeState(); 
                             mSinglyLinkedList.mDeleteActivated = 1;
+                            mSinglyLinkedList.mColorIndex = 0;
                             mSinglyLinkedList.mAnimationOrder = 1;
                             break;
                         }
                     }
-                    if (mSettings.mIsReplayAction) {
-                        mSinglyLinkedList.createList(mSettings.mInputArr);
-                        mSettings.mIsReplayAction = 0;
-                    }
                     mSettings.mActionActivated[Action::Play] = 0;
                 }
-                if (mSinglyLinkedList.mInsertActivated) mSinglyLinkedList.insertAnimation(dt, 1, mSettings.mActionIndex, mSettings.mInsertValue);
+                if (mSettings.mActionActivated[Action::Insert]) {
+                    if (mSettings.mIsNext) {
+                        if (mSettings.mPrevNext != mSettings.mIsNext && !mSinglyLinkedList.isProcessing() && mSettings.mAnimationOrder != 7) {
+                            mSettings.mPrevPrev = 0;
+                            mSettings.mPrevNext = 1;
+                            mSettings.mPrevPlay = 1;
+                            mSettings.mPrevAnimationOrder = mSettings.mAnimationOrder - 1;
+                            mSettings.mPrevColorIndex = mSettings.mColorIndex - 1;
+                            mSinglyLinkedList.resetNodeState();
+                            std::cout << 1;
+                        }
+                        mSinglyLinkedList.insertAnimation(dt, 1, mSettings.mActionIndex, mSettings.mInsertValue);
+                    }
+                    else if (mSettings.mIsPrev) {  
+                        if (mSettings.mPrevPrev != mSettings.mIsPrev && !mSinglyLinkedList.isProcessing() && mSettings.mAnimationOrder != 7) {
+                            mSettings.mPrevAnimationOrder = mSettings.mAnimationOrder + 1;
+                            mSettings.mPrevColorIndex = mSettings.mColorIndex + 1;
+                            mSinglyLinkedList.resetNodeState();
+                            mSettings.mPrevPrev = 1;
+                            mSettings.mPrevNext = 0;
+                            mSettings.mPrevPlay = 0;
+                            std::cout << 2;
+                        }
+                        mSinglyLinkedList.insertAnimationReversed(dt, 1, mSettings.mActionIndex, mSettings.mInsertValue);
+                    } 
+                    else {
+                        if (mSettings.mPrevPlay != mSettings.mIsPlay && !mSinglyLinkedList.isProcessing()) {
+                            mSettings.mPrevPlay = 1;
+                            mSinglyLinkedList.resetNodeState();
+                            mSettings.mPrevPrev = 0;
+                            mSettings.mPrevNext = 1;
+                            std::cout << 3;
+                        }
+                        mSinglyLinkedList.insertAnimation(dt, 1, mSettings.mActionIndex, mSettings.mInsertValue);
+                    }
+                }
                 if (mSinglyLinkedList.mDeleteActivated) mSinglyLinkedList.deleteAnimation(dt, 1, mSettings.mActionIndex);
                 mSettings.mAnimationOrder = mSinglyLinkedList.mAnimationOrder;
+                mSettings.mColorIndex = mSinglyLinkedList.mColorIndex;
                 mSettings.mIsActionActivating = mSinglyLinkedList.mInsertActivated;
                 mSinglyLinkedList.mIsActionPaused = mSettings.mIsActionPaused;
-                mSettings.mColorIndex = mSinglyLinkedList.mColorIndex;
                 mSettings.mIsEndAnimation.first = mSinglyLinkedList.mIsEndAnimation;
                 mSettings.mInputArr = mSinglyLinkedList.mListData;
+                if ((mSettings.mPrevAnimationOrder != mSettings.mAnimationOrder || mSettings.mColorIndex != mSettings.mPrevColorIndex) && (mSettings.mIsPrev || mSettings.mIsNext)) {
+                    mSettings.mPrevAnimationOrder = mSettings.mAnimationOrder;
+                    mSettings.mPrevColorIndex = mSettings.mColorIndex;
+                    mSettings.mIsActionPaused = 1;
+                }
                 mSinglyLinkedList.update(dt);
             }
             mSettings.update(dt);

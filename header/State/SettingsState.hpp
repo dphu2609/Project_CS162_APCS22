@@ -44,8 +44,12 @@ public:
     bool mIsActionActivating = 0;
 
     bool mIsActionPaused = 0;
-    bool mIsPrevious = 0;
+    bool mIsPrev = 0;
     bool mIsNext = 0;
+    bool mPrevNext = 0;
+    bool mPrevPrev = 0;
+    bool mPrevPlay = 0;
+    bool mIsPlay = 0;
     int mPrevAnimationOrder = 1;
     int mAnimationOrder = 1;
     int mPrevColorIndex = 0;
