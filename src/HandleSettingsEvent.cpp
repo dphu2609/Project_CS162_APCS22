@@ -406,12 +406,17 @@ void SettingsState::handleAction(sf::Event &event) {
                             } else if (mInputArr.size() == 0) {
                                 throwError("Error: List is empty! Can not perform this action.");
                             }
-                            else if (!mIsActionActivating) {
+                            else {
+                                for (int i = 0; i < Action::ActionCount; i++) mActionActivated[i] = 0;
+                                mActionActivated[Action::Delete] = 1;
                                 mActionActivated[Action::Play] = 1;
                                 mActionIndex = indexInput[0];
                                 mDeleteValue = mInputArr[mActionIndex];
                                 mSceneLayers[Error]->getChildren().clear();
                                 mTypeOfAction = Action::Delete;
+                                mIsPrev = 0;
+                                mIsNext = 0;
+                                mIsActionPaused = 0;
                             }
                         }
                         break;

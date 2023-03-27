@@ -60,7 +60,7 @@ void GraphicalNode::setColor(sf::Color textColor, sf::Color boxColor, sf::Color 
 void GraphicalNode::setSize(double size) {
     std::string string = this->number.getString();
     double oldSize = this->box.getSize().x/1.2;
-    sf::Vector2f newPos = this->box.getPosition() + sf::Vector2f((oldSize - size)/2, (oldSize - size)/2);
+    sf::Vector2f newPos = this->box.getPosition() + sf::Vector2f((oldSize - size)*1.2/2, (oldSize - size)*1.2/2);
     this->box.setSize(sf::Vector2f(size*1.2, size*1.2));
     this->box.setPosition(newPos);
     this->box.setOutlineThickness(size*0.1);

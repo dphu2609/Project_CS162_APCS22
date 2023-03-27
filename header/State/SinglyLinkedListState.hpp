@@ -9,6 +9,7 @@ public:
     void insertAnimation(sf::Time dt, double speed, int insertIndex, int insertData);
     void insertAnimationReversed(sf::Time dt, double speed, int insertIndex, int insertData);
     void deleteAnimation(sf::Time dt, double speed, int deleteIndex);
+    void deleteAnimationReversed(sf::Time dt, double speed, int deleteIndex, int deleteValue);
     void createList(std::vector<int> &list);
     void handleClick(sf::Event &event);
     bool mInsertActivated = 0;

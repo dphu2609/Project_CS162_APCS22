@@ -10,6 +10,7 @@ public:
     void run();
 private:
     void processEvents();
+    void singlyLinkedListHandle(sf::Time dt);
 private:
     SettingsState mSettings;
     LinkedListState mSinglyLinkedList;

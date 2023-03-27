@@ -66,3 +66,26 @@ void LinkedListState::createList(std::vector<int> &list) {
         mSceneLayers[Arrow]->attachChild(std::move(newArrow));
     }
 }
+
+void LinkedListState::resetNodeState() {
+    for (int i = 0; i < LayerCount; i++) {
+        for (auto &child : mSceneLayers[i]->getChildren()) {
+            child->mIsDoneColoring = 0;
+            child->mIsDoneMoving = 0;
+            child->mIsDoneRotating = 0;
+            child->mIsDoneScaling = 0;
+        }
+    }
+}
+
+bool LinkedListState::isProcessing() {
+    for (int i = 0; i < LayerCount; i++) {
+        for (auto &child : mSceneLayers[i]->getChildren()) {
+            if (child->mIsColoring) return 1;
+            if (child->mIsMoving) return 1;
+            if (child->mIsRotating) return 1;
+            if (child->mIsScaling) return 1;
+        }
+    }
+    return 0;
+}
