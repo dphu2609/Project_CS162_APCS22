@@ -10,10 +10,16 @@ public:
     void insertAnimationReversed(sf::Time dt, double speed, int insertIndex, int insertData);
     void deleteAnimation(sf::Time dt, double speed, int deleteIndex);
     void deleteAnimationReversed(sf::Time dt, double speed, int deleteIndex, int deleteValue);
+    void updateAnimation(sf::Time dt, double speed, int updateIndex, int updateValue);
+    void updateAnimationReversed(sf::Time dt, double speed, int updateIndex, int prevValue);
+    void searchAnimation(sf::Time dt, double speed, int searchValue);
+    void searchAnimationReversed(sf::Time dt, double speed, int searchValue);
     void createList(std::vector<int> &list);
     void handleClick(sf::Event &event);
     bool mInsertActivated = 0;
     bool mDeleteActivated = 0;
+    bool mUpdateActivated = 0;
+    bool mSearchActivated = 0;
     int mAnimationOrder = 0;
     bool mIsActionPaused = 0;
     int mAnimationStep = 0;

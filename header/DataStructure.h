@@ -13,5 +13,6 @@ public:
     void setPos(sf::Vector2f pos);
     void setColor(sf::Color textColor, sf::Color boxColor, sf::Color outlineColor);
     void setSize(double size);
+    void setString(std::string string);
 };
 

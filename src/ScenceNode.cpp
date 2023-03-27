@@ -52,8 +52,5 @@ void SceneNode::triggerRotateAnimation(sf::Time dt, double speed, double rotatin
 
 void SceneNode::triggerScaleAnimation(sf::Time dt, double lengthSpeed, double scalingLengthDistance, double widthSpeed, double scalingWidthDistance) {}
 
-bool SceneNode::isLeftClicked() {
-    return 0;
-}
 
 

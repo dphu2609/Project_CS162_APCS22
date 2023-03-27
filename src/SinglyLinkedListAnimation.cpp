@@ -1009,6 +1009,255 @@ void LinkedListState::deleteAnimationReversed(sf::Time dt, double speed, int del
             }
             break;
         }
-
     }
 }   
+
+void LinkedListState::updateAnimation(sf::Time dt, double speed, int updateIndex, int updateValue) {
+    switch (mAnimationOrder) {
+        case 1: {
+            for (auto &child : mSceneLayers[Nodes]->getChildren()) {
+                if (!child->mIsColoring && !child->mIsDoneColoring) {
+                    child->triggerColorAnimation(
+                        dt, 100, 
+                        sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255),
+                        sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
+                    );
+                } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
+                    child->mIsDoneColoring = 0;
+                    mAnimationOrder = 2;
+                }
+            }
+            break;
+        }
+        case 2: {
+            int index = 0;
+            for (auto &child : mSceneLayers[Nodes]->getChildren()) {
+                if (index == this->mColorIndex) {
+                    if (!child->mIsColoring && !child->mIsDoneColoring) {
+                        child->triggerColorAnimation(
+                            dt, speed, 
+                            sf::Color::White, sf::Color(237, 139, 26, 255), sf::Color(237, 139, 26, 255),
+                            sf::Color(237, 139, 26, 255), sf::Color::White, sf::Color(237, 139, 26, 255)
+                        );
+                    } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
+                        child->mIsDoneColoring = 0;
+                        this->mColorIndex++;
+                        if (this->mColorIndex > updateIndex && !mIsActionPaused) {
+                            this->mColorIndex--;
+                            mAnimationOrder = 3;
+                            break;
+                        }
+                    }
+                }
+                index++;
+            }
+            break;
+        }
+        case 3: {
+            int index = 0;
+            for (auto &child : mSceneLayers[Nodes]->getChildren()) {
+                if (index == updateIndex) {
+                    if (!child->mIsColoring && !child->mIsDoneColoring) {
+                        child->triggerColorAnimation(
+                            dt, speed, 
+                            sf::Color::White, sf::Color(78, 62, 222, 255), sf::Color(78, 62, 222, 255),
+                            sf::Color(78, 62, 222, 255), sf::Color::White, sf::Color(78, 62, 222, 255)
+                        );
+                    } else if (!child->mIsColoring && child->mIsDoneColoring) {
+                        child->mIsDoneColoring = 0;
+                        child->triggerChangeContent(std::to_string(updateValue));
+                        mAnimationOrder = 4;
+                    }
+                }
+                index++;
+            }
+            break;
+        }
+        case 4: {
+            if (!mIsEndAnimation) {
+                mListData[updateIndex] = updateValue;
+                mIsEndAnimation = 1;
+            }
+            break;
+        }
+    }
+}
+
+void LinkedListState::updateAnimationReversed(sf::Time dt, double speed, int updateIndex, int prevValue) {
+    mIsEndAnimation = 0;
+    switch (mAnimationOrder) {
+        case 4: {
+            mListData[updateIndex] = prevValue;
+            mAnimationOrder = 3;
+            break;
+        }
+        case 3: {
+            int index = 0;
+            for (auto &child : mSceneLayers[Nodes]->getChildren()) {
+                if (index == updateIndex) {
+                    if (!child->mIsColoring && !child->mIsDoneColoring) {
+                        child->triggerColorAnimation(
+                            dt, speed, 
+                            sf::Color::White, sf::Color(78, 62, 222, 255), sf::Color(78, 62, 222, 255),
+                            sf::Color(237, 139, 26, 255), sf::Color::White, sf::Color(237, 139, 26, 255)
+                        );
+                    } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
+                        child->mIsDoneColoring = 0;
+                        child->triggerChangeContent(std::to_string(prevValue));
+                        mAnimationOrder = 2;
+                    }
+                }
+                index++;
+            }
+            break;
+        }
+        case 2: {
+            int index = 0;
+            for (auto &child : mSceneLayers[Nodes]->getChildren()) {
+                if (index == this->mColorIndex) {
+                    if (!child->mIsColoring && !child->mIsDoneColoring) {
+                        child->triggerColorAnimation(
+                            dt, speed, 
+                            sf::Color::White, sf::Color(237, 139, 26, 255), sf::Color(237, 139, 26, 255),
+                            sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
+                        );
+                    } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
+                        child->mIsDoneColoring = 0;
+                        this->mColorIndex--;
+                        if (this->mColorIndex < 0 && !mIsActionPaused) {
+                            this->mColorIndex = 0;
+                            mAnimationOrder = 1;
+                            break;
+                        }
+                    }
+                }
+                index++;
+            }
+            break;
+        }
+    }
+}
+
+void LinkedListState::searchAnimation(sf::Time dt, double speed, int searchValue) {
+    switch(mAnimationOrder) {
+        case 1: {
+            for (auto &child : mSceneLayers[Nodes]->getChildren()) {
+                if (!child->mIsColoring && !child->mIsDoneColoring) {
+                    child->triggerColorAnimation(
+                        dt, 100, 
+                        sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255),
+                        sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
+                    );
+                } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
+                    child->mIsDoneColoring = 0;
+                    mAnimationOrder = 2;
+                }
+            }
+            break;
+        }
+        case 2: {
+            int index = 0;
+            for (auto &child : mSceneLayers[Nodes]->getChildren()) {
+                if (index == this->mColorIndex) {
+                    if (!child->mIsColoring && !child->mIsDoneColoring) {
+                        child->triggerColorAnimation(
+                            dt, speed, 
+                            sf::Color::White, sf::Color(237, 139, 26, 255), sf::Color(237, 139, 26, 255),
+                            sf::Color(237, 139, 26, 255), sf::Color::White, sf::Color(237, 139, 26, 255)
+                        );
+                    } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
+                        child->mIsDoneColoring = 0;
+                        this->mColorIndex++;
+                        if (std::stoi(child->getStringData()) == searchValue) {
+                            this->mColorIndex--;    
+                            mAnimationOrder = 3;
+                        } else if (this->mColorIndex == mListData.size()) {
+                            mAnimationOrder = 4;
+                        }
+                    }
+                }
+                index++;
+            }
+            break;
+        }
+        case 3: {
+            int index = 0;
+            for (auto &child : mSceneLayers[Nodes]->getChildren()) {
+                if (index == this->mColorIndex) {
+                    if (!child->mIsColoring && !child->mIsDoneColoring) {
+                        child->triggerColorAnimation(
+                            dt, speed, 
+                            sf::Color::White, sf::Color(221, 99, 230, 255), sf::Color(221, 99, 230, 255),
+                            sf::Color(221, 99, 230, 255), sf::Color::White, sf::Color(221, 99, 230, 255)
+                        );
+                    } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
+                        child->mIsDoneColoring = 0;
+                        mAnimationOrder = 4;
+                    }
+                }
+                index++;
+            }
+            break;
+        }
+        case 4: {
+            if (!mIsEndAnimation) {
+                mIsEndAnimation = 1;
+            }
+        }
+    }
+}
+
+void LinkedListState::searchAnimationReversed(sf::Time dt, double speed, int searchValue) {
+    mIsEndAnimation = 0;
+    switch(mAnimationOrder) {
+        case 4: {
+            if (this->mColorIndex == mListData.size()) {
+                this->mColorIndex--;
+                mAnimationOrder = 2;
+            } 
+            else mAnimationOrder = 3;
+            break;
+        }
+        case 3: {
+            int index = 0;
+            for (auto &child : mSceneLayers[Nodes]->getChildren()) {
+                if (index == this->mColorIndex) {
+                    if (!child->mIsColoring && !child->mIsDoneColoring) {
+                        child->triggerColorAnimation(
+                            dt, speed, 
+                            sf::Color::White, sf::Color(221, 99, 230, 255), sf::Color(221, 99, 230, 255),
+                            sf::Color(237, 139, 26, 255), sf::Color::White, sf::Color(237, 139, 26, 255)
+                        );
+                    } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
+                        child->mIsDoneColoring = 0;
+                        mAnimationOrder = 2;
+                    }
+                }
+                index++;
+            }
+            break;
+        }
+        case 2: {
+            int index = 0;
+            for (auto &child : mSceneLayers[Nodes]->getChildren()) {
+                if (index == this->mColorIndex) {
+                    if (!child->mIsColoring && !child->mIsDoneColoring) {
+                        child->triggerColorAnimation(
+                            dt, speed, 
+                            sf::Color::White, sf::Color(237, 139, 26, 255), sf::Color(237, 139, 26, 255),
+                            sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
+                        );
+                    } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
+                        child->mIsDoneColoring = 0;
+                        this->mColorIndex--;
+                        if (this->mColorIndex < 0) {
+                            mAnimationOrder = 1;
+                        }
+                    }
+                }
+                index++;
+            }
+            break;
+        }
+    }
+}

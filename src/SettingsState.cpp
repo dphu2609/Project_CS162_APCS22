@@ -102,7 +102,7 @@ void SettingsState::activeSettings(sf::Time dt) {
         this->elapsedTime = 0.f;
         settingsIn(dt);
     }
-    else if (mActionActivated[Action::Play] && this->mIsEmerged) {
+    else if (mActionActivated[Action::Play] && this->mIsEmerged && !mActionActivated[Action::Create]) {
         settingsOut(dt);
     }
     else if (localPositionF.x >= 520 && this->mIsEmerged && !isInputBoxActivated) {

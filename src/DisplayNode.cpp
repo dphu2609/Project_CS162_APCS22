@@ -99,3 +99,12 @@ void DisplayNode::triggerColorAnimation(
     this->mAnimationType["color"] = 1;
     this->mNode.setColor(textColorWhenChange, boxColorWhenChange, outlineColorWhenChange);
 }
+
+void DisplayNode::triggerChangeContent(std::string string) {
+    this->mNode.setString(string);
+}
+
+std::string DisplayNode::getStringData() {
+    std::string str = this->mNode.number.getString();
+    return str;
+}

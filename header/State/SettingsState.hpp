@@ -36,12 +36,10 @@ public:
     std::vector<bool> mActionActivated;
     std::vector<int> mInputArr;
     int mActionIndex;
-    int mInsertValue;
-    int mDeleteValue;
+    int mActionValue;
+    int mPrevActionValue;
 
     int mTypeOfAction = 0;
-
-    bool mIsActionActivating = 0;
 
     bool mIsActionPaused = 0;
     bool mIsPrev = 0;
@@ -77,6 +75,7 @@ private:
     virtual void buildScence();
 private:
     void createRandomList();
+    void createRandomValue();
     void throwError(const std::string &errorMessage);
     void settingsIn(sf::Time dt);
     void settingsOut(sf::Time dt);

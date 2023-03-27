@@ -96,4 +96,9 @@ void GraphicalNode::setSize(double size) {
     this->number.setCharacterSize(textSize);
 }
 
+void GraphicalNode::setString(std::string string) {
+    this->number.setString(string);
+    setSize(this->box.getSize().x/1.2);
+}
+
 

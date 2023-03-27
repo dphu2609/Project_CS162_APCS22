@@ -12,6 +12,8 @@ public:
         sf::Color textColorAfterChange, sf::Color boxColorAfterChange, sf::Color outlineColorAfterChange
     );
     virtual void triggerScaleAnimation(sf::Time dt, double lengthSpeed, double scalingLengthDistance, double widthSpeed, double scalingWidthDistance);
+    virtual void triggerChangeContent(std::string string);
+    virtual std::string getStringData();
 private:
     GraphicalNode mNode;
 private:

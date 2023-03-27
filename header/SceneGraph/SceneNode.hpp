@@ -24,7 +24,7 @@ public:
         sf::Color textColorWhenChange, sf::Color boxColorWhenChange, sf::Color outlineColorWhenChange, 
         sf::Color textColorAfterChange, sf::Color boxColorAfterChange, sf::Color outlineColorAfterChange
     ) {}
-    virtual bool isLeftClicked();
+    virtual void triggerChangeContent(std::string string) {}
     virtual int getClickedIndex(sf::Event &event) {return 0;};
     virtual void resetContent(const std::string &str) {}
     virtual std::string getStringData() {return "";}
