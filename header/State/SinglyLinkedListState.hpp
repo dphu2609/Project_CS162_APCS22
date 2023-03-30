@@ -5,7 +5,8 @@
 class LinkedListState : public State {
 public:
     explicit LinkedListState(sf::RenderWindow &window);
-    // void activateAnimation(sf::Time dt, double speed);
+
+    void createSLL(std::vector<int> list);
     void SLLInsertAnimation(sf::Time dt, double speed, int insertIndex, int insertData);
     void SLLInsertAnimationReversed(sf::Time dt, double speed, int insertIndex, int insertData);
     void SLLDeleteAnimation(sf::Time dt, double speed, int deleteIndex);
@@ -14,8 +15,17 @@ public:
     void SLLUpdateAnimationReversed(sf::Time dt, double speed, int updateIndex, int prevValue);
     void SLLSearchAnimation(sf::Time dt, double speed, int searchValue);
     void SLLSearchAnimationReversed(sf::Time dt, double speed, int searchValue);
-    void createSLL(std::vector<int> list);
+
     void createStaticArray(std::vector<int> list);
+    void staticArrayInsertAnimation(sf::Time dt, double speed, int insertIndex, int insertData);
+    void staticArrayInsertAnimationReversed(sf::Time dt, double speed, int insertIndex, int insertData);
+    void staticArrayDeleteAnimation(sf::Time dt, double speed, int deleteIndex);
+    void staticArrayDeleteAnimationReversed(sf::Time dt, double speed, int deleteIndex, int deleteValue);
+    void staticArrayUpdateAnimation(sf::Time dt, double speed, int updateIndex, int updateValue);
+    void staticArrayUpdateAnimationReversed(sf::Time dt, double speed, int updateIndex, int prevValue);
+    void staticArraySearchAnimation(sf::Time dt, double speed, int searchValue);
+    void staticArraySearchAnimationReversed(sf::Time dt, double speed, int searchValue);
+
     void createDynamicArray(std::vector<int> list);
     void createDLL(std::vector<int> list);
     void createCLL(std::vector<int> list);
@@ -36,11 +46,12 @@ public:
     bool isProcessing();
 private:
     enum Layers {
-        Button,
-        Nodes,
         newNode,
         Arrow,
         tempArrow,
+        BlankNode,
+        Nodes,
+        ArrayBoder,
         CodeBox,
         LayerCount
     };

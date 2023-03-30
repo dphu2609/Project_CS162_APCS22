@@ -16,9 +16,9 @@ public:
     void update (sf::Time dt);
     void handleEvent(sf::Event &event);
     std::vector<std::unique_ptr<SceneNode>>& getChildren() { return mChildren; }
-    virtual void triggerMoveAnimation(sf::Time dt, double speed, double movingDistance, double angleMovement);
-    virtual void triggerRotateAnimation(sf::Time dt, double speed, double rotatingDistance);
-    virtual void triggerScaleAnimation(sf::Time dt, double lengthSpeed, double scalingLengthDistance, double widthSpeed, double scalingWidthDistance);
+    virtual void triggerMoveAnimation(sf::Time dt, double speed, double movingDistance, double angleMovement) {}
+    virtual void triggerRotateAnimation(sf::Time dt, double speed, double rotatingDistance) {}
+    virtual void triggerScaleAnimation(sf::Time dt, double lengthSpeed, double scalingLengthDistance, double widthSpeed, double scalingWidthDistance) {}
     virtual void triggerColorAnimation(
         sf::Time dt, double speed, 
         sf::Color textColorWhenChange, sf::Color boxColorWhenChange, sf::Color outlineColorWhenChange, 
@@ -33,9 +33,9 @@ public:
     virtual void changeCodeBoxColor(std::vector<int> index) {}
     virtual void resetCodeBoxColor() {}
 private:
-    virtual void drawCurrent(sf::RenderTarget &target, sf::RenderStates states) const;
-    virtual void updateCurrent(sf::Time dt);
-    virtual void handleCurrentEvent(sf::Event &event);
+    virtual void drawCurrent(sf::RenderTarget &target, sf::RenderStates states) const {}
+    virtual void updateCurrent(sf::Time dt) {}
+    virtual void handleCurrentEvent(sf::Event &event) {}
 private:
     std::vector<Ptr> mChildren;
     SceneNode* mParent;

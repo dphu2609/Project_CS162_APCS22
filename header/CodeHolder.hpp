@@ -35,7 +35,7 @@ namespace Code {
 
 class CodeHolder {
 public:
-    void load(std::vector<int> codeID);
+    void load();
     std::vector<std::string>& operator [] (int id);
     const std::vector<std::string>& operator [] (int id) const;
     std::vector<bool> mStateActivated = {};

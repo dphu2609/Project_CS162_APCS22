@@ -1,17 +1,34 @@
 #include <State/SinglyLinkedListState.hpp>
 
-void LinkedListState::SLLInsertAnimation(sf::Time dt, double speed, int insertIndex, int insertData) {
-    if (mSceneLayers[CodeBox]->getChildren().size() == 0) {
-        std::unique_ptr<CodeBlockNode> codeBlock = std::make_unique<CodeBlockNode>(
-            mWindow, mCodeHolder[Code::SinglyLinkedListInsert], mFontsHolder[Fonts::FiraMonoRegular], 25,
-            sf::Color::Black, sf::Color(145, 174, 226, 255), sf::Color::Black, sf::Color(86, 114, 163, 255)
+void LinkedListState::createSLL(std::vector<int> list) {
+    for (int i = 0; i < LayerCount; i++) {
+        mSceneLayers[i]->getChildren().clear();
+    }
+    if (list.size() == 0) return;
+    mListData = list;
+    for (int i = 0; i < mListData.size(); i++) {
+        std::unique_ptr<DisplayNode> newNode = std::make_unique<DisplayNode>(
+            mListData[i], mFontsHolder[Fonts::FiraSansRegular], 100, 
+            sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + i*250, 250), 
+            sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
         );
-        mSceneLayers[CodeBox]->attachChild(std::move(codeBlock));
-        mCodeHolder.mStateActivated[Code::SinglyLinkedListInsert] = 1;
-    } else if (mSceneLayers[CodeBox]->getChildren().size() == 1 && !mCodeHolder.mStateActivated[Code::SinglyLinkedListInsert]) {
+        mSceneLayers[Nodes]->attachChild(std::move(newNode));
+    }
+    
+    for (int i = 0; i < mListData.size() - 1; i++) {
+        std::unique_ptr<SpriteNode> newArrow = std::make_unique<SpriteNode>(
+            mTexturesHolder[Textures::rightArrow], sf::Vector2f(110, 50), 
+            sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + i*250 + 130, 285), 0
+        );
+        mSceneLayers[Arrow]->attachChild(std::move(newArrow));
+    }
+}
+
+void LinkedListState::SLLInsertAnimation(sf::Time dt, double speed, int insertIndex, int insertData) {
+    if (mSceneLayers[CodeBox]->getChildren().size() == 0 || (mSceneLayers[CodeBox]->getChildren().size() == 1 && !mCodeHolder.mStateActivated[Code::SinglyLinkedListInsert])) {
         mSceneLayers[CodeBox]->getChildren().clear();
         std::unique_ptr<CodeBlockNode> codeBlock = std::make_unique<CodeBlockNode>(
-            mWindow, mCodeHolder[Code::SinglyLinkedListInsert], mFontsHolder[Fonts::FiraSansRegular], 30,
+            mWindow, mCodeHolder[Code::SinglyLinkedListInsert], mFontsHolder[Fonts::FiraMonoRegular], 25,
             sf::Color::Black, sf::Color(145, 174, 226, 255), sf::Color::Black, sf::Color(86, 114, 163, 255)
         );
         mSceneLayers[CodeBox]->attachChild(std::move(codeBlock));

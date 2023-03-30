@@ -1,21 +1,21 @@
 #include <CodeHolder.hpp>
 
 
-void CodeHolder::load(std::vector<int> codeID) {
-    mStateActivated.resize(codeID.size());
+void CodeHolder::load() {
+    mStateActivated.resize(Code::CodeCount);
     std::fill(mStateActivated.begin(), mStateActivated.end(), 0);
     mCodeMap.resize(Code::CodeCount);
     mCodeMap[Code::SinglyLinkedListInsert] = {
-        "void insert(int index, int value, Node*& head) {",    // 0
-        "    if (index == 0) {",                                // 1
-        "        Node* newNode = new Node(value, nullptr);",    // 2
-        "        newNode->next = head;",                    // 3
-        "        head = newNode;", // 4
-        "        return;",// 5
-        "    }",//  6
-        "    Node* cur = head;",// 7
-        "    for (int i = 0; i < index - 1; i++) {",// 8
-        "        cur = cur->next;",// 9
+        "void insert(int index, int value, Node*& head) {",   
+        "    if (index == 0) {",                                
+        "        Node* newNode = new Node(value, nullptr);",   
+        "        newNode->next = head;",                    
+        "        head = newNode;", 
+        "        return;",
+        "    }",
+        "    Node* cur = head;",
+        "    for (int i = 0; i < index - 1; i++) {",
+        "        cur = cur->next;",
         "    }",
         "    Node* newNode = new Node(value, nullptr);",
         "    newNode->next = cur->next;",
@@ -65,6 +65,17 @@ void CodeHolder::load(std::vector<int> codeID) {
         "    return nullptr;",
         "}"
     };
+
+    mCodeMap[Code::StaticArrayInsert] = {
+        "void insert(int *arr, int& size, int index, int value) {", // 0
+        "    for (int i = size; i > index; i--) {",                              // 1
+        "        arr[i] = arr[i-1];",                                            // 2
+        "    }",                                                                 // 3
+        "    arr[index] = value;",                                               // 4
+        "    size++;",                                                           // 5
+        "}"                                                                      // 6
+    };
+
 }
 
 std::vector<std::string>& CodeHolder::operator[] (int id) {
