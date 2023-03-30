@@ -41,6 +41,10 @@ void Program2::processEvents()
 }
 
 void Program2::linkedListHandle(sf::Time dt, LinkedListState &linkedList) {
+    if (mSettings.mActionActivated[Action::ResetAction]) {
+        mSettings.mActionActivated[Action::ResetAction] = 0;
+        // linkedList.createSLL(mSettings.mInputArr);
+    }
     if (mSettings.mActionActivated[Action::Play]) {
         int index = 0;
         for (int i = 0; i < Action::ActionCount; i++) {
@@ -55,7 +59,7 @@ void Program2::linkedListHandle(sf::Time dt, LinkedListState &linkedList) {
         linkedList.mSearchActivated = 0;
         switch(index) {
             case Action::Create : {
-                linkedList.createList(mSettings.mInputArr);
+                linkedList.createSLL(mSettings.mInputArr);
                 break;
             }
             case Action::Insert : {
@@ -75,7 +79,7 @@ void Program2::linkedListHandle(sf::Time dt, LinkedListState &linkedList) {
                 break;
             }
         }
-        linkedList.createList(mSettings.mInputArr);
+        linkedList.createSLL(mSettings.mInputArr);
         linkedList.mAnimationOrder = 1;
         linkedList.mColorIndex = 0;
         linkedList.mIsEndAnimation = 0;
@@ -94,10 +98,10 @@ void Program2::linkedListHandle(sf::Time dt, LinkedListState &linkedList) {
                 mSettings.mPrevColorIndex = mSettings.mColorIndex - 1;
                 linkedList.resetNodeState();
             }
-            if (linkedList.mInsertActivated) linkedList.insertAnimation(dt, 1, mSettings.mActionIndex, mSettings.mActionValue); 
-            else if (linkedList.mDeleteActivated) linkedList.deleteAnimation(dt, 1, mSettings.mActionIndex);
-            else if (linkedList.mUpdateActivated) linkedList.updateAnimation(dt, 1, mSettings.mActionIndex, mSettings.mActionValue);
-            else if (linkedList.mSearchActivated) linkedList.searchAnimation(dt, 1, mSettings.mActionValue);
+            if (linkedList.mInsertActivated) linkedList.SLLInsertAnimation(dt, 1, mSettings.mActionIndex, mSettings.mActionValue); 
+            else if (linkedList.mDeleteActivated) linkedList.SLLDeleteAnimation(dt, 1, mSettings.mActionIndex);
+            else if (linkedList.mUpdateActivated) linkedList.SLLUpdateAnimation(dt, 1, mSettings.mActionIndex, mSettings.mActionValue);
+            else if (linkedList.mSearchActivated) linkedList.SLLSearchAnimation(dt, 1, mSettings.mActionValue);
         }
         else if (mSettings.mIsPrev) {  
             if (mSettings.mPrevPrev != mSettings.mIsPrev && !linkedList.isProcessing()) {
@@ -108,10 +112,10 @@ void Program2::linkedListHandle(sf::Time dt, LinkedListState &linkedList) {
                 mSettings.mPrevColorIndex = mSettings.mColorIndex + 1;
                 linkedList.resetNodeState();
             }
-            if (linkedList.mInsertActivated) linkedList.insertAnimationReversed(dt, 1, mSettings.mActionIndex, mSettings.mActionValue); 
-            else if (linkedList.mDeleteActivated) linkedList.deleteAnimationReversed(dt, 1, mSettings.mActionIndex, mSettings.mActionValue);
-            else if (linkedList.mUpdateActivated) linkedList.updateAnimationReversed(dt, 1, mSettings.mActionIndex, mSettings.mPrevActionValue);
-            else if (linkedList.mSearchActivated) linkedList.searchAnimationReversed(dt, 1, mSettings.mActionValue);
+            if (linkedList.mInsertActivated) linkedList.SLLInsertAnimationReversed(dt, 1, mSettings.mActionIndex, mSettings.mActionValue); 
+            else if (linkedList.mDeleteActivated) linkedList.SLLDeleteAnimationReversed(dt, 1, mSettings.mActionIndex, mSettings.mActionValue);
+            else if (linkedList.mUpdateActivated) linkedList.SLLUpdateAnimationReversed(dt, 1, mSettings.mActionIndex, mSettings.mPrevActionValue);
+            else if (linkedList.mSearchActivated) linkedList.SLLSearchAnimationReversed(dt, 1, mSettings.mActionValue);
         } 
         else {
             if (mSettings.mPrevPlay != mSettings.mIsPlay && !linkedList.isProcessing()) {
@@ -120,10 +124,10 @@ void Program2::linkedListHandle(sf::Time dt, LinkedListState &linkedList) {
                 mSettings.mPrevNext = 1;
                 linkedList.resetNodeState();
             }
-            if (linkedList.mInsertActivated) linkedList.insertAnimation(dt, 1, mSettings.mActionIndex, mSettings.mActionValue); 
-            else if (linkedList.mDeleteActivated) linkedList.deleteAnimation(dt, 1, mSettings.mActionIndex);
-            else if (linkedList.mUpdateActivated) linkedList.updateAnimation(dt, 1, mSettings.mActionIndex, mSettings.mActionValue);
-            else if (linkedList.mSearchActivated) linkedList.searchAnimation(dt, 1, mSettings.mActionValue);
+            if (linkedList.mInsertActivated) linkedList.SLLInsertAnimation(dt, 1, mSettings.mActionIndex, mSettings.mActionValue); 
+            else if (linkedList.mDeleteActivated) linkedList.SLLDeleteAnimation(dt, 1, mSettings.mActionIndex);
+            else if (linkedList.mUpdateActivated) linkedList.SLLUpdateAnimation(dt, 1, mSettings.mActionIndex, mSettings.mActionValue);
+            else if (linkedList.mSearchActivated) linkedList.SLLSearchAnimation(dt, 1, mSettings.mActionValue);
         }
     }
     mSettings.mAnimationOrder = linkedList.mAnimationOrder;

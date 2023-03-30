@@ -1,15 +1,40 @@
 #include <State/SinglyLinkedListState.hpp>
 
-void LinkedListState::insertAnimation(sf::Time dt, double speed, int insertIndex, int insertData) {
-    switch (mAnimationOrder) {
+void LinkedListState::SLLInsertAnimation(sf::Time dt, double speed, int insertIndex, int insertData) {
+    if (mSceneLayers[CodeBox]->getChildren().size() == 0) {
+        std::unique_ptr<CodeBlockNode> codeBlock = std::make_unique<CodeBlockNode>(
+            mWindow, mCodeHolder[Code::SinglyLinkedListInsert], mFontsHolder[Fonts::FiraMonoRegular], 25,
+            sf::Color::Black, sf::Color(145, 174, 226, 255), sf::Color::Black, sf::Color(86, 114, 163, 255)
+        );
+        mSceneLayers[CodeBox]->attachChild(std::move(codeBlock));
+        mCodeHolder.mStateActivated[Code::SinglyLinkedListInsert] = 1;
+    } else if (mSceneLayers[CodeBox]->getChildren().size() == 1 && !mCodeHolder.mStateActivated[Code::SinglyLinkedListInsert]) {
+        mSceneLayers[CodeBox]->getChildren().clear();
+        std::unique_ptr<CodeBlockNode> codeBlock = std::make_unique<CodeBlockNode>(
+            mWindow, mCodeHolder[Code::SinglyLinkedListInsert], mFontsHolder[Fonts::FiraSansRegular], 30,
+            sf::Color::Black, sf::Color(145, 174, 226, 255), sf::Color::Black, sf::Color(86, 114, 163, 255)
+        );
+        mSceneLayers[CodeBox]->attachChild(std::move(codeBlock));
+        for (int i = 0; i < mCodeHolder.mStateActivated.size(); i++) {
+            mCodeHolder.mStateActivated[i] = 0;
+        }
+        mCodeHolder.mStateActivated[Code::SinglyLinkedListInsert] = 1;
+    }
+    switch (mAnimationOrder) {  
         case 1: {
+            if (mListData.size() == 0) {
+                mAnimationOrder = 3;
+                break;
+            }
             for (auto &child : mSceneLayers[Nodes]->getChildren()) {
                 if (!child->mIsColoring && !child->mIsDoneColoring) {
                     child->triggerColorAnimation(
-                        dt, 100, 
+                        dt, 1, 
                         sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255),
                         sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
                     );
+                    mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
+                    mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({7});
                 } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
                     child->mIsDoneColoring = 0;
                     mAnimationOrder = 2;
@@ -31,10 +56,11 @@ void LinkedListState::insertAnimation(sf::Time dt, double speed, int insertIndex
                             sf::Color::White, sf::Color(237, 139, 26, 255), sf::Color(237, 139, 26, 255),
                             sf::Color(237, 139, 26, 255), sf::Color::White, sf::Color(237, 139, 26, 255)
                         );
+                        mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
+                        mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({8, 9, 10});
                     } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
                         child->mIsDoneColoring = 0;
-                        if (this->mColorIndex >= insertIndex) this->mColorIndex = insertIndex;
-                        else this->mColorIndex++;
+                        this->mColorIndex++;
                         if (this->mColorIndex >= insertIndex && !mIsActionPaused) {
                             this->mColorIndex--;
                             mAnimationOrder = 3;
@@ -67,6 +93,9 @@ void LinkedListState::insertAnimation(sf::Time dt, double speed, int insertIndex
             for (auto &child : this->mSceneLayers[newNode]->getChildren()) {
                 if (!child->mIsMoving && !child->mIsDoneMoving) {
                     child->triggerMoveAnimation(dt, speed, 250, -90);
+                    mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
+                    mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({11});
+
                 } else if (!child->mIsMoving && child->mIsDoneMoving && !mIsActionPaused) {
                     child->mIsDoneMoving = 0;
                     if (mListData.size() == 0) mAnimationOrder = 7;
@@ -87,6 +116,8 @@ void LinkedListState::insertAnimation(sf::Time dt, double speed, int insertIndex
             for (auto &child : this->mSceneLayers[tempArrow]->getChildren()) {
                 if (!child->mIsScaling && !child->mIsDoneScaling) {
                     child->triggerScaleAnimation(dt, speed, 110, 0, 0);
+                    mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
+                    mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({12});
                 } else if (!child->mIsScaling && child->mIsDoneScaling && !mIsActionPaused) {
                     child->mIsDoneScaling = 0;
                     if(insertIndex != 0) mAnimationOrder = 5;
@@ -110,6 +141,8 @@ void LinkedListState::insertAnimation(sf::Time dt, double speed, int insertIndex
                         if (insertIndex != mListData.size()) {
                             child->triggerRotateAnimation(dt, speed, 66.8);
                             child->triggerScaleAnimation(dt, speed*0.8, (110/std::cos(66.8*std::atan(1)*4/180)) - 110, 0, 0);
+                            mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
+                            mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({13});
                         }
                         else {
                             child->triggerScaleAnimation(dt, speed*0.8, (110/std::cos(66.8*std::atan(1)*4/180)), 0, 0);
@@ -137,6 +170,8 @@ void LinkedListState::insertAnimation(sf::Time dt, double speed, int insertIndex
                             child->triggerRotateAnimation(dt, speed, -66.8);
                             child->triggerScaleAnimation(dt, speed*0.99, -(110/std::cos(66.8*std::atan(1)*4/180)) + 110, 0, 0);
                             child->triggerMoveAnimation(dt, speed*2, 25, -150);
+                            mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
+                            mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({14});
                         } else if (!child->mIsScaling && child->mIsDoneScaling) {
                             child->mIsDoneMoving = 0;
                             child->mIsDoneScaling = 0;
@@ -237,7 +272,7 @@ void LinkedListState::insertAnimation(sf::Time dt, double speed, int insertIndex
     }
 }
 
-void LinkedListState::insertAnimationReversed(sf::Time dt, double speed, int insertIndex, int insertData) {
+void LinkedListState::SLLInsertAnimationReversed(sf::Time dt, double speed, int insertIndex, int insertData) {
     mIsEndAnimation = 0;
     switch (mAnimationOrder) {
         case 8: {
@@ -296,6 +331,8 @@ void LinkedListState::insertAnimationReversed(sf::Time dt, double speed, int ins
                             child->triggerRotateAnimation(dt, speed, 66.8);
                             child->triggerScaleAnimation(dt, speed*0.99, (110/std::cos(66.8*std::atan(1)*4/180)) - 110, 0, 0);
                             child->triggerMoveAnimation(dt, speed*2, 25, 30);
+                            mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
+                            mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({13});
                         } else if (!child->mIsScaling && child->mIsDoneScaling && !mIsActionPaused) {
                             child->mIsDoneMoving = 0;
                             child->mIsDoneScaling = 0;
@@ -357,6 +394,8 @@ void LinkedListState::insertAnimationReversed(sf::Time dt, double speed, int ins
                             child->triggerRotateAnimation(dt, speed, -66.8);
                             child->triggerScaleAnimation(dt, speed*0.8, -(110/std::cos(66.8*std::atan(1)*4/180)) + 110, 0, 0);
                             child->triggerMoveAnimation(dt, speed*2, 25, 210);
+                            mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
+                            mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({12});
                         }
                         else {
                             child->triggerScaleAnimation(dt, speed, -(110/std::cos(66.8*std::atan(1)*4/180)), 0, 0);
@@ -381,6 +420,8 @@ void LinkedListState::insertAnimationReversed(sf::Time dt, double speed, int ins
             for (auto &child : this->mSceneLayers[tempArrow]->getChildren()) {
                 if (!child->mIsScaling && !child->mIsDoneScaling) {
                     child->triggerScaleAnimation(dt, speed, -110, 0, 0);
+                    mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
+                    mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({11});
                 } else if (!child->mIsScaling && child->mIsDoneScaling && !mIsActionPaused) {
                     child->mIsDoneScaling = 0;
                     mAnimationOrder = 3;
@@ -395,6 +436,8 @@ void LinkedListState::insertAnimationReversed(sf::Time dt, double speed, int ins
             for (auto &child : this->mSceneLayers[newNode]->getChildren()) {
                 if (!child->mIsMoving && !child->mIsDoneMoving) {
                     child->triggerMoveAnimation(dt, speed, 250, 90);
+                    mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
+                    mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({8, 9, 10});
                 } else if (!child->mIsMoving && child->mIsDoneMoving) {
                     mSceneLayers[newNode]->getChildren().clear();
                 }
@@ -416,6 +459,8 @@ void LinkedListState::insertAnimationReversed(sf::Time dt, double speed, int ins
                             sf::Color::White, sf::Color(237, 139, 26, 255), sf::Color(237, 139, 26, 255),
                             sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
                         );
+                        mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
+                        mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({8, 9, 10});
                     } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
                         child->mIsDoneColoring = 0;
                         this->mColorIndex--;
@@ -432,7 +477,26 @@ void LinkedListState::insertAnimationReversed(sf::Time dt, double speed, int ins
     }
 }
 
-void LinkedListState::deleteAnimation(sf::Time dt, double speed, int deleteIndex) {
+void LinkedListState::SLLDeleteAnimation(sf::Time dt, double speed, int deleteIndex) {
+    if (mSceneLayers[CodeBox]->getChildren().size() == 0) {
+        std::unique_ptr<CodeBlockNode> codeBlock = std::make_unique<CodeBlockNode>(
+            mWindow, mCodeHolder[Code::SinglyLinkedListDelete], mFontsHolder[Fonts::FiraMonoRegular], 25,
+            sf::Color::Black, sf::Color(145, 174, 226, 255), sf::Color::Black, sf::Color(86, 114, 163, 255)
+        );
+        mSceneLayers[CodeBox]->attachChild(std::move(codeBlock));
+        mCodeHolder.mStateActivated[Code::SinglyLinkedListInsert] = 1;
+    } else if (mSceneLayers[CodeBox]->getChildren().size() == 1 && !mCodeHolder.mStateActivated[Code::SinglyLinkedListInsert]) {
+        mSceneLayers[CodeBox]->getChildren().clear();
+        std::unique_ptr<CodeBlockNode> codeBlock = std::make_unique<CodeBlockNode>(
+            mWindow, mCodeHolder[Code::SinglyLinkedListDelete], mFontsHolder[Fonts::FiraSansRegular], 30,
+            sf::Color::Black, sf::Color(145, 174, 226, 255), sf::Color::Black, sf::Color(86, 114, 163, 255)
+        );
+        mSceneLayers[CodeBox]->attachChild(std::move(codeBlock));
+        for (int i = 0; i < mCodeHolder.mStateActivated.size(); i++) {
+            mCodeHolder.mStateActivated[i] = 0;
+        }
+        mCodeHolder.mStateActivated[Code::SinglyLinkedListInsert] = 1;
+    }
     switch (mAnimationOrder) {
         case 1: {
             for (auto &child : mSceneLayers[Nodes]->getChildren()) {
@@ -716,7 +780,7 @@ void LinkedListState::deleteAnimation(sf::Time dt, double speed, int deleteIndex
     }
 }
 
-void LinkedListState::deleteAnimationReversed(sf::Time dt, double speed, int deleteIndex, int deleteValue) {
+void LinkedListState::SLLDeleteAnimationReversed(sf::Time dt, double speed, int deleteIndex, int deleteValue) {
     mIsEndAnimation = 0;
     switch (mAnimationOrder) {
         case 8: {
@@ -988,6 +1052,10 @@ void LinkedListState::deleteAnimationReversed(sf::Time dt, double speed, int del
                     } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
                         child->mIsDoneColoring = 0;
                         this->mColorIndex--;
+                        if (this->mColorIndex < 0) {
+                            this->mColorIndex = 0;
+                            mAnimationOrder = 1;
+                        }
                     }
                 } else if (index == this->mColorIndex) {
                     if (!child->mIsColoring && !child->mIsDoneColoring) {
@@ -999,10 +1067,6 @@ void LinkedListState::deleteAnimationReversed(sf::Time dt, double speed, int del
                     } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
                         child->mIsDoneColoring = 0;
                         this->mColorIndex--;
-                        if (this->mColorIndex < 0) {
-                            this->mColorIndex = 0;
-                            mAnimationOrder = 1;
-                        }
                     }  
                 }
                 index++;
@@ -1012,7 +1076,7 @@ void LinkedListState::deleteAnimationReversed(sf::Time dt, double speed, int del
     }
 }   
 
-void LinkedListState::updateAnimation(sf::Time dt, double speed, int updateIndex, int updateValue) {
+void LinkedListState::SLLUpdateAnimation(sf::Time dt, double speed, int updateIndex, int updateValue) {
     switch (mAnimationOrder) {
         case 1: {
             for (auto &child : mSceneLayers[Nodes]->getChildren()) {
@@ -1083,7 +1147,7 @@ void LinkedListState::updateAnimation(sf::Time dt, double speed, int updateIndex
     }
 }
 
-void LinkedListState::updateAnimationReversed(sf::Time dt, double speed, int updateIndex, int prevValue) {
+void LinkedListState::SLLUpdateAnimationReversed(sf::Time dt, double speed, int updateIndex, int prevValue) {
     mIsEndAnimation = 0;
     switch (mAnimationOrder) {
         case 4: {
@@ -1138,7 +1202,7 @@ void LinkedListState::updateAnimationReversed(sf::Time dt, double speed, int upd
     }
 }
 
-void LinkedListState::searchAnimation(sf::Time dt, double speed, int searchValue) {
+void LinkedListState::SLLSearchAnimation(sf::Time dt, double speed, int searchValue) {
     switch(mAnimationOrder) {
         case 1: {
             for (auto &child : mSceneLayers[Nodes]->getChildren()) {
@@ -1207,7 +1271,7 @@ void LinkedListState::searchAnimation(sf::Time dt, double speed, int searchValue
     }
 }
 
-void LinkedListState::searchAnimationReversed(sf::Time dt, double speed, int searchValue) {
+void LinkedListState::SLLSearchAnimationReversed(sf::Time dt, double speed, int searchValue) {
     mIsEndAnimation = 0;
     switch(mAnimationOrder) {
         case 4: {

@@ -32,9 +32,9 @@ public:
     void activeSettings(sf::Time dt);
     void controlEvent(sf::Event &event);
     void controlBoxUpdate();
-    std::vector<bool> mStateActivated;
-    std::vector<bool> mActionActivated;
-    std::vector<int> mInputArr;
+    std::vector<bool> mStateActivated = {};
+    std::vector<bool> mActionActivated = {};
+    std::vector<int> mInputArr = {};
     int mActionIndex;
     int mActionValue;
     int mPrevActionValue;
@@ -68,10 +68,12 @@ private:
     };
     sf::Clock clock;
     double elapsedTime;
-    bool mIsEmerged;
+    bool mIsEmerged = 0;
+    bool mIsControlBoxEmerged = 0;
 private:
     virtual void loadTextures();
     virtual void loadFonts();
+    virtual void loadCode() {};
     virtual void buildScence();
 private:
     void createRandomList();
@@ -79,6 +81,8 @@ private:
     void throwError(const std::string &errorMessage);
     void settingsIn(sf::Time dt);
     void settingsOut(sf::Time dt);
+    void controlBoxOut(sf::Time dt);
+    void controlBoxIn(sf::Time dt); 
     void handleAction(sf::Event &event);
     void handleActionDropBoxEvent(sf::Event &event);
     void handleControlBoxEvent(sf::Event &event);

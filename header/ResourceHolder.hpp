@@ -28,7 +28,8 @@ namespace Fonts {
         FiraSansRegular,
         GreateVibesRegular,
         TiltWarpRegular,
-        RobotoRegular
+        RobotoRegular,
+        FiraMonoRegular
     };
 };
 

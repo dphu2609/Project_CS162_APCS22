@@ -67,32 +67,32 @@ void SettingsState::buildScence() {
 
     std::unique_ptr<ContainerNode> controlBoxContainer = std::make_unique<ContainerNode>(
         mWindow, sf::Vector2f(500, 150), 0,
-        sf::Vector2f((sf::VideoMode::getDesktopMode().width - 500)/2, sf::VideoMode::getDesktopMode().height - 200), sf::Color(52, 53, 59, 255), sf::Color::Black
+        sf::Vector2f((sf::VideoMode::getDesktopMode().width - 500)/2, sf::VideoMode::getDesktopMode().height - 200 + 300), sf::Color(52, 53, 59, 255), sf::Color::Black
     );
     mSceneLayers[ControlBoxContainer]->attachChild(std::move(controlBoxContainer));
 
     std::unique_ptr<ImageButtonNode> pauseButton = std::make_unique<ImageButtonNode>(
         mWindow, this->mTexturesHolder[Textures::pauseButton], this->mTexturesHolder[Textures::pauseButtonHoverred],
-        sf::Vector2f(30, 30), sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2, sf::VideoMode::getDesktopMode().height - 150)
+        sf::Vector2f(30, 30), sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2, sf::VideoMode::getDesktopMode().height - 150 + 300)
     );
     mSceneLayers[ControlBoxButtons]->attachChild(std::move(pauseButton));
 
     std::unique_ptr<ImageButtonNode> nextButton = std::make_unique<ImageButtonNode>(
         mWindow, this->mTexturesHolder[Textures::nextButton], this->mTexturesHolder[Textures::nextButtonHoverred],
-        sf::Vector2f(30, 30), sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 + 70, sf::VideoMode::getDesktopMode().height - 150)
+        sf::Vector2f(30, 30), sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 + 70, sf::VideoMode::getDesktopMode().height - 150 + 300)
     );
     mSceneLayers[ControlBoxButtons]->attachChild(std::move(nextButton));
 
     std::unique_ptr<ImageButtonNode> prevButton = std::make_unique<ImageButtonNode>(
         mWindow, this->mTexturesHolder[Textures::prevButton], this->mTexturesHolder[Textures::prevButtonHoverred],
-        sf::Vector2f(30, 30), sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 - 70, sf::VideoMode::getDesktopMode().height - 150)
+        sf::Vector2f(30, 30), sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 - 70, sf::VideoMode::getDesktopMode().height - 150 + 300)
     );
     mSceneLayers[ControlBoxButtons]->attachChild(std::move(prevButton));
 }
 
 void SettingsState::activeSettings(sf::Time dt) {
     sf::Vector2i localPosition(sf::Mouse::getPosition(this->mWindow));
-    sf::Vector2f localPositionF(static_cast<float>(localPosition.x), static_cast<float>(localPosition.y));
+    sf::Vector2f localPositionF(static_cast<double>(localPosition.x), static_cast<double>(localPosition.y));
     localPositionF = mWindow.mapPixelToCoords(localPosition);
     bool isInputBoxActivated = 0;
     for (auto &child : mSceneLayers[InputBox]->getChildren()) {
@@ -104,6 +104,9 @@ void SettingsState::activeSettings(sf::Time dt) {
     }
     else if (mActionActivated[Action::Play] && this->mIsEmerged && !mActionActivated[Action::Create]) {
         settingsOut(dt);
+        if (!this->mIsControlBoxEmerged) {
+            controlBoxIn(dt);
+        }
     }
     else if (localPositionF.x >= 520 && this->mIsEmerged && !isInputBoxActivated) {
         this->elapsedTime += clock.restart().asSeconds(); 
@@ -113,6 +116,33 @@ void SettingsState::activeSettings(sf::Time dt) {
     else {
         this->elapsedTime = 0.f;
         clock.restart();
+    }
+    if (mActionActivated[Action::ResetAction]) {
+        if (this->mIsControlBoxEmerged) {
+            controlBoxOut(dt);
+        }
+    }
+}
+
+void SettingsState::controlBoxIn(sf::Time dt) {
+    for (int i = Error + 1; i < LayerCount; i++) {
+        for (auto &child : this->mSceneLayers[i]->getChildren()) {
+            if (!child->mIsMoving) {
+                child->triggerMoveAnimation(dt, 3, 300, -90);
+                this->mIsControlBoxEmerged = 1;
+            }
+        }
+    }
+}
+
+void SettingsState::controlBoxOut(sf::Time dt) {
+    for (int i = Error + 1; i < LayerCount; i++) {
+        for (auto &child : this->mSceneLayers[i]->getChildren()) {
+            if (!child->mIsMoving) {
+                child->triggerMoveAnimation(dt, 1.6, 300, 90);
+                this->mIsControlBoxEmerged = 0;
+            }
+        }
     }
 }
 

@@ -131,7 +131,7 @@ bool InputBoxNode::isActivated() {
 }
 
 std::vector<int> InputBoxNode::getIntArrayData() {
-    if (mInputBox.mContent == "") return {};
+    if (mInputBox.mContent.size() == 0) return {};
     std::vector<int> result;
     std::string temp = "";
     bool isValid = 1;

@@ -5,6 +5,8 @@
 #include <ResourceHolder.hpp>
 #include <SceneGraph/SceneNode.hpp>
 #include <Event.hpp>
+#include <CodeHolder.hpp>
+
 
 class State : private sf::NonCopyable {
 public:
@@ -18,9 +20,11 @@ public:
     SceneNode mSceneGraph;
     ResourceHolder<sf::Texture, Textures::ID> mTexturesHolder;
     ResourceHolder<sf::Font, Fonts::ID> mFontsHolder;
+    CodeHolder mCodeHolder;
 private:
     virtual void loadTextures() = 0;
     virtual void loadFonts() = 0;
+    virtual void loadCode() = 0;
     virtual void buildScence() = 0;
 };
 

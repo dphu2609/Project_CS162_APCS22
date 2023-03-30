@@ -6,15 +6,21 @@ class LinkedListState : public State {
 public:
     explicit LinkedListState(sf::RenderWindow &window);
     // void activateAnimation(sf::Time dt, double speed);
-    void insertAnimation(sf::Time dt, double speed, int insertIndex, int insertData);
-    void insertAnimationReversed(sf::Time dt, double speed, int insertIndex, int insertData);
-    void deleteAnimation(sf::Time dt, double speed, int deleteIndex);
-    void deleteAnimationReversed(sf::Time dt, double speed, int deleteIndex, int deleteValue);
-    void updateAnimation(sf::Time dt, double speed, int updateIndex, int updateValue);
-    void updateAnimationReversed(sf::Time dt, double speed, int updateIndex, int prevValue);
-    void searchAnimation(sf::Time dt, double speed, int searchValue);
-    void searchAnimationReversed(sf::Time dt, double speed, int searchValue);
-    void createList(std::vector<int> &list);
+    void SLLInsertAnimation(sf::Time dt, double speed, int insertIndex, int insertData);
+    void SLLInsertAnimationReversed(sf::Time dt, double speed, int insertIndex, int insertData);
+    void SLLDeleteAnimation(sf::Time dt, double speed, int deleteIndex);
+    void SLLDeleteAnimationReversed(sf::Time dt, double speed, int deleteIndex, int deleteValue);
+    void SLLUpdateAnimation(sf::Time dt, double speed, int updateIndex, int updateValue);
+    void SLLUpdateAnimationReversed(sf::Time dt, double speed, int updateIndex, int prevValue);
+    void SLLSearchAnimation(sf::Time dt, double speed, int searchValue);
+    void SLLSearchAnimationReversed(sf::Time dt, double speed, int searchValue);
+    void createSLL(std::vector<int> list);
+    void createStaticArray(std::vector<int> list);
+    void createDynamicArray(std::vector<int> list);
+    void createDLL(std::vector<int> list);
+    void createCLL(std::vector<int> list);
+    void createStack(std::vector<int> list);
+    void createQueue(std::vector<int> list);
     void handleClick(sf::Event &event);
     bool mInsertActivated = 0;
     bool mDeleteActivated = 0;
@@ -25,7 +31,7 @@ public:
     int mAnimationStep = 0;
     int mColorIndex = 0;
     bool mIsEndAnimation = 0;
-    std::vector<int> mListData;
+    std::vector<int> mListData = {};
     void resetNodeState();
     bool isProcessing();
 private:
@@ -35,10 +41,12 @@ private:
         newNode,
         Arrow,
         tempArrow,
+        CodeBox,
         LayerCount
     };
 private:
     virtual void loadTextures();
     virtual void loadFonts();
+    virtual void loadCode();
     virtual void buildScence();
 };

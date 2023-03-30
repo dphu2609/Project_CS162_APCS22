@@ -3,6 +3,7 @@
 LinkedListState::LinkedListState(sf::RenderWindow &window) : State(window) {
     loadTextures();
     loadFonts();
+    loadCode();
     buildScence();
 } 
 
@@ -14,6 +15,11 @@ void LinkedListState::loadTextures() {
 
 void LinkedListState::loadFonts() {
     this->mFontsHolder.load(Fonts::FiraSansRegular, "fonts/FiraSans-Regular.ttf");
+    this->mFontsHolder.load(Fonts::FiraMonoRegular, "fonts/Fira_Mono/FiraMono-Regular.ttf");
+}
+
+void LinkedListState::loadCode() {
+    this->mCodeHolder.load({Code::SinglyLinkedListInsert, Code::SinglyLinkedListDelete, Code::SinglyLinkedListUpdate, Code::SinglyLinkedListSearch});
 }
 
 void LinkedListState::buildScence() {
@@ -22,7 +28,7 @@ void LinkedListState::buildScence() {
         mSceneLayers[i] = layer.get();
         mSceneGraph.attachChild(std::move(layer));
     }
-    mAnimationOrder = 0;
+    
 }  
 
 void LinkedListState::handleClick(sf::Event &event) {
@@ -44,7 +50,8 @@ void LinkedListState::handleClick(sf::Event &event) {
     //------------------------------------------------------
 }
 
-void LinkedListState::createList(std::vector<int> &list) {
+void LinkedListState::createSLL(std::vector<int> list) {
+    if (list.size() == 0) return;
     for (int i = 0; i < LayerCount; i++) {
         mSceneLayers[i]->getChildren().clear();
     }
@@ -65,6 +72,10 @@ void LinkedListState::createList(std::vector<int> &list) {
         );
         mSceneLayers[Arrow]->attachChild(std::move(newArrow));
     }
+}
+
+void LinkedListState::createStaticArray(std::vector<int> list) {
+
 }
 
 void LinkedListState::resetNodeState() {

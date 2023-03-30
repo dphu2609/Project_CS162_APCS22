@@ -25,11 +25,13 @@ public:
         sf::Color textColorAfterChange, sf::Color boxColorAfterChange, sf::Color outlineColorAfterChange
     ) {}
     virtual void triggerChangeContent(std::string string) {}
-    virtual int getClickedIndex(sf::Event &event) {return 0;};
+    virtual int getClickedIndex(sf::Event &event) {return 0;}
     virtual void resetContent(const std::string &str) {}
     virtual std::string getStringData() {return "";}
     virtual std::vector<int> getIntArrayData() {return {};}
     virtual bool isActivated() {return 0;};
+    virtual void changeCodeBoxColor(std::vector<int> index) {}
+    virtual void resetCodeBoxColor() {}
 private:
     virtual void drawCurrent(sf::RenderTarget &target, sf::RenderStates states) const;
     virtual void updateCurrent(sf::Time dt);
@@ -89,3 +91,4 @@ public:
 #include <SceneGraph/ContainerNode.hpp>
 #include <SceneGraph/DropBoxNode.hpp>
 #include <SceneGraph/InputBoxNode.hpp>
+#include <SceneGraph/CodeBlockNode.hpp>

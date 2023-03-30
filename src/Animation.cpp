@@ -23,7 +23,7 @@ void anm::hoverText(sf::Text &text, sf::Vector2i pos, sf::Color newColor, sf::Co
 
 //InputBox
 
-anm::InputBox::InputBox(sf::Font &font, int textSize, sf::Color textColor, float posX, float posY, float boxLength, sf::Color boxColor, sf::Color boxOutlineColor, int outLineThickness) {
+anm::InputBox::InputBox(sf::Font &font, int textSize, sf::Color textColor, double posX, double posY, double boxLength, sf::Color boxColor, sf::Color boxOutlineColor, int outLineThickness) {
     content = "";
     inputText.setString("");
     inputText.setFont(font);

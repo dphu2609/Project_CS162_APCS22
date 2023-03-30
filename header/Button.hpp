@@ -30,7 +30,7 @@ public:
 
 class InputBox {
 public:
-    std::string mContent;
+    std::string mContent = "";
     sf::Text mInputText;
     sf::RectangleShape mBox;
     sf::RectangleShape mCursor;

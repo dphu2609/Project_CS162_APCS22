@@ -234,6 +234,7 @@ void SettingsState::handleActionDropBoxEvent(sf::Event &event) {
                         for (int i = 0; i < mActionActivated.size(); i++) {
                             mActionActivated[i] = 0;
                         }
+                        mActionActivated[Action::ResetAction] = 1;
                         break;
                     }
                 }
@@ -317,7 +318,7 @@ void SettingsState::handleAction(sf::Event &event) {
                             for (auto &child : mSceneLayers[InputBox]->getChildren()) {
                                 this->mInputArr = child->getIntArrayData();
                             }
-                            if (mInputArr.size() <= 10) {
+                            if (mInputArr.size() <= 10 && mInputArr.size() > 0) {
                                 mActionActivated[Action::Play] = 1;
                             }
                         }
@@ -390,7 +391,6 @@ void SettingsState::handleAction(sf::Event &event) {
                                 mIsNext = 0;
                                 mIsActionPaused = 0;
                             }
-                            std::cout << 2;
                         }
                         break;
                     }

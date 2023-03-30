@@ -22,7 +22,7 @@ public:
     std::string content;
     sf::Text inputText;
     sf::RectangleShape inputBox;
-    InputBox(sf::Font &font, int size, sf::Color textColor, float posX, float posY, float boxLength, sf::Color boxColor, sf::Color boxOutlineColor, int outLineThickness);
+    InputBox(sf::Font &font, int size, sf::Color textColor, double posX, double posY, double boxLength, sf::Color boxColor, sf::Color boxOutlineColor, int outLineThickness);
     void type(sf::Event &event);
 };
 
