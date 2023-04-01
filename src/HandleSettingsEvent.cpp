@@ -291,7 +291,6 @@ void SettingsState::throwError(const std::string &errorMessage) {
         sf::Color(201, 52, 112, 255), sf::Color(41, 58, 117, 255), sf::Color::White
     );
     this->mSceneLayers[Error]->attachChild(std::move(newError));
-    std::cout << 1;
 }
 
 void SettingsState::handleAction(sf::Event &event) {
@@ -320,6 +319,7 @@ void SettingsState::handleAction(sf::Event &event) {
                             }
                             if (mInputArr.size() <= 10 && mInputArr.size() > 0) {
                                 mActionActivated[Action::Play] = 1;
+                                mIsReplay = 0;
                             }
                         }
                         break;
@@ -390,6 +390,7 @@ void SettingsState::handleAction(sf::Event &event) {
                                 mIsPrev = 0;
                                 mIsNext = 0;
                                 mIsActionPaused = 0;
+                                mIsReplay = 0;
                             }
                         }
                         break;
@@ -451,6 +452,7 @@ void SettingsState::handleAction(sf::Event &event) {
                                 mIsPrev = 0;
                                 mIsNext = 0;
                                 mIsActionPaused = 0;
+                                mIsReplay = 0;
                             }
                         }
                         break;
@@ -500,6 +502,7 @@ void SettingsState::handleAction(sf::Event &event) {
                                 mIsPrev = 0;
                                 mIsNext = 0;
                                 mIsActionPaused = 0;
+                                mIsReplay = 0;
                             }
                         }
                         break;
@@ -541,6 +544,7 @@ void SettingsState::handleAction(sf::Event &event) {
                                 mIsPrev = 0;
                                 mIsNext = 0;
                                 mIsActionPaused = 0;
+                                mIsReplay = 0;
                             }
                         }
                         break;
@@ -575,7 +579,7 @@ void SettingsState::handleControlBoxEvent(sf::Event &event) {
                             }
                         }
                         mActionActivated[Action::Play] = 1;
-                        mIsReplayAction = 1;
+                        mIsReplay = 1;
                         mIsActionPaused = 1;
                         mIsEndAnimation.second = 0;
                         mIsEndAnimation.first = 0;

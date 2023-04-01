@@ -53,7 +53,7 @@ public:
     int mPrevColorIndex = 0;
     int mColorIndex = 0;
 
-    bool mIsReplayAction = 0;
+    bool mIsReplay = 0;
     std::pair<bool, bool> mIsEndAnimation = {0, 0};
 private:
     enum Layers {

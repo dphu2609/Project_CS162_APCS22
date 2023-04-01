@@ -41,9 +41,14 @@ public:
     int mAnimationStep = 0;
     int mColorIndex = 0;
     bool mIsEndAnimation = 0;
+    int mActionIndex;
+    int mActionValue;
     std::vector<int> mListData = {};
+    std::vector<int> mTempListData = {};
     void resetNodeState();
     bool isProcessing();
+    bool mIsReplay = 0;
+    bool mIsReplayOnce = 0;
 private:
     enum Layers {
         newNode,
