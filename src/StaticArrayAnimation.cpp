@@ -73,6 +73,10 @@ void LinkedListState::staticArrayInsertAnimation(sf::Time dt, double speed, int 
     }
     switch (mAnimationOrder) {
         case 1: {
+            if (mListData.size() == 0) {
+                mAnimationOrder = 2;
+                break;
+            }
             for (auto &child : mSceneLayers[Nodes]->getChildren()) {
                 if (!child->mIsColoring && !child->mIsDoneColoring) {
                     child->triggerColorAnimation(

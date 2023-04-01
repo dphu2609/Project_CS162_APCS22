@@ -2,8 +2,8 @@
 
 #include <State/State.hpp>
 
-class LinkedListState : public State {
-public:
+class LinkedListState : public State { //after creating all the data structures, we can create a state for each of them,
+public:                                 //i should create a base class a derived class for each data structure
     explicit LinkedListState(sf::RenderWindow &window);
 
     void createSLL(std::vector<int> list);
@@ -27,6 +27,15 @@ public:
     void staticArraySearchAnimationReversed(sf::Time dt, double speed, int searchValue);
 
     void createDynamicArray(std::vector<int> list);
+    void dynamicArrayInsertAnimation(sf::Time dt, double speed, int insertIndex, int insertValue);
+    void dynamicArrayInsertAnimationReversed(sf::Time dt, double speed, int insertIndex, int insertValue);
+    void dynamicArrayDeleteAnimation(sf::Time dt, double speed, int deleteIndex);
+    void dynamicArrayDeleteAnimationReversed(sf::Time dt, double speed, int deleteIndex, int deleteValue);
+    void dynamicArrayUpdateAnimation(sf::Time dt, double speed, int updateIndex, int updateValue);
+    void dynamicArrayUpdateAnimationReversed(sf::Time dt, double speed, int updateIndex, int prevValue);
+    void dynamicArraySearchAnimation(sf::Time dt, double speed, int searchValue);
+    void dynamicArraySearchAnimationReversed(sf::Time dt, double speed, int searchValue);
+
     void createDLL(std::vector<int> list);
     void createCLL(std::vector<int> list);
     void createStack(std::vector<int> list);
@@ -59,6 +68,7 @@ private:
         NewDLLArrow,
         BlankNode,
         Nodes,
+        NewArray,
         ArrayBoder,
         CodeBox,
         LayerCount

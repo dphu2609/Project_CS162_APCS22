@@ -93,7 +93,7 @@ void LinkedListState::SLLInsertAnimation(sf::Time dt, double speed, int insertIn
             break;
         }
         case 3: {
-            if (mSceneLayers[newNode]->getChildren().size() == 0) {
+            if (mSceneLayers[NewNode]->getChildren().size() == 0) {
                 if (mListData.size() > 0) {
                     std::unique_ptr<DisplayNode> addedNode = std::make_unique<DisplayNode>(
                         insertValue, mFontsHolder[Fonts::FiraSansRegular], 100,
