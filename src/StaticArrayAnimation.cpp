@@ -12,14 +12,27 @@ void LinkedListState::createStaticArray(std::vector<int> list) {
         mSceneLayers[BlankNode]->attachChild(std::move(blankNode));
     }
     if (list.size() == 0) return;
-    if (mIsReplay) {
+    if (mIsReplay && mInsertActivated) {
         for (int i = mActionIndex; i < mListData.size() - 1; i++) {
             mTempListData[i] = mTempListData[i + 1];
         }
-        mTempListData.pop_back();
+        if (!mIsInsertOnce) mTempListData.pop_back();   
+        for (int i = 0; i < mTempListData.size(); i++) {
+            std::cout << mTempListData[i] << ' ';
+        }
+        std::cout << std::endl;
+    } else if (mIsReplay && mDeleteActivated) {
+        for (int i = mListData.size() - 1; i > mActionIndex; i--) {
+            mTempListData[i] = mTempListData[i - 1];
+        }
+        mTempListData[mActionIndex] = mActionValue;
+        std::cout << 1;
     }
     if (mTempListData.size() == 0) {
-        if (mInsertActivated) mTempListData = list;
+        if (mInsertActivated || mDeleteActivated || mUpdateActivated) {
+            mTempListData = list;
+            mIsInsertOnce = 0;
+        }
         mListData = list;
         for (int i = 0; i < list.size(); i++) {
             std::unique_ptr<DisplayNode> arrayNode = std::make_unique<DisplayNode>(
@@ -45,7 +58,7 @@ void LinkedListState::createStaticArray(std::vector<int> list) {
     mSceneLayers[ArrayBoder]->attachChild(std::move(arrayBorder));  
 }
 
-void LinkedListState::staticArrayInsertAnimation(sf::Time dt, double speed, int insertIndex, int insertData) {
+void LinkedListState::staticArrayInsertAnimation(sf::Time dt, double speed, int insertIndex, int insertValue) {
     if (mSceneLayers[CodeBox]->getChildren().size() == 0 || (mSceneLayers[CodeBox]->getChildren().size() == 1 && !mCodeHolder.mStateActivated[Code::SinglyLinkedListInsert])) {
         mSceneLayers[CodeBox]->getChildren().clear();
         std::unique_ptr<CodeBlockNode> codeBlock = std::make_unique<CodeBlockNode>(
@@ -96,29 +109,43 @@ void LinkedListState::staticArrayInsertAnimation(sf::Time dt, double speed, int 
                             sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
                         );
                         int tempIndex = 0;
-                        for (auto &blankNode : mSceneLayers[BlankNode]->getChildren()) {
-                            if (tempIndex == mListData.size()) {
-                                if (!blankNode->mIsColoring && !blankNode->mIsDoneColoring) {
-                                    blankNode->triggerColorAnimation(
-                                        dt, speed,
-                                        sf::Color::White, sf::Color(237, 139, 26, 255), sf::Color(237, 139, 26, 255),
-                                        sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
-                                    );
-                                } else if (!blankNode->mIsColoring && blankNode->mIsDoneColoring) {
-                                    blankNode->mIsDoneColoring = 0;
+                        if (mTempListData.size() == mListData.size()) {
+                            for (auto &blankNode : mSceneLayers[BlankNode]->getChildren()) {
+                                if (tempIndex == mListData.size()) {
+                                    if (!blankNode->mIsColoring && !blankNode->mIsDoneColoring) {
+                                        blankNode->triggerColorAnimation(
+                                            dt, speed,
+                                            sf::Color::White, sf::Color(237, 139, 26, 255), sf::Color(237, 139, 26, 255),
+                                            sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
+                                        );
+                                    } else if (!blankNode->mIsColoring && blankNode->mIsDoneColoring) {
+                                        blankNode->mIsDoneColoring = 0;
+                                    }
                                 }
+                                tempIndex++;
                             }
-                            tempIndex++;
                         }
                     } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
                         child->mIsDoneColoring = 0;
-                        std::unique_ptr<DisplayNode> arrayNode = std::make_unique<DisplayNode>(
-                            mListData.back(), mFontsHolder[Fonts::FiraSansRegular], 100, sf::Vector2f(mWindow.getSize().x/2 - 645 + 130*mListData.size(), 250),
-                            sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
-                        );
-                        mSceneLayers[Nodes]->attachChild(std::move(arrayNode));
+                        if (mTempListData.size() == mListData.size()) {
+                            std::unique_ptr<DisplayNode> arrayNode = std::make_unique<DisplayNode>(
+                                mListData.back(), mFontsHolder[Fonts::FiraSansRegular], 100, sf::Vector2f(mWindow.getSize().x/2 - 645 + 130*mListData.size(), 250),
+                                sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
+                            );
+                            mSceneLayers[Nodes]->attachChild(std::move(arrayNode));
+                        }
                         if (mListData.size() == 1) mAnimationOrder = 4;
                         else mAnimationOrder = 3;
+                    }
+                } else if (index == mListData.size() && mTempListData.size() != mListData.size()) {
+                    if (!child->mIsColoring && !child->mIsDoneColoring) {
+                        child->triggerColorAnimation(
+                            dt, speed, 
+                            sf::Color::White, sf::Color(237, 139, 26, 255), sf::Color(237, 139, 26, 255),
+                            sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
+                        );
+                    } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
+                        child->mIsDoneColoring = 0;
                     }
                 }
                 index++;
@@ -174,7 +201,7 @@ void LinkedListState::staticArrayInsertAnimation(sf::Time dt, double speed, int 
                         );
                     } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
                         child->mIsDoneColoring = 0;
-                        child->triggerChangeContent(std::to_string(insertData));
+                        child->triggerChangeContent(std::to_string(insertValue));
                         mAnimationOrder = 5;
                     }
                 }
@@ -198,17 +225,21 @@ void LinkedListState::staticArrayInsertAnimation(sf::Time dt, double speed, int 
             if (!mIsEndAnimation) {
                 mIsEndAnimation = 1;
                 if (mTempListData.size() == mListData.size()) mTempListData.resize(mTempListData.size() + 1);
-                for (int i = mListData.size() - 1; i > insertIndex; i--) {
+                for (int i = mListData.size() - 1; i >= insertIndex; i--) {
                     mTempListData[i + 1] = mTempListData[i];
                 }
-                mTempListData[insertIndex] = insertData;
-                mListData.insert(mListData.begin() + insertIndex, insertData);
+                mTempListData[insertIndex] = insertValue;
+                mListData.insert(mListData.begin() + insertIndex, insertValue);
+                for (int i = 0; i < mTempListData.size(); i++) {
+                    std::cout << mTempListData[i] << ' ';
+                }
+                std::cout << std::endl;
             }
         }
     }
 }
 
-void LinkedListState::staticArrayInsertAnimationReversed(sf::Time dt, double speed, int insertIndex, int insertData) {
+void LinkedListState::staticArrayInsertAnimationReversed(sf::Time dt, double speed, int insertIndex, int insertValue) {
     mIsEndAnimation = 0;
     switch(mAnimationOrder) {
         case 6: {
@@ -313,7 +344,10 @@ void LinkedListState::staticArrayInsertAnimationReversed(sf::Time dt, double spe
                         );
                     } else if (!child->mIsColoring && child->mIsDoneColoring) {
                         child->mIsDoneColoring = 0;
-                        mSceneLayers[Nodes]->getChildren().pop_back();
+                        if (!mIsInsertOnce) {
+                            mSceneLayers[Nodes]->getChildren().pop_back();
+                            mIsInsertOnce = 1;
+                        }
                         mAnimationOrder = 1;
                         break;
                     }
@@ -388,6 +422,10 @@ void LinkedListState::staticArrayDeleteAnimation(sf::Time dt, double speed, int 
                     } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
                         child->mIsDoneColoring = 0;
                         mColorIndex++;
+                        if (mColorIndex > mListData.size() - 1) {
+                            mAnimationOrder = 4;
+                            mColorIndex -= 2;
+                        }
                         break;
                     }
                 } else if (index == mColorIndex - 1) {
@@ -400,9 +438,6 @@ void LinkedListState::staticArrayDeleteAnimation(sf::Time dt, double speed, int 
                     } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
                         child->mIsDoneColoring = 0;
                         child->triggerChangeContent(std::to_string(mListData[mColorIndex]));
-                        if (mColorIndex >= mListData.size() - 1) {
-                            mAnimationOrder = 4;
-                        }
                     }
                 }
                 index++;
@@ -435,53 +470,85 @@ void LinkedListState::staticArrayDeleteAnimation(sf::Time dt, double speed, int 
 void LinkedListState::staticArrayDeleteAnimationReversed(sf::Time dt, double speed, int deleteIndex, int deleteValue) {
     mIsEndAnimation = 0;
     switch(mAnimationOrder) {
-        case 4: {
+        case 5: {
+            for (int i = mTempListData.size() - 1; i > deleteIndex; i--) {
+                mTempListData[i] = mTempListData[i - 1];
+            }
             mListData.insert(mListData.begin() + deleteIndex, deleteValue);
-            mAnimationOrder = 3;
+            mAnimationOrder = 4;
             break;
         }
-        case 3: {
+        case 4: {
             for (auto &child : mSceneLayers[ArrayBoder]->getChildren()) {
                 if (!child->mIsScaling && !child->mIsDoneScaling) {
                     child->triggerScaleAnimation(dt, speed, 130, 0, 0);
-                } else if (!child->mIsScaling && child->mIsDoneScaling) {
+                } else if (!child->mIsScaling && child->mIsDoneScaling && !mIsActionPaused) {
                     child->mIsDoneScaling = 0;
-                    mAnimationOrder = 2;
+                    mAnimationOrder = 3;
                 }
+            }
+            break;
+        }
+        case 3: {
+            int index = 0;
+            for (auto &child : mSceneLayers[Nodes]->getChildren()) {
+                if (index == mColorIndex + 1) {
+                    if (!child->mIsColoring && !child->mIsDoneColoring) {
+                        child->triggerColorAnimation(
+                            dt, speed, 
+                            sf::Color::White, sf::Color(237, 139, 26, 255), sf::Color(237, 139, 26, 255),
+                            sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
+                        );
+                    } else if (!child->mIsColoring && child->mIsDoneColoring) {
+                        child->triggerChangeContent(std::to_string(mListData[mColorIndex + 1]));
+                        if (!mIsActionPaused) {
+                            child->mIsDoneColoring = 0;
+                            mColorIndex--;
+                            if (mColorIndex < deleteIndex) {
+                                mAnimationOrder = 2;
+                                mColorIndex = deleteIndex + 1;
+                            }
+                        }
+                        break;
+                    }
+                } else if (index == mColorIndex) {
+                    if (!child->mIsColoring && !child->mIsDoneColoring) {
+                        child->triggerColorAnimation(
+                            dt, speed, 
+                            sf::Color::White, sf::Color(237, 139, 26, 255), sf::Color(237, 139, 26, 255),
+                            sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
+                        );
+                    } else if (!child->mIsColoring && child->mIsDoneColoring) {
+                        if (mColorIndex == deleteIndex) {
+                            child->triggerChangeContent(std::to_string(mListData[mColorIndex]));
+                        }
+                        if (!mIsActionPaused) {
+                            child->mIsDoneColoring = 0;
+                        }
+                    }
+                }
+                index++;
             }
             break;
         }
         case 2: {
             int index = 0;
             for (auto &child : mSceneLayers[Nodes]->getChildren()) {
-                if (index == mColorIndex) {
+                if (index == deleteIndex) {
                     if (!child->mIsColoring && !child->mIsDoneColoring) {
                         child->triggerColorAnimation(
-                            dt, speed, 
-                            sf::Color::White, sf::Color(237, 139, 26, 255), sf::Color(237, 139, 26, 255),
+                            dt, 1, 
+                            sf::Color::White, sf::Color(150, 0, 25, 255), sf::Color(150, 0, 25, 255),
                             sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
                         );
-                    } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
+                    } else if (!child->mIsColoring && child->mIsDoneColoring) {
                         child->mIsDoneColoring = 0;
-                        child->triggerChangeContent(std::to_string(mListData[mColorIndex - 1]));
-                        mColorIndex--;
-                        if (mColorIndex <= deleteIndex) {
-                            mAnimationOrder = 1;
-                        }
-                    }
-                } else if (index == mColorIndex - 1) {
-                    if (!child->mIsColoring && !child->mIsDoneColoring) {
-                        child->triggerColorAnimation(
-                            dt, speed, 
-                            sf::Color::White, sf::Color(237, 139, 26, 255), sf::Color(237, 139, 26, 255),
-                            sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
-                        );
-                    } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
-                        child->mIsDoneColoring = 0;
-                    }
+                        mAnimationOrder = 1;
+                    } 
                 }
                 index++;
             }
+            break;
         }
     }
 }
@@ -527,7 +594,7 @@ void LinkedListState::staticArrayUpdateAnimation(sf::Time dt, double speed, int 
                     } else if (!child->mIsColoring && child->mIsDoneColoring) {
                         child->mIsDoneColoring = 0;
                         child->triggerChangeContent(std::to_string(updateValue));
-                        mAnimationOrder = 2;
+                        mAnimationOrder = 3;
                     }
                 }
                 index++;
@@ -538,6 +605,7 @@ void LinkedListState::staticArrayUpdateAnimation(sf::Time dt, double speed, int 
             if (!mIsEndAnimation) {
                 mIsEndAnimation = 1;
                 mListData[updateIndex] = updateValue;
+                mTempListData[updateIndex] = updateValue;
             }
             break;
         }
@@ -548,6 +616,7 @@ void LinkedListState::staticArrayUpdateAnimationReversed(sf::Time dt, double spe
     switch(mAnimationOrder) {
         case 3: {
             mListData[updateIndex] = prevValue;
+            mTempListData[updateIndex] = prevValue;
             mAnimationOrder = 2;
             break;
         }

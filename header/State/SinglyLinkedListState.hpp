@@ -7,8 +7,8 @@ public:
     explicit LinkedListState(sf::RenderWindow &window);
 
     void createSLL(std::vector<int> list);
-    void SLLInsertAnimation(sf::Time dt, double speed, int insertIndex, int insertData);
-    void SLLInsertAnimationReversed(sf::Time dt, double speed, int insertIndex, int insertData);
+    void SLLInsertAnimation(sf::Time dt, double speed, int insertIndex, int insertValue);
+    void SLLInsertAnimationReversed(sf::Time dt, double speed, int insertIndex, int insertValue);
     void SLLDeleteAnimation(sf::Time dt, double speed, int deleteIndex);
     void SLLDeleteAnimationReversed(sf::Time dt, double speed, int deleteIndex, int deleteValue);
     void SLLUpdateAnimation(sf::Time dt, double speed, int updateIndex, int updateValue);
@@ -17,8 +17,8 @@ public:
     void SLLSearchAnimationReversed(sf::Time dt, double speed, int searchValue);
 
     void createStaticArray(std::vector<int> list);
-    void staticArrayInsertAnimation(sf::Time dt, double speed, int insertIndex, int insertData);
-    void staticArrayInsertAnimationReversed(sf::Time dt, double speed, int insertIndex, int insertData);
+    void staticArrayInsertAnimation(sf::Time dt, double speed, int insertIndex, int insertValue);
+    void staticArrayInsertAnimationReversed(sf::Time dt, double speed, int insertIndex, int insertValue);
     void staticArrayDeleteAnimation(sf::Time dt, double speed, int deleteIndex);
     void staticArrayDeleteAnimationReversed(sf::Time dt, double speed, int deleteIndex, int deleteValue);
     void staticArrayUpdateAnimation(sf::Time dt, double speed, int updateIndex, int updateValue);
@@ -43,6 +43,7 @@ public:
     bool mIsEndAnimation = 0;
     int mActionIndex;
     int mActionValue;
+    bool mIsInsertOnce = 0;
     std::vector<int> mListData = {};
     std::vector<int> mTempListData = {};
     void resetNodeState();
@@ -51,9 +52,11 @@ public:
     bool mIsReplayOnce = 0;
 private:
     enum Layers {
-        newNode,
+        NewNode,
         Arrow,
-        tempArrow,
+        DLLArrow,
+        NewArrow,
+        NewDLLArrow,
         BlankNode,
         Nodes,
         ArrayBoder,
