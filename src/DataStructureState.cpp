@@ -1,57 +1,36 @@
-#include <State/SinglyLinkedListState.hpp>
+#include <State/DataStructureState.hpp>
 
-LinkedListState::LinkedListState(sf::RenderWindow &window) : State(window) {
+DataStructureState::DataStructureState(sf::RenderWindow &window) : State(window) {
     loadTextures();
     loadFonts();
     loadCode();
     buildScence();
 } 
 
-void LinkedListState::loadTextures() {
-    this->mTexturesHolder.load(Textures::playButton, "img/playButton.png");
-    this->mTexturesHolder.load(Textures::playButtonHoverred, "img/playButtonHoverred.png");
+void DataStructureState::loadTextures() {
     this->mTexturesHolder.load(Textures::rightArrow, "img/rightArrow.png");
     this->mTexturesHolder.load(Textures::leftArrow, "img/leftArrow.png");
 }
 
-void LinkedListState::loadFonts() {
+void DataStructureState::loadFonts() {
     this->mFontsHolder.load(Fonts::FiraSansRegular, "fonts/FiraSans-Regular.ttf");
     this->mFontsHolder.load(Fonts::FiraMonoRegular, "fonts/Fira_Mono/FiraMono-Regular.ttf");
 }
 
-void LinkedListState::loadCode() {
+void DataStructureState::loadCode() {
     this->mCodeHolder.load();
 }
 
-void LinkedListState::buildScence() {
+void DataStructureState::buildScence() {
     for (int i = 0; i < LayerCount; i++) {
         SceneNode::Ptr layer = std::make_unique<SceneNode>();
         mSceneLayers[i] = layer.get();
         mSceneGraph.attachChild(std::move(layer));
     }
     
-}  
+} 
 
-void LinkedListState::handleClick(sf::Event &event) {
-    // //Handle Button
-    // int index = 0;
-    // for (auto &child : this->mSceneLayers[Button]->getChildren()) {
-    //     if (child->getClickedIndex(event) == 0) {
-    //         switch (index) {
-    //             case ButtonType::Create : {
-    //                 std::cout << "Button Create Clicked" << std::endl;
-    //                 // if (!this->isAdd) {
-    //                 //     this->animationOrder = 1;
-    //                 //     // this->isAdd = 1;
-    //                 // }
-    //             }
-    //         }
-    //     }
-    // }
-    //------------------------------------------------------
-}
-
-void LinkedListState::resetNodeState() {
+void DataStructureState::resetNodeState() {
     for (int i = 0; i < LayerCount; i++) {
         for (auto &child : mSceneLayers[i]->getChildren()) {
             child->mIsDoneColoring = 0;
@@ -62,7 +41,7 @@ void LinkedListState::resetNodeState() {
     }
 }
 
-bool LinkedListState::isProcessing() {
+bool DataStructureState::isProcessing() {
     for (int i = 0; i < LayerCount; i++) {
         for (auto &child : mSceneLayers[i]->getChildren()) {
             if (child->mIsColoring) return 1;

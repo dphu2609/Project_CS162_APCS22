@@ -1,6 +1,6 @@
-#include <State/SinglyLinkedListState.hpp>
+#include <State/StaticArrayState.hpp>
 
-void LinkedListState::createStaticArray(std::vector<int> list) {
+void StaticArrayState::createDataStructure(std::vector<int> list) {
     for (int i = 0; i < LayerCount; i++) {
         mSceneLayers[i]->getChildren().clear();
     }
@@ -58,7 +58,7 @@ void LinkedListState::createStaticArray(std::vector<int> list) {
     mSceneLayers[ArrayBoder]->attachChild(std::move(arrayBorder));  
 }
 
-void LinkedListState::staticArrayInsertAnimation(sf::Time dt, double speed, int insertIndex, int insertValue) {
+void StaticArrayState::insertAnimation(sf::Time dt, double speed, int insertIndex, int insertValue) {
     if (mSceneLayers[CodeBox]->getChildren().size() == 0 || (mSceneLayers[CodeBox]->getChildren().size() == 1 && !mCodeHolder.mStateActivated[Code::SinglyLinkedListInsert])) {
         mSceneLayers[CodeBox]->getChildren().clear();
         std::unique_ptr<CodeBlockNode> codeBlock = std::make_unique<CodeBlockNode>(
@@ -243,7 +243,7 @@ void LinkedListState::staticArrayInsertAnimation(sf::Time dt, double speed, int 
     }
 }
 
-void LinkedListState::staticArrayInsertAnimationReversed(sf::Time dt, double speed, int insertIndex, int insertValue) {
+void StaticArrayState::insertAnimationReversed(sf::Time dt, double speed, int insertIndex, int insertValue) {
     mIsEndAnimation = 0;
     switch(mAnimationOrder) {
         case 6: {
@@ -362,7 +362,7 @@ void LinkedListState::staticArrayInsertAnimationReversed(sf::Time dt, double spe
         }   
     }
 }
-void LinkedListState::staticArrayDeleteAnimation(sf::Time dt, double speed, int deleteIndex) {
+void StaticArrayState::deleteAnimation(sf::Time dt, double speed, int deleteIndex) {
     if (mSceneLayers[CodeBox]->getChildren().size() == 0 || (mSceneLayers[CodeBox]->getChildren().size() == 1 && !mCodeHolder.mStateActivated[Code::SinglyLinkedListInsert])) {
         mSceneLayers[CodeBox]->getChildren().clear();
         std::unique_ptr<CodeBlockNode> codeBlock = std::make_unique<CodeBlockNode>(
@@ -471,7 +471,7 @@ void LinkedListState::staticArrayDeleteAnimation(sf::Time dt, double speed, int 
         }
     }
 }
-void LinkedListState::staticArrayDeleteAnimationReversed(sf::Time dt, double speed, int deleteIndex, int deleteValue) {
+void StaticArrayState::deleteAnimationReversed(sf::Time dt, double speed, int deleteIndex, int deleteValue) {
     mIsEndAnimation = 0;
     switch(mAnimationOrder) {
         case 5: {
@@ -556,7 +556,7 @@ void LinkedListState::staticArrayDeleteAnimationReversed(sf::Time dt, double spe
         }
     }
 }
-void LinkedListState::staticArrayUpdateAnimation(sf::Time dt, double speed, int updateIndex, int updateValue) {
+void StaticArrayState::updateAnimation(sf::Time dt, double speed, int updateIndex, int updateValue) {
     if (mSceneLayers[CodeBox]->getChildren().size() == 0 || (mSceneLayers[CodeBox]->getChildren().size() == 1 && !mCodeHolder.mStateActivated[Code::SinglyLinkedListInsert])) {
         mSceneLayers[CodeBox]->getChildren().clear();
         std::unique_ptr<CodeBlockNode> codeBlock = std::make_unique<CodeBlockNode>(
@@ -615,7 +615,7 @@ void LinkedListState::staticArrayUpdateAnimation(sf::Time dt, double speed, int 
         }
     }
 }
-void LinkedListState::staticArrayUpdateAnimationReversed(sf::Time dt, double speed, int updateIndex, int prevValue) {
+void StaticArrayState::updateAnimationReversed(sf::Time dt, double speed, int updateIndex, int prevValue) {
     mIsEndAnimation = 0;
     switch(mAnimationOrder) {
         case 3: {
@@ -646,7 +646,7 @@ void LinkedListState::staticArrayUpdateAnimationReversed(sf::Time dt, double spe
         }
     }
 }
-void LinkedListState::staticArraySearchAnimation(sf::Time dt, double speed, int searchValue) {
+void StaticArrayState::searchAnimation(sf::Time dt, double speed, int searchValue) {
     if (mSceneLayers[CodeBox]->getChildren().size() == 0 || (mSceneLayers[CodeBox]->getChildren().size() == 1 && !mCodeHolder.mStateActivated[Code::SinglyLinkedListInsert])) {
         mSceneLayers[CodeBox]->getChildren().clear();
         std::unique_ptr<CodeBlockNode> codeBlock = std::make_unique<CodeBlockNode>(
@@ -727,7 +727,7 @@ void LinkedListState::staticArraySearchAnimation(sf::Time dt, double speed, int 
         }
      }
 }
-void LinkedListState::staticArraySearchAnimationReversed(sf::Time dt, double speed, int searchValue) {
+void StaticArrayState::searchAnimationReversed(sf::Time dt, double speed, int searchValue) {
     mIsEndAnimation = 0;
     switch(mAnimationOrder) {
         case 4: {
