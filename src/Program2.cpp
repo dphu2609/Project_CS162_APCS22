@@ -99,9 +99,9 @@ void Program2::linkedListHandle(sf::Time dt, LinkedListState &linkedList) {
                 linkedList.resetNodeState();
             }
             if (linkedList.mInsertActivated) linkedList.DLLInsertAnimation(dt, 1, mSettings.mActionIndex, mSettings.mActionValue); 
-            else if (linkedList.mDeleteActivated) linkedList.dynamicArrayDeleteAnimation(dt, 1, mSettings.mActionIndex);
-            else if (linkedList.mUpdateActivated) linkedList.dynamicArrayUpdateAnimation(dt, 1, mSettings.mActionIndex, mSettings.mActionValue);
-            else if (linkedList.mSearchActivated) linkedList.dynamicArraySearchAnimation(dt, 1, mSettings.mActionValue);
+            else if (linkedList.mDeleteActivated) linkedList.DLLDeleteAnimation(dt, 1, mSettings.mActionIndex);
+            else if (linkedList.mUpdateActivated) linkedList.DLLUpdateAnimation(dt, 1, mSettings.mActionIndex, mSettings.mActionValue);
+            else if (linkedList.mSearchActivated) linkedList.DLLSearchAnimation(dt, 1, mSettings.mActionValue);
         }
         else if (mSettings.mIsPrev) {  
             if (mSettings.mPrevPrev != mSettings.mIsPrev && !linkedList.isProcessing()) {
@@ -113,9 +113,9 @@ void Program2::linkedListHandle(sf::Time dt, LinkedListState &linkedList) {
                 linkedList.resetNodeState();
             }
             if (linkedList.mInsertActivated) linkedList.DLLInsertAnimationReversed(dt, 1, mSettings.mActionIndex, mSettings.mActionValue); 
-            else if (linkedList.mDeleteActivated) linkedList.dynamicArrayDeleteAnimationReversed(dt, 1, mSettings.mActionIndex, mSettings.mActionValue);
-            else if (linkedList.mUpdateActivated) linkedList.dynamicArrayUpdateAnimationReversed(dt, 1, mSettings.mActionIndex, mSettings.mPrevActionValue);
-            else if (linkedList.mSearchActivated) linkedList.dynamicArraySearchAnimationReversed(dt, 1, mSettings.mActionValue);
+            else if (linkedList.mDeleteActivated) linkedList.DLLDeleteAnimationReversed(dt, 1, mSettings.mActionIndex, mSettings.mActionValue);
+            else if (linkedList.mUpdateActivated) linkedList.DLLUpdateAnimationReversed(dt, 1, mSettings.mActionIndex, mSettings.mPrevActionValue);
+            else if (linkedList.mSearchActivated) linkedList.DLLSearchAnimationReversed(dt, 1, mSettings.mActionValue);
         } 
         else {
             if (mSettings.mPrevPlay != mSettings.mIsPlay && !linkedList.isProcessing()) {
@@ -126,9 +126,9 @@ void Program2::linkedListHandle(sf::Time dt, LinkedListState &linkedList) {
                 std::cout << 1;
             }
             if (linkedList.mInsertActivated) linkedList.DLLInsertAnimation(dt, 1, mSettings.mActionIndex, mSettings.mActionValue); 
-            else if (linkedList.mDeleteActivated) linkedList.dynamicArrayDeleteAnimation(dt, 1, mSettings.mActionIndex);
-            else if (linkedList.mUpdateActivated) linkedList.dynamicArrayUpdateAnimation(dt, 1, mSettings.mActionIndex, mSettings.mActionValue);
-            else if (linkedList.mSearchActivated) linkedList.dynamicArraySearchAnimation(dt, 1, mSettings.mActionValue);
+            else if (linkedList.mDeleteActivated) linkedList.DLLDeleteAnimation(dt, 1, mSettings.mActionIndex);
+            else if (linkedList.mUpdateActivated) linkedList.DLLUpdateAnimation(dt, 1, mSettings.mActionIndex, mSettings.mActionValue);
+            else if (linkedList.mSearchActivated) linkedList.DLLSearchAnimation(dt, 1, mSettings.mActionValue);
         }
     }
     mSettings.mAnimationOrder = linkedList.mAnimationOrder;
