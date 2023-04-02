@@ -8,6 +8,7 @@ namespace Textures {
     enum ID {
         menuBackGround,
         rightArrow,
+        leftArrow,
         pointerArrow,
         nextButton,
         nextButtonHoverred,

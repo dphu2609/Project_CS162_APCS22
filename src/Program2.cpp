@@ -69,7 +69,6 @@ void Program2::linkedListHandle(sf::Time dt, LinkedListState &linkedList) {
             }
             case Action::Delete : {
                 linkedList.mDeleteActivated = 1;
-                break;
             }
             case Action::Update : {
                 linkedList.mUpdateActivated = 1;
@@ -80,7 +79,7 @@ void Program2::linkedListHandle(sf::Time dt, LinkedListState &linkedList) {
                 break;
             }
         }
-        linkedList.createDynamicArray(mSettings.mInputArr);
+        linkedList.createDLL(mSettings.mInputArr);
         linkedList.mAnimationOrder = 1;
         linkedList.mColorIndex = 0;
         linkedList.mIsEndAnimation = 0;
@@ -99,7 +98,7 @@ void Program2::linkedListHandle(sf::Time dt, LinkedListState &linkedList) {
                 mSettings.mPrevColorIndex = mSettings.mColorIndex - 1;
                 linkedList.resetNodeState();
             }
-            if (linkedList.mInsertActivated) linkedList.dynamicArrayInsertAnimation(dt, 1, mSettings.mActionIndex, mSettings.mActionValue); 
+            if (linkedList.mInsertActivated) linkedList.DLLInsertAnimation(dt, 1, mSettings.mActionIndex, mSettings.mActionValue); 
             else if (linkedList.mDeleteActivated) linkedList.dynamicArrayDeleteAnimation(dt, 1, mSettings.mActionIndex);
             else if (linkedList.mUpdateActivated) linkedList.dynamicArrayUpdateAnimation(dt, 1, mSettings.mActionIndex, mSettings.mActionValue);
             else if (linkedList.mSearchActivated) linkedList.dynamicArraySearchAnimation(dt, 1, mSettings.mActionValue);
@@ -113,7 +112,7 @@ void Program2::linkedListHandle(sf::Time dt, LinkedListState &linkedList) {
                 mSettings.mPrevColorIndex = mSettings.mColorIndex + 1;
                 linkedList.resetNodeState();
             }
-            if (linkedList.mInsertActivated) linkedList.dynamicArrayInsertAnimationReversed(dt, 1, mSettings.mActionIndex, mSettings.mActionValue); 
+            if (linkedList.mInsertActivated) linkedList.DLLInsertAnimationReversed(dt, 1, mSettings.mActionIndex, mSettings.mActionValue); 
             else if (linkedList.mDeleteActivated) linkedList.dynamicArrayDeleteAnimationReversed(dt, 1, mSettings.mActionIndex, mSettings.mActionValue);
             else if (linkedList.mUpdateActivated) linkedList.dynamicArrayUpdateAnimationReversed(dt, 1, mSettings.mActionIndex, mSettings.mPrevActionValue);
             else if (linkedList.mSearchActivated) linkedList.dynamicArraySearchAnimationReversed(dt, 1, mSettings.mActionValue);
@@ -124,8 +123,9 @@ void Program2::linkedListHandle(sf::Time dt, LinkedListState &linkedList) {
                 mSettings.mPrevPrev = 0;
                 mSettings.mPrevNext = 1;
                 linkedList.resetNodeState();
+                std::cout << 1;
             }
-            if (linkedList.mInsertActivated) linkedList.dynamicArrayInsertAnimation(dt, 1, mSettings.mActionIndex, mSettings.mActionValue); 
+            if (linkedList.mInsertActivated) linkedList.DLLInsertAnimation(dt, 1, mSettings.mActionIndex, mSettings.mActionValue); 
             else if (linkedList.mDeleteActivated) linkedList.dynamicArrayDeleteAnimation(dt, 1, mSettings.mActionIndex);
             else if (linkedList.mUpdateActivated) linkedList.dynamicArrayUpdateAnimation(dt, 1, mSettings.mActionIndex, mSettings.mActionValue);
             else if (linkedList.mSearchActivated) linkedList.dynamicArraySearchAnimation(dt, 1, mSettings.mActionValue);

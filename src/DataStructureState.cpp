@@ -11,6 +11,7 @@ void LinkedListState::loadTextures() {
     this->mTexturesHolder.load(Textures::playButton, "img/playButton.png");
     this->mTexturesHolder.load(Textures::playButtonHoverred, "img/playButtonHoverred.png");
     this->mTexturesHolder.load(Textures::rightArrow, "img/rightArrow.png");
+    this->mTexturesHolder.load(Textures::leftArrow, "img/leftArrow.png");
 }
 
 void LinkedListState::loadFonts() {

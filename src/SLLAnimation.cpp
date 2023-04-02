@@ -250,12 +250,12 @@ void LinkedListState::SLLInsertAnimation(sf::Time dt, double speed, int insertIn
             );
 
             mSceneLayers[Nodes]->getChildren().insert(mSceneLayers[Nodes]->getChildren().begin() + insertIndex, std::move(addedNode));
-            if (mListData.size() > 0) {
+            if (mListData.size() > 0 && insertIndex != mListData.size()) {
                 std::unique_ptr<SpriteNode> newArrow = std::make_unique<SpriteNode>(
                     mTexturesHolder[Textures::rightArrow], sf::Vector2f(110, 50), 
                     sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + insertIndex*250 + 130, 285), 0
                 );
-                if (insertIndex != mListData.size()) mSceneLayers[Arrow]->getChildren().insert(mSceneLayers[Arrow]->getChildren().begin() + insertIndex, std::move(newArrow)); 
+                mSceneLayers[Arrow]->getChildren().insert(mSceneLayers[Arrow]->getChildren().begin() + insertIndex, std::move(newArrow)); 
             }
 
             mListData.insert(mListData.begin() + insertIndex, insertValue);

@@ -589,6 +589,9 @@ void SettingsState::handleControlBoxEvent(sf::Event &event) {
                     }
                     else {
                         mIsActionPaused = 0;
+                        if (!mIsPrev) {
+                            mPrevPlay = 1;
+                        }
                         mIsNext = 0;
                         mIsPrev = 0;
                         mIsPlay = 1;
@@ -617,6 +620,9 @@ void SettingsState::handleControlBoxEvent(sf::Event &event) {
                             sf::Vector2f(30, 30), sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2, sf::VideoMode::getDesktopMode().height - 150)
                         );
                         mSceneLayers[ControlBoxButtons]->getChildren()[0] = std::move(playButton);
+                    }
+                    if (!mIsPrev) {
+                        mPrevNext = 1;
                     }
                     mIsNext = 1;
                     mIsActionPaused = 0;

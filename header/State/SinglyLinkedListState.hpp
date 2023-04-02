@@ -37,6 +37,15 @@ public:                                 //i should create a base class a derived
     void dynamicArraySearchAnimationReversed(sf::Time dt, double speed, int searchValue);
 
     void createDLL(std::vector<int> list);
+    void DLLInsertAnimation(sf::Time dt, double speed, int insertIndex, int insertValue);
+    void DLLInsertAnimationReversed(sf::Time dt, double speed, int insertIndex, int insertValue);
+    void DLLDeleteAnimation(sf::Time dt, double speed, int deleteIndex);
+    void DLLDeleteAnimationReversed(sf::Time dt, double speed, int deleteIndex, int deleteValue);
+    void DLLUpdateAnimation(sf::Time dt, double speed, int updateIndex, int updateValue);
+    void DLLUpdateAnimationReversed(sf::Time dt, double speed, int updateIndex, int prevValue);
+    void DLLSearchAnimation(sf::Time dt, double speed, int searchValue);
+    void DLLSearchAnimationReversed(sf::Time dt, double speed, int searchValue);
+
     void createCLL(std::vector<int> list);
     void createStack(std::vector<int> list);
     void createQueue(std::vector<int> list);
