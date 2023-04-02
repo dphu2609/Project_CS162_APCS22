@@ -102,5 +102,5 @@ void ContainerNode::triggerColorAnimation(
     this->mIsDoneColoring = 0;
     this->mAnimationType["color"] = 1;
     this->mBox.setFillColor(boxColorWhenChange);
-    this->mBox.setOutlineColor(outlineColorAfterChange);
+    this->mBox.setOutlineColor(outlineColorWhenChange);
 }

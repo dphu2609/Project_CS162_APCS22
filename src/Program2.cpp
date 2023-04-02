@@ -80,7 +80,7 @@ void Program2::linkedListHandle(sf::Time dt, LinkedListState &linkedList) {
                 break;
             }
         }
-        linkedList.createStaticArray(mSettings.mInputArr);
+        linkedList.createDynamicArray(mSettings.mInputArr);
         linkedList.mAnimationOrder = 1;
         linkedList.mColorIndex = 0;
         linkedList.mIsEndAnimation = 0;
@@ -99,10 +99,10 @@ void Program2::linkedListHandle(sf::Time dt, LinkedListState &linkedList) {
                 mSettings.mPrevColorIndex = mSettings.mColorIndex - 1;
                 linkedList.resetNodeState();
             }
-            if (linkedList.mInsertActivated) linkedList.staticArrayInsertAnimation(dt, 1, mSettings.mActionIndex, mSettings.mActionValue); 
-            else if (linkedList.mDeleteActivated) linkedList.staticArrayDeleteAnimation(dt, 1, mSettings.mActionIndex);
-            else if (linkedList.mUpdateActivated) linkedList.staticArrayUpdateAnimation(dt, 1, mSettings.mActionIndex, mSettings.mActionValue);
-            else if (linkedList.mSearchActivated) linkedList.staticArraySearchAnimation(dt, 1, mSettings.mActionValue);
+            if (linkedList.mInsertActivated) linkedList.dynamicArrayInsertAnimation(dt, 1, mSettings.mActionIndex, mSettings.mActionValue); 
+            else if (linkedList.mDeleteActivated) linkedList.dynamicArrayDeleteAnimation(dt, 1, mSettings.mActionIndex);
+            else if (linkedList.mUpdateActivated) linkedList.dynamicArrayUpdateAnimation(dt, 1, mSettings.mActionIndex, mSettings.mActionValue);
+            else if (linkedList.mSearchActivated) linkedList.dynamicArraySearchAnimation(dt, 1, mSettings.mActionValue);
         }
         else if (mSettings.mIsPrev) {  
             if (mSettings.mPrevPrev != mSettings.mIsPrev && !linkedList.isProcessing()) {
@@ -113,10 +113,10 @@ void Program2::linkedListHandle(sf::Time dt, LinkedListState &linkedList) {
                 mSettings.mPrevColorIndex = mSettings.mColorIndex + 1;
                 linkedList.resetNodeState();
             }
-            if (linkedList.mInsertActivated) linkedList.staticArrayInsertAnimationReversed(dt, 1, mSettings.mActionIndex, mSettings.mActionValue); 
-            else if (linkedList.mDeleteActivated) linkedList.staticArrayDeleteAnimationReversed(dt, 1, mSettings.mActionIndex, mSettings.mActionValue);
-            else if (linkedList.mUpdateActivated) linkedList.staticArrayUpdateAnimationReversed(dt, 1, mSettings.mActionIndex, mSettings.mPrevActionValue);
-            else if (linkedList.mSearchActivated) linkedList.staticArraySearchAnimationReversed(dt, 1, mSettings.mActionValue);
+            if (linkedList.mInsertActivated) linkedList.dynamicArrayInsertAnimationReversed(dt, 1, mSettings.mActionIndex, mSettings.mActionValue); 
+            else if (linkedList.mDeleteActivated) linkedList.dynamicArrayDeleteAnimationReversed(dt, 1, mSettings.mActionIndex, mSettings.mActionValue);
+            else if (linkedList.mUpdateActivated) linkedList.dynamicArrayUpdateAnimationReversed(dt, 1, mSettings.mActionIndex, mSettings.mPrevActionValue);
+            else if (linkedList.mSearchActivated) linkedList.dynamicArraySearchAnimationReversed(dt, 1, mSettings.mActionValue);
         } 
         else {
             if (mSettings.mPrevPlay != mSettings.mIsPlay && !linkedList.isProcessing()) {
@@ -125,10 +125,10 @@ void Program2::linkedListHandle(sf::Time dt, LinkedListState &linkedList) {
                 mSettings.mPrevNext = 1;
                 linkedList.resetNodeState();
             }
-            if (linkedList.mInsertActivated) linkedList.staticArrayInsertAnimation(dt, 1, mSettings.mActionIndex, mSettings.mActionValue); 
-            else if (linkedList.mDeleteActivated) linkedList.staticArrayDeleteAnimation(dt, 1, mSettings.mActionIndex);
-            else if (linkedList.mUpdateActivated) linkedList.staticArrayUpdateAnimation(dt, 1, mSettings.mActionIndex, mSettings.mActionValue);
-            else if (linkedList.mSearchActivated) linkedList.staticArraySearchAnimation(dt, 1, mSettings.mActionValue);
+            if (linkedList.mInsertActivated) linkedList.dynamicArrayInsertAnimation(dt, 1, mSettings.mActionIndex, mSettings.mActionValue); 
+            else if (linkedList.mDeleteActivated) linkedList.dynamicArrayDeleteAnimation(dt, 1, mSettings.mActionIndex);
+            else if (linkedList.mUpdateActivated) linkedList.dynamicArrayUpdateAnimation(dt, 1, mSettings.mActionIndex, mSettings.mActionValue);
+            else if (linkedList.mSearchActivated) linkedList.dynamicArraySearchAnimation(dt, 1, mSettings.mActionValue);
         }
     }
     mSettings.mAnimationOrder = linkedList.mAnimationOrder;
