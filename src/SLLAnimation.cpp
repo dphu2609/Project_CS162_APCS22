@@ -491,7 +491,7 @@ void SLLState::insertAnimationReversed(sf::Time dt, double speed, int insertInde
                             this->mColorIndex = 0;
                             mAnimationOrder = 1;
                         }
-                        if (this->mColorIndex < 0  && !mIsActionPaused) {
+                        if (this->mColorIndex < 0) {
                             this->mColorIndex = 0;
                             mAnimationOrder = 1;
                         }
@@ -522,7 +522,7 @@ void SLLState::deleteAnimation(sf::Time dt, double speed, int deleteIndex) {
             for (auto &child : mSceneLayers[Nodes]->getChildren()) {
                 if (!child->mIsColoring && !child->mIsDoneColoring) {
                     child->triggerColorAnimation(
-                        dt, 100, 
+                        dt, speed, 
                         sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255),
                         sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
                     );

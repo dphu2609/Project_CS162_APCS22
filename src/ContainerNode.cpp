@@ -26,6 +26,21 @@ void ContainerNode::updateCurrent(sf::Time dt) {
             this->mIsDoneMoving = 1;
         }
     }
+    if (this->mAnimationType["rotate"]) {
+        double newAngle;
+        if (this->mRotatingDistance >= 0) {
+            newAngle = this->mStartAngle - std::pow(this->mCurrentAngle, 4) + this->mRotatingDistance;
+        } else {
+            newAngle = this->mStartAngle + std::pow(this->mCurrentAngle, 4) + this->mRotatingDistance;
+        }
+        this->mBox.setRotation(newAngle);
+        if (this->mCurrentAngle > 0) this->mCurrentAngle -= this->mRotatingStep;
+        else {
+            this->mAnimationType["rotate"] = 0;
+            this->mIsRotating = 0;
+            this->mIsDoneRotating = 1;
+        }
+    }
     if (this->mAnimationType["scale"]) {
         sf::Vector2f newSize;
         if (this->mScalingLengthDistance >= 0) {
@@ -71,6 +86,16 @@ void ContainerNode::triggerMoveAnimation(sf::Time dt, double speed, double moveD
     this->mAnimationType["move"] = 1;
     this->mIsMoving = 1;
     this->mIsDoneMoving = 0;
+}
+
+void ContainerNode::triggerRotateAnimation(sf::Time dt, double speed, double rotatingDistance) {
+    this->mCurrentAngle = std::sqrt(std::sqrt(std::abs(rotatingDistance)));
+    this->mRotatingStep = this->mCurrentAngle*dt.asSeconds()*speed;
+    this->mStartAngle = this->mBox.getRotation();
+    this->mRotatingDistance = rotatingDistance;
+    this->mAnimationType["rotate"] = 1;
+    this->mIsRotating = 1;
+    this->mIsDoneRotating = 0;
 }
 
 void ContainerNode::triggerScaleAnimation(sf::Time dt, double lengthSpeed, double scalingLengthDistance, double widthSpeed, double scalingWidthDistance) {
