@@ -1,7 +1,7 @@
 #include <Program2.hpp>
 
-Program2::Program2() : mWindow(sf::VideoMode(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height), "Data Visual", sf::Style::Default), mSinglyLinkedList(mWindow), mSettings(mWindow) {
-    mSinglyLinkedList.mInsertActivated = 0;
+Program2::Program2() : mWindow(sf::VideoMode(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height), "Data Visual", sf::Style::Default), 
+mSettings(mWindow), mSLL(mWindow), mDLL(mWindow), mCLL(mWindow), mStack(mWindow), mQueue(mWindow), mStaticArray(mWindow), mDynamicArray(mWindow) {
 }
 
 void Program2::run() {
@@ -16,13 +16,13 @@ void Program2::run() {
             timeSinceLastUpdate -= dt;
             mSettings.activeSettings(dt);
             if (mSettings.mStateActivated[States::SinglyLinkedList]) {
-                linkedListHandle(dt, mSinglyLinkedList);
+                dataStructureDisplay(dt, mCLL);
             }
             mSettings.update(dt);
             mSettings.controlBoxUpdate();
         }
         mWindow.clear(sf::Color(18, 18, 18, 255));
-        if (mSettings.mStateActivated[States::SinglyLinkedList]) mSinglyLinkedList.draw();
+        if (mSettings.mStateActivated[States::SinglyLinkedList]) mCLL.draw();
         mSettings.draw();
         mWindow.display();
     }
@@ -34,14 +34,13 @@ void Program2::processEvents()
     while (mWindow.pollEvent(event)) {
         mSettings.handleEvent(event);
         mSettings.controlEvent(event);
-        mSinglyLinkedList.handleClick(event);
         if (event.type == sf::Event::Closed)
             mWindow.close();
     }
 }
 
-void Program2::linkedListHandle(sf::Time dt, LinkedListState &linkedList) {
-    linkedList.mIsReplay = mSettings.mIsReplay;
+void Program2::dataStructureDisplay(sf::Time dt, DataStructureState &dataStructure) {
+    dataStructure.mIsReplay = mSettings.mIsReplay;
     if (mSettings.mActionActivated[Action::ResetAction]) {
         mSettings.mActionActivated[Action::ResetAction] = 0;
     }
@@ -53,96 +52,95 @@ void Program2::linkedListHandle(sf::Time dt, LinkedListState &linkedList) {
                 break;
             }
         }
-        linkedList.mInsertActivated = 0;
-        linkedList.mDeleteActivated = 0;
-        linkedList.mUpdateActivated = 0;
-        linkedList.mSearchActivated = 0;
+        dataStructure.mInsertActivated = 0;
+        dataStructure.mDeleteActivated = 0;
+        dataStructure.mUpdateActivated = 0;
+        dataStructure.mSearchActivated = 0;
         switch(index) {
             case Action::Create : {
-                linkedList.mListData.clear();
-                linkedList.mTempListData.clear();
+                dataStructure.mListData.clear();
+                dataStructure.mTempListData.clear();
                 break;
             }
             case Action::Insert : {
-                linkedList.mInsertActivated = 1;
+                dataStructure.mInsertActivated = 1;
                 break;
             }
             case Action::Delete : {
-                linkedList.mDeleteActivated = 1;
+                dataStructure.mDeleteActivated = 1;
             }
             case Action::Update : {
-                linkedList.mUpdateActivated = 1;
+                dataStructure.mUpdateActivated = 1;
                 break;
             }
             case Action::Search : {
-                linkedList.mSearchActivated = 1;
+                dataStructure.mSearchActivated = 1;
                 break;
             }
         }
-        linkedList.createDLL(mSettings.mInputArr);
-        linkedList.mAnimationOrder = 1;
-        linkedList.mColorIndex = 0;
-        linkedList.mIsEndAnimation = 0;
+        dataStructure.createDataStructure(mSettings.mInputArr);
+        dataStructure.mAnimationOrder = 1;
+        dataStructure.mColorIndex = 0;
+        dataStructure.mIsEndAnimation = 0;
         mSettings.mIsEndAnimation.first = 0;
         mSettings.mIsPrev = 0;
         mSettings.mIsNext = 0;
         mSettings.mActionActivated[Action::Play] = 0;
     }
-    if (linkedList.mInsertActivated || linkedList.mDeleteActivated || linkedList.mUpdateActivated || linkedList.mSearchActivated) {
+    if (dataStructure.mInsertActivated || dataStructure.mDeleteActivated || dataStructure.mUpdateActivated || dataStructure.mSearchActivated) {
         if (mSettings.mIsNext) {
-            if (mSettings.mPrevNext != mSettings.mIsNext && !linkedList.isProcessing()) {
+            if (mSettings.mPrevNext != mSettings.mIsNext && !dataStructure.isProcessing()) {
                 mSettings.mPrevPrev = 0;
                 mSettings.mPrevNext = 1;
                 mSettings.mPrevPlay = 1;
                 mSettings.mPrevAnimationOrder = mSettings.mAnimationOrder - 1;
                 mSettings.mPrevColorIndex = mSettings.mColorIndex - 1;
-                linkedList.resetNodeState();
+                dataStructure.resetNodeState();
             }
-            if (linkedList.mInsertActivated) linkedList.DLLInsertAnimation(dt, 1, mSettings.mActionIndex, mSettings.mActionValue); 
-            else if (linkedList.mDeleteActivated) linkedList.DLLDeleteAnimation(dt, 1, mSettings.mActionIndex);
-            else if (linkedList.mUpdateActivated) linkedList.DLLUpdateAnimation(dt, 1, mSettings.mActionIndex, mSettings.mActionValue);
-            else if (linkedList.mSearchActivated) linkedList.DLLSearchAnimation(dt, 1, mSettings.mActionValue);
+            if (dataStructure.mInsertActivated) dataStructure.insertAnimation(dt, 1, mSettings.mActionIndex, mSettings.mActionValue); 
+            else if (dataStructure.mDeleteActivated) dataStructure.deleteAnimation(dt, 1, mSettings.mActionIndex);
+            else if (dataStructure.mUpdateActivated) dataStructure.updateAnimation(dt, 1, mSettings.mActionIndex, mSettings.mActionValue);
+            else if (dataStructure.mSearchActivated) dataStructure.searchAnimation(dt, 1, mSettings.mActionValue);
         }
         else if (mSettings.mIsPrev) {  
-            if (mSettings.mPrevPrev != mSettings.mIsPrev && !linkedList.isProcessing()) {
+            if (mSettings.mPrevPrev != mSettings.mIsPrev && !dataStructure.isProcessing()) {
                 mSettings.mPrevPrev = 1;
                 mSettings.mPrevNext = 0;
                 mSettings.mPrevPlay = 0;
                 mSettings.mPrevAnimationOrder = mSettings.mAnimationOrder + 1;
                 mSettings.mPrevColorIndex = mSettings.mColorIndex + 1;
-                linkedList.resetNodeState();
+                dataStructure.resetNodeState();
             }
-            if (linkedList.mInsertActivated) linkedList.DLLInsertAnimationReversed(dt, 1, mSettings.mActionIndex, mSettings.mActionValue); 
-            else if (linkedList.mDeleteActivated) linkedList.DLLDeleteAnimationReversed(dt, 1, mSettings.mActionIndex, mSettings.mActionValue);
-            else if (linkedList.mUpdateActivated) linkedList.DLLUpdateAnimationReversed(dt, 1, mSettings.mActionIndex, mSettings.mPrevActionValue);
-            else if (linkedList.mSearchActivated) linkedList.DLLSearchAnimationReversed(dt, 1, mSettings.mActionValue);
+            if (dataStructure.mInsertActivated) dataStructure.insertAnimationReversed(dt, 1, mSettings.mActionIndex, mSettings.mActionValue); 
+            else if (dataStructure.mDeleteActivated) dataStructure.deleteAnimationReversed(dt, 1, mSettings.mActionIndex, mSettings.mActionValue);
+            else if (dataStructure.mUpdateActivated) dataStructure.updateAnimationReversed(dt, 1, mSettings.mActionIndex, mSettings.mPrevActionValue);
+            else if (dataStructure.mSearchActivated) dataStructure.searchAnimationReversed(dt, 1, mSettings.mActionValue);
         } 
         else {
-            if (mSettings.mPrevPlay != mSettings.mIsPlay && !linkedList.isProcessing()) {
+            if (mSettings.mPrevPlay != mSettings.mIsPlay && !dataStructure.isProcessing()) {
                 mSettings.mPrevPlay = 1;
                 mSettings.mPrevPrev = 0;
                 mSettings.mPrevNext = 1;
-                linkedList.resetNodeState();
-                std::cout << 1;
+                dataStructure.resetNodeState();
             }
-            if (linkedList.mInsertActivated) linkedList.DLLInsertAnimation(dt, 1, mSettings.mActionIndex, mSettings.mActionValue); 
-            else if (linkedList.mDeleteActivated) linkedList.DLLDeleteAnimation(dt, 1, mSettings.mActionIndex);
-            else if (linkedList.mUpdateActivated) linkedList.DLLUpdateAnimation(dt, 1, mSettings.mActionIndex, mSettings.mActionValue);
-            else if (linkedList.mSearchActivated) linkedList.DLLSearchAnimation(dt, 1, mSettings.mActionValue);
+            if (dataStructure.mInsertActivated) dataStructure.insertAnimation(dt, 1, mSettings.mActionIndex, mSettings.mActionValue); 
+            else if (dataStructure.mDeleteActivated) dataStructure.deleteAnimation(dt, 1, mSettings.mActionIndex);
+            else if (dataStructure.mUpdateActivated) dataStructure.updateAnimation(dt, 1, mSettings.mActionIndex, mSettings.mActionValue);
+            else if (dataStructure.mSearchActivated) dataStructure.searchAnimation(dt, 1, mSettings.mActionValue);
         }
     }
-    mSettings.mAnimationOrder = linkedList.mAnimationOrder;
-    mSettings.mColorIndex = linkedList.mColorIndex;
-    linkedList.mIsActionPaused = mSettings.mIsActionPaused;
-    mSettings.mIsEndAnimation.first = linkedList.mIsEndAnimation;
-    mSettings.mInputArr = linkedList.mListData;
-    linkedList.mIsReplay = mSettings.mIsReplay;
-    linkedList.mActionIndex = mSettings.mActionIndex;
-    linkedList.mActionValue = mSettings.mActionValue;
+    mSettings.mAnimationOrder = dataStructure.mAnimationOrder;
+    mSettings.mColorIndex = dataStructure.mColorIndex;
+    dataStructure.mIsActionPaused = mSettings.mIsActionPaused;
+    mSettings.mIsEndAnimation.first = dataStructure.mIsEndAnimation;
+    mSettings.mInputArr = dataStructure.mListData;
+    dataStructure.mIsReplay = mSettings.mIsReplay;
+    dataStructure.mActionIndex = mSettings.mActionIndex;
+    dataStructure.mActionValue = mSettings.mActionValue;
     if ((mSettings.mPrevAnimationOrder != mSettings.mAnimationOrder || mSettings.mColorIndex != mSettings.mPrevColorIndex) && (mSettings.mIsPrev || mSettings.mIsNext)) {
         mSettings.mPrevAnimationOrder = mSettings.mAnimationOrder;
         mSettings.mPrevColorIndex = mSettings.mColorIndex;
         mSettings.mIsActionPaused = 1;
     }
-    linkedList.update(dt);
+    dataStructure.update(dt);
 }

@@ -25,6 +25,7 @@ void QueueState::createDataStructure(std::vector<int> list) {
 }
 
 void QueueState::insertAnimation(sf::Time dt, double speed, int insertIndex, int insertValue) {
+    insertIndex = mListData.size();
     if (mSceneLayers[CodeBox]->getChildren().size() == 0 || (mSceneLayers[CodeBox]->getChildren().size() == 1 && !mCodeHolder.mStateActivated[Code::SinglyLinkedListInsert])) {
         mSceneLayers[CodeBox]->getChildren().clear();
         std::unique_ptr<CodeBlockNode> codeBlock = std::make_unique<CodeBlockNode>(
@@ -168,6 +169,7 @@ void QueueState::insertAnimation(sf::Time dt, double speed, int insertIndex, int
 }
 
 void QueueState::insertAnimationReversed(sf::Time dt, double speed, int insertIndex, int insertValue) {
+    insertIndex = mListData.size();
     mIsEndAnimation = 0;
     switch(mAnimationOrder) {
         case 6: {
@@ -262,6 +264,7 @@ void QueueState::insertAnimationReversed(sf::Time dt, double speed, int insertIn
 }
 
 void QueueState::deleteAnimation(sf::Time dt, double speed, int deleteIndex) {
+    deleteIndex = 0;
     if (mSceneLayers[CodeBox]->getChildren().size() == 0 || (mSceneLayers[CodeBox]->getChildren().size() == 1 && !mCodeHolder.mStateActivated[Code::SinglyLinkedListInsert])) {
         mSceneLayers[CodeBox]->getChildren().clear();
         std::unique_ptr<CodeBlockNode> codeBlock = std::make_unique<CodeBlockNode>(
@@ -366,7 +369,8 @@ void QueueState::deleteAnimation(sf::Time dt, double speed, int deleteIndex) {
     }
 }
 
-void QueueState:deleteAnimationReversed(sf::Time dt, double speed, int deleteIndex, int deleteValue) {
+void QueueState::deleteAnimationReversed(sf::Time dt, double speed, int deleteIndex, int deleteValue) {
+    deleteIndex = 0;
     mIsEndAnimation = 0;
     switch (mAnimationOrder) {
         case 5: {

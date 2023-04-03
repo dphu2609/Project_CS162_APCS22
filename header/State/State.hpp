@@ -28,6 +28,7 @@ private:
     virtual void buildScence() = 0;
 };
 
-#include <State/SinglyLinkedListState.hpp>
+#include <State/DataStructureState.hpp>
 #include <State/SettingsState.hpp>
+
 

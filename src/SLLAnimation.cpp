@@ -94,7 +94,7 @@ void SLLState::insertAnimation(sf::Time dt, double speed, int insertIndex, int i
         }
         case 3: {
             if (mSceneLayers[NewNode]->getChildren().size() == 0) {
-                if (mListData.size() > 0 && insertIndex != mListData.size() && mListData.size() != 0) {
+                if (mListData.size() > 0 && insertIndex != mListData.size()) {
                     std::unique_ptr<DisplayNode> addedNode = std::make_unique<DisplayNode>(
                         insertValue, mFontsHolder[Fonts::FiraSansRegular], 100,
                         sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + (insertIndex)*250, 750), 
@@ -109,7 +109,7 @@ void SLLState::insertAnimation(sf::Time dt, double speed, int insertIndex, int i
                     );
                     mSceneLayers[NewNode]->attachChild(std::move(addedNode));
                     if (mListData.size() == 0) {
-                        mAnimationOrder = 7;
+                        mAnimationOrder = 6;
                         break;
                     }
                 }

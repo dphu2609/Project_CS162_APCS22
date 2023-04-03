@@ -2,19 +2,19 @@
 
 #include <State/State.hpp>
 
-class DataStructureState : public State { //after creating all the data structures, we can create a state for each of them,
-public:                                 //i should create a base class a derived class for each data structure
-    explicit DataStructureState(sf::RenderWindow &window);
+class DataStructureState : public State { 
+public:
+    DataStructureState(sf::RenderWindow &window);
 
     virtual void createDataStructure(std::vector<int> list) = 0;
-    virtual void insertAnimation(sf::Time dt, double speed, int insertIndex, int insertValue) = 0;
-    virtual void insertAnimationReversed(sf::Time dt, double speed, int insertIndex, int insertValue) = 0;
-    virtual void deleteAnimation(sf::Time dt, double speed, int deleteIndex) = 0;
-    virtual void deleteAnimationReversed(sf::Time dt, double speed, int deleteIndex, int deleteValue) = 0;
-    virtual void updateAnimation(sf::Time dt, double speed, int updateIndex, int updateValue) = 0;
-    virtual void updateAnimationReversed(sf::Time dt, double speed, int updateIndex, int prevValue) = 0;
-    virtual void searchAnimation(sf::Time dt, double speed, int searchValue) = 0;
-    virtual void searchAnimationReversed(sf::Time dt, double speed, int searchValue) = 0;
+    virtual void insertAnimation(sf::Time dt, double speed, int insertIndex, int insertValue) {}
+    virtual void insertAnimationReversed(sf::Time dt, double speed, int insertIndex, int insertValue) {}
+    virtual void deleteAnimation(sf::Time dt, double speed, int deleteIndex) {}
+    virtual void deleteAnimationReversed(sf::Time dt, double speed, int deleteIndex, int deleteValue) {}
+    virtual void updateAnimation(sf::Time dt, double speed, int updateIndex, int updateValue) {}
+    virtual void updateAnimationReversed(sf::Time dt, double speed, int updateIndex, int prevValue) {}
+    virtual void searchAnimation(sf::Time dt, double speed, int searchValue) {}
+    virtual void searchAnimationReversed(sf::Time dt, double speed, int searchValue) {}
 
     bool mInsertActivated = 0;
     bool mDeleteActivated = 0;
@@ -34,11 +34,11 @@ public:                                 //i should create a base class a derived
     bool isProcessing();
     bool mIsReplay = 0;
     bool mIsReplayOnce = 0;
-private:
     enum Layers {
         NewNode,
         Arrow,
         DLLArrow,
+        CLLArrow,
         NewArrow,
         NewDLLArrow,
         BlankNode,
@@ -54,3 +54,11 @@ private:
     virtual void loadCode();
     virtual void buildScence();
 };
+
+#include <State/SLLState.hpp>
+#include <State/DLLState.hpp>
+#include <State/CLLState.hpp>
+#include <State/StackState.hpp>
+#include <State/QueueState.hpp>
+#include <State/StaticArrayState.hpp>
+#include <State/DynamicArrayState.hpp>

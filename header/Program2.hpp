@@ -9,9 +9,15 @@ public:
     void run();
 private:
     void processEvents();
-    void linkedListHandle(sf::Time dt, LinkedListState &linkedList);
+    void dataStructureDisplay(sf::Time dt, DataStructureState &dataStructure);
 private:
     SettingsState mSettings;
-    LinkedListState mSinglyLinkedList;
+    SLLState mSLL;
+    DLLState mDLL;
+    CLLState mCLL;
+    StackState mStack;
+    QueueState mQueue;
+    StaticArrayState mStaticArray;
+    DynamicArrayState mDynamicArray;
     sf::RenderWindow mWindow;
 };

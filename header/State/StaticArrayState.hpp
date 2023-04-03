@@ -1,7 +1,9 @@
+#pragma once
 #include <State/DataStructureState.hpp>
 
 class StaticArrayState : public DataStructureState {
 public: 
+    StaticArrayState(sf::RenderWindow &window) : DataStructureState(window) {}
     virtual void createDataStructure(std::vector<int> list);
     virtual void insertAnimation(sf::Time dt, double speed, int insertIndex, int insertValue);
     virtual void insertAnimationReversed(sf::Time dt, double speed, int insertIndex, int insertValue);
@@ -11,4 +13,4 @@ public:
     virtual void updateAnimationReversed(sf::Time dt, double speed, int updateIndex, int prevValue);
     virtual void searchAnimation(sf::Time dt, double speed, int searchValue);
     virtual void searchAnimationReversed(sf::Time dt, double speed, int searchValue);
-}
+};

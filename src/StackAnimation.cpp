@@ -25,6 +25,7 @@ void StackState::createDataStructure(std::vector<int> list) {
 }
 
 void StackState::insertAnimation(sf::Time dt, double speed, int insertIndex, int insertValue) {
+    insertIndex = 0;
     if (mSceneLayers[CodeBox]->getChildren().size() == 0 || (mSceneLayers[CodeBox]->getChildren().size() == 1 && !mCodeHolder.mStateActivated[Code::SinglyLinkedListInsert])) {
         mSceneLayers[CodeBox]->getChildren().clear();
         std::unique_ptr<CodeBlockNode> codeBlock = std::make_unique<CodeBlockNode>(
@@ -200,6 +201,7 @@ void StackState::insertAnimation(sf::Time dt, double speed, int insertIndex, int
 }
 
 void StackState::insertAnimationReversed(sf::Time dt, double speed, int insertIndex, int insertValue) {
+    insertIndex = 0;
     mIsEndAnimation = 0;
     switch(mAnimationOrder) {
         case 6: {
@@ -244,11 +246,11 @@ void StackState::insertAnimationReversed(sf::Time dt, double speed, int insertIn
                 );
                 mSceneLayers[NewArrow]->attachChild(std::move(newArrow));
             }
-            if (mListData.size() == 0) mAnimationOrder = 3;
-            else mAnimationOrder = 5;
+            if (mListData.size() == 0) mAnimationOrder = 2;
+            else mAnimationOrder = 4;
             break;
         }
-        case 5: {
+        case 4: {
             int index = 0;
             for (auto &child : this->mSceneLayers[Nodes]->getChildren()) {
                 if (index >= insertIndex) {
@@ -289,7 +291,7 @@ void StackState::insertAnimationReversed(sf::Time dt, double speed, int insertIn
             }
             break;
         }
-        case 4: {
+        case 3: {
             for (auto &child : this->mSceneLayers[NewArrow]->getChildren()) {
                 if (!child->mIsScaling && !child->mIsDoneScaling) {
                     child->triggerScaleAnimation(dt, speed, -110, 0, 0);
@@ -303,7 +305,7 @@ void StackState::insertAnimationReversed(sf::Time dt, double speed, int insertIn
             }
             break;
         }
-        case 3: {
+        case 2: {
             for (auto &child : this->mSceneLayers[NewNode]->getChildren()) {
                 if (!child->mIsMoving && !child->mIsDoneMoving) {
                     child->triggerMoveAnimation(dt, speed, 250, 90);
@@ -312,29 +314,8 @@ void StackState::insertAnimationReversed(sf::Time dt, double speed, int insertIn
                 } else if (!child->mIsMoving && child->mIsDoneMoving) {
                     if (mSceneLayers[NewNode]->getChildren().size() != 0) 
                         mSceneLayers[NewNode]->getChildren().clear();
-                    if (!mIsActionPaused) {
-                        if (mListData.size() == 0) mAnimationOrder = 1;
-                        else mAnimationOrder = 2;
-                    }
-                }
-            }
-            break;
-        }
-        case 2: {
-            for (auto &child : mSceneLayers[Nodes]->getChildren()) {
-                if (!child->mIsColoring && !child->mIsDoneColoring) {
-                    child->triggerColorAnimation(
-                        dt, speed, 
-                        sf::Color::White, sf::Color(237, 139, 26, 255), sf::Color(237, 139, 26, 255),
-                        sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
-                    );
-                    // mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
-                    // mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({8, 9, 10});
-                } else if (!child->mIsColoring && child->mIsDoneColoring) {
-                    child->mIsDoneColoring = 0;
                     mAnimationOrder = 1;
                 }
-                break;
             }
             break;
         }
@@ -342,6 +323,7 @@ void StackState::insertAnimationReversed(sf::Time dt, double speed, int insertIn
 }
 
 void StackState::deleteAnimation(sf::Time dt, double speed, int deleteIndex) {
+    deleteIndex = 0;
     if (mSceneLayers[CodeBox]->getChildren().size() == 0 || (mSceneLayers[CodeBox]->getChildren().size() == 1 && !mCodeHolder.mStateActivated[Code::SinglyLinkedListInsert])) {
         mSceneLayers[CodeBox]->getChildren().clear();
         std::unique_ptr<CodeBlockNode> codeBlock = std::make_unique<CodeBlockNode>(
@@ -447,6 +429,7 @@ void StackState::deleteAnimation(sf::Time dt, double speed, int deleteIndex) {
 }
 
 void StackState::deleteAnimationReversed(sf::Time dt, double speed, int deleteIndex, int deleteValue) {
+    deleteIndex = 0;
     mIsEndAnimation = 0;
     switch (mAnimationOrder) {
         case 5: {
