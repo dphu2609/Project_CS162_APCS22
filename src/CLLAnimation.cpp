@@ -742,7 +742,8 @@ void CLLState::deleteAnimation(sf::Time dt, double speed, int deleteIndex) {
                         );
                     } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
                         child->mIsDoneColoring = 0;
-                        mAnimationOrder = 3;
+                        if (mListData.size() == 1) mAnimationOrder = 7;
+                        else mAnimationOrder = 4;
                     }
                     break;
                 }
@@ -862,7 +863,7 @@ void CLLState::deleteAnimation(sf::Time dt, double speed, int deleteIndex) {
                         child->triggerScaleAnimation(dt, speed, -250, 0, 0);
                     } else if (!child->mIsScaling && child->mIsDoneScaling && !mIsActionPaused) {
                         child->mIsDoneScaling = 0;
-                        mAnimationOrder = 7;
+                        mAnimationOrder = 8;
                     }
                 }
                 index++;
@@ -931,6 +932,7 @@ void CLLState::deleteAnimation(sf::Time dt, double speed, int deleteIndex) {
                             child->triggerScaleAnimation(dt, speed, -250, 0, 0);
                             child->triggerMoveAnimation(dt, speed, 250, 0);
                         } else if (!child->mIsMoving && child->mIsDoneMoving && !mIsActionPaused) {
+                            child->mIsDoneScaling = 0;
                             child->mIsDoneMoving = 0;
                         }
                     }
@@ -940,21 +942,685 @@ void CLLState::deleteAnimation(sf::Time dt, double speed, int deleteIndex) {
             break;
         }
         case 7: {
+            for (auto &child : mSceneLayers[Nodes]->getChildren()) {
+                if (!child->mIsScaling && !child->mIsDoneScaling) {
+                    child->triggerScaleAnimation(dt, speed*2, -100, 0, 0);
+                } else if (!child->mIsScaling && child->mIsDoneScaling && !mIsActionPaused) {
+                    mAnimationOrder = 8;
+                }
+                break;
+            }
+            int index = 0;
+            for (auto &child : mSceneLayers[CLLArrow]->getChildren()) {
+                if (index == 0) {
+                    if (!child->mIsScaling && !child->mIsDoneScaling) {
+                        child->triggerScaleAnimation(dt, speed*2, -110, speed, -5);
+                    }
+                }
+                else if (index == 1 || index == 3) {
+                    if (!child->mIsScaling && !child->mIsDoneScaling) {
+                        child->triggerScaleAnimation(dt, speed, -5, speed*2, -175);
+                    }
+                }
+                else if (index == 2) {
+                    if (!child->mIsScaling && !child->mIsDoneScaling) {
+                        child->triggerScaleAnimation(dt, speed*2, -(mListData.size()*250) - 100, speed, -5);
+                    }
+                }
+                index++;
+            }
+            for (auto &child : mSceneLayers[Arrow]->getChildren()) {
+                if (!child->mIsScaling && !child->mIsDoneScaling) {
+                    child->triggerScaleAnimation(dt, speed*2, -110, speed, -50);
+                }
+                break;
+            }
+            break;
+        }
+        case 8: {
             if (!mIsEndAnimation) {
                 mSceneLayers[Nodes]->getChildren().erase(mSceneLayers[Nodes]->getChildren().begin() + deleteIndex);
                 if (deleteIndex == mListData.size() - 1) {
                     mSceneLayers[CLLArrow]->getChildren()[0] = std::move(mSceneLayers[Arrow]->getChildren().back());
                 }
+                if (mListData.size() == 0) {
+                    mSceneLayers[CLLArrow]->getChildren().clear();
+                }
                 mSceneLayers[Arrow]->getChildren().erase(mSceneLayers[Arrow]->getChildren().begin() + deleteIndex + 1);
                 mListData.erase(mListData.begin() + deleteIndex);
+                mIsEndAnimation = 1;
+                mIsReplay = 0;
+            }
+            break;
+        }
+    }
+}
+void CLLState::deleteAnimationReversed(sf::Time dt, double speed, int deleteIndex, int deleteValue) {
+    mIsEndAnimation = 0;
+    switch (mAnimationOrder) {
+        case 8: {
+            if (!mIsReplay) {
+                mListData.insert(mListData.begin() + deleteIndex, deleteValue);
+                std::unique_ptr<DisplayNode> newNode = std::make_unique<DisplayNode>(
+                    deleteValue, mFontsHolder[Fonts::FiraSansRegular], 0,
+                    sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + (deleteIndex)*250 + 60, 560), 
+                    sf::Color::White, sf::Color(150, 0, 25, 255), sf::Color(150, 0, 25, 255)
+                );
+                mSceneLayers[Nodes]->getChildren().insert(mSceneLayers[Nodes]->getChildren().begin() + deleteIndex, std::move(newNode));
+            }
+            if (deleteIndex != mListData.size() - 1) {
+                std::unique_ptr<SpriteNode> newArrow = std::make_unique<SpriteNode>(
+                    mTexturesHolder[Textures::rightArrow], sf::Vector2f(0, 0), 
+                    sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + deleteIndex*250 + 130 - 22, 555), -66.8
+                );
+                mSceneLayers[Arrow]->getChildren().insert(mSceneLayers[Arrow]->getChildren().begin() + deleteIndex + 1, std::move(newArrow));
+                mAnimationOrder = 6;
+                break;
+            } else if (mListData.size() != 1) {
+                if (!mIsReplay) {
+                    mSceneLayers[Arrow]->getChildren().push_back(std::move(mSceneLayers[CLLArrow]->getChildren()[0]));
+                    std::unique_ptr<ContainerNode> newCLLArrow = std::make_unique<ContainerNode>(
+                        mWindow, sf::Vector2f(0, 0), 0, sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + deleteIndex*250 + 130 - 22, 555),
+                        sf::Color(240, 114, 53, 255), sf::Color::Transparent
+                    );
+                    mSceneLayers[CLLArrow]->getChildren()[0] = std::move(newCLLArrow);
+                    mIsReplay = 1;
+                }
+                for (auto &child : mSceneLayers[CLLArrow]->getChildren()) {
+                    if (!child->mIsRotating && !child->mIsDoneRotating) {
+                        child->triggerRotateAnimation(dt, 100, -66.8);
+                    }
+                    else if (!child->mIsRotating && child->mIsDoneRotating) {
+                        child->mIsDoneRotating = 0;
+                        mAnimationOrder = 6;
+                    }
+                    break;
+                }
+            } else {
+                std::unique_ptr<SpriteNode> newArrow = std::make_unique<SpriteNode>(
+                    mTexturesHolder[Textures::rightArrow], sf::Vector2f(0, 0), 
+                    sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + deleteIndex*250 + 130 - 22, 555), -66.8
+                );
+                mSceneLayers[Arrow]->getChildren().insert(mSceneLayers[Arrow]->getChildren().begin() + deleteIndex + 1, std::move(newArrow));
+                std::unique_ptr<ContainerNode> newCLLArrow1st = std::make_unique<ContainerNode>(
+                    mWindow, sf::Vector2f(0, 0), 0, sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + mListData.size()*250 - 130, 305),
+                    sf::Color(240, 114, 53, 255), sf::Color::Transparent
+                );
+                mSceneLayers[CLLArrow]->attachChild(std::move(newCLLArrow1st));
+
+                std::unique_ptr<ContainerNode> newCLLArrow2nd = std::make_unique<ContainerNode>(
+                    mWindow, sf::Vector2f(0, 0), 0, sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + mListData.size()*250 - 20, 135),
+                    sf::Color(240, 114, 53, 255), sf::Color::Transparent
+                );
+                mSceneLayers[CLLArrow]->attachChild(std::move(newCLLArrow2nd));
+
+                std::unique_ptr<ContainerNode> newCLLArrow3rd = std::make_unique<ContainerNode>(
+                    mWindow, sf::Vector2f(0, 0), 0, sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 - 120, 135),
+                    sf::Color(240, 114, 53, 255), sf::Color::Transparent
+                );
+                mSceneLayers[CLLArrow]->attachChild(std::move(newCLLArrow3rd));
+
+                std::unique_ptr<ContainerNode> newCLLArrow4th = std::make_unique<ContainerNode>(
+                    mWindow, sf::Vector2f(0, 0), 0, sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 - 120, 135),
+                    sf::Color(240, 114, 53, 255), sf::Color::Transparent
+                );
+                mSceneLayers[CLLArrow]->attachChild(std::move(newCLLArrow4th));
+                mAnimationOrder = 7;
+                break;
+            }
+            break;
+        }
+        case 7: {
+            for (auto &child : mSceneLayers[Nodes]->getChildren()) {
+                if (!child->mIsScaling && !child->mIsDoneScaling) {
+                    child->triggerScaleAnimation(dt, speed*2, -100, 0, 0);
+                } else if (!child->mIsScaling && child->mIsDoneScaling && !mIsActionPaused) {
+                    mAnimationOrder = 3;
+                }
+                break;
+            }
+            int index = 0;
+            for (auto &child : mSceneLayers[CLLArrow]->getChildren()) {
+                if (index == 0) {
+                    if (!child->mIsScaling && !child->mIsDoneScaling) {
+                        child->triggerScaleAnimation(dt, speed*2, 110, speed, 5);
+                    }
+                }
+                else if (index == 1 || index == 3) {
+                    if (!child->mIsScaling && !child->mIsDoneScaling) {
+                        child->triggerScaleAnimation(dt, speed, 5, speed*2, 175);
+                    }
+                }
+                else if (index == 2) {
+                    if (!child->mIsScaling && !child->mIsDoneScaling) {
+                        child->triggerScaleAnimation(dt, speed*2, (mListData.size()*250) + 100, speed, 5);
+                    }
+                }
+                index++;
+            }
+            for (auto &child : mSceneLayers[Arrow]->getChildren()) {
+                if (!child->mIsScaling && !child->mIsDoneScaling) {
+                    child->triggerScaleAnimation(dt, speed*2, 110, speed, 50);
+                }
+                break;
+            }
+            break;
+        }
+        case 6: {
+            int index = 0;
+            for (auto &child : mSceneLayers[Arrow]->getChildren()) {
+                if (index == deleteIndex) {
+                    if (!child->mIsScaling && !child->mIsDoneScaling) {
+                        child->triggerScaleAnimation(dt, speed, 250, 0, 0);
+                    } else if (!child->mIsScaling && child->mIsDoneScaling && !mIsActionPaused) {
+                        child->mIsDoneScaling = 0;
+                        mAnimationOrder = 5;
+                    }
+                }
+                index++;
+            }
+            index = 0;
+            for (auto &child : mSceneLayers[Nodes]->getChildren()) {
+                if (index > deleteIndex && mListData.size()%2 != 0) {
+                    if (!child->mIsMoving && !child->mIsDoneMoving) {
+                        child->triggerMoveAnimation(dt, speed, 250, 0);
+                    } else if (!child->mIsMoving && child->mIsDoneMoving && !mIsActionPaused) {
+                        child->mIsDoneMoving = 0;
+                    }
+                } else if (index < deleteIndex && mListData.size()%2 == 0) {
+                    if (!child->mIsMoving && !child->mIsDoneMoving) {
+                        child->triggerMoveAnimation(dt, speed, 250, 180);
+                    } else if (!child->mIsMoving && child->mIsDoneMoving && !mIsActionPaused) {
+                        child->mIsDoneMoving = 0;
+                    }
+                }
+                index++;
+            }
+            index = 0;
+            for (auto &child : mSceneLayers[Arrow]->getChildren()) {
+                if (index > deleteIndex + 1 && mListData.size()%2 != 0) {
+                    if (!child->mIsMoving && !child->mIsDoneMoving) {
+                        child->triggerMoveAnimation(dt, speed, 250, 0);
+                    } else if (!child->mIsMoving && child->mIsDoneMoving && !mIsActionPaused) {
+                        child->mIsDoneMoving = 0;
+                    }
+                } else if (index < deleteIndex + 1 && mListData.size()%2 == 0) {
+                    if (!child->mIsMoving && !child->mIsDoneMoving) {
+                        child->triggerMoveAnimation(dt, speed, 250, 180);
+                    } else if (!child->mIsMoving && child->mIsDoneMoving && !mIsActionPaused) {
+                        child->mIsDoneMoving = 0;
+                    }
+                }
+                index++;
+            }
+            if (mListData.size()%2 != 0) {
+                index = 0;
+                for (auto &child : mSceneLayers[CLLArrow]->getChildren()) {
+                    if (index == 0 || index == 1) {
+                        if (!child->mIsMoving && !child->mIsDoneMoving) {
+                            child->triggerMoveAnimation(dt, speed, 250, 0);
+                        } else if (!child->mIsMoving && child->mIsDoneMoving && !mIsActionPaused) {
+                            child->mIsDoneMoving = 0;
+                        }
+                    } else if (index == 2) {
+                        if (!child->mIsScaling && !child->mIsDoneScaling) {
+                            child->triggerScaleAnimation(dt, speed, 250, 0, 0);
+                        } else if (!child->mIsMoving && child->mIsDoneMoving && !mIsActionPaused) {
+                            child->mIsDoneMoving = 0;
+                        }
+                    }
+                    index++;
+                }
+            } else {
+                index = 0;
+                for (auto &child : mSceneLayers[CLLArrow]->getChildren()) {
+                    if (index == 3) {
+                        if (!child->mIsMoving && !child->mIsDoneMoving) {
+                            child->triggerMoveAnimation(dt, speed, 250, 180);
+                        } else if (!child->mIsMoving && child->mIsDoneMoving && !mIsActionPaused) {
+                            child->mIsDoneMoving = 0;
+                        }
+                    } else if (index == 2) {
+                        if (!child->mIsMoving && !child->mIsDoneMoving) {
+                            child->triggerScaleAnimation(dt, speed, 250, 0, 0);
+                            child->triggerMoveAnimation(dt, speed, 250, 180);
+                        } else if (!child->mIsMoving && child->mIsDoneMoving && !mIsActionPaused) {
+                            child->mIsDoneMoving = 0;
+                        }
+                    }
+                    index++;
+                }
+            }
+            break;
+        }
+        case 5: {
+            int index = 0;
+            if (deleteIndex != mListData.size() - 1) {
+                for (auto &child : mSceneLayers[Arrow]->getChildren()) {
+                    if (index == deleteIndex + 1) {
+                        if (!child->mIsScaling && !child->mIsDoneScaling) {
+                            child->triggerScaleAnimation(dt, speed*2, (110/std::cos(66.8*std::atan(1)*4/180)), speed, 50);
+                        } else if (!child->mIsScaling && child->mIsDoneScaling && !mIsActionPaused) {
+                            child->mIsDoneScaling = 0;
+                            mAnimationOrder = 4;
+                        }
+                    }
+                    index++;
+                }
+            }
+            else {
+                for (auto &child : mSceneLayers[CLLArrow]->getChildren()) {
+                    if (!child->mIsScaling && !child->mIsDoneScaling) {
+                        child->triggerScaleAnimation(dt, speed*2, (110/std::cos(66.8*std::atan(1)*4/180)), speed, 5);
+                    } else if (!child->mIsScaling && child->mIsDoneScaling && !mIsActionPaused) {
+                        child->mIsDoneScaling = 0;
+                        mAnimationOrder = 4;
+                    }
+                    break;
+                }
+            }
+            index = 0;
+            for (auto &child : mSceneLayers[Nodes]->getChildren()) {
+                if (index == deleteIndex) {
+                    if (!child->mIsScaling && !child->mIsDoneScaling) {
+                        child->triggerScaleAnimation(dt, speed*1.5, 100, 0, 0);
+                    }
+                }
+                index++;
+            }
+            break;
+        }
+        case 4: {
+            int index = 0;
+            if (deleteIndex != mListData.size() - 1) {
+                for (auto &child : mSceneLayers[Arrow]->getChildren()) {
+                    if (index == deleteIndex) {
+                        if (!child->mIsScaling && !child->mIsDoneScaling) {
+                            child->triggerScaleAnimation(dt, speed, -250, 0, 0);
+                        } else if (!child->mIsScaling && child->mIsDoneScaling && !mIsActionPaused) {
+                            child->mIsDoneScaling = 0;
+                        }
+                    }
+                    if (index == deleteIndex + 1) {
+                        if (!child->mIsScaling && !child->mIsDoneScaling) {
+                            child->triggerRotateAnimation(dt, speed, 66.8);
+                            child->triggerScaleAnimation(dt, speed, -(110/std::cos(66.8*std::atan(1)*4/180)) + 110, 0, 0);
+                            child->triggerMoveAnimation(dt, speed, 270, 94.5 + 180);
+                        } else if (!child->mIsScaling && child->mIsDoneScaling && !mIsActionPaused) {
+                            child->mIsDoneScaling = 0;
+                            child->mIsDoneMoving = 0;
+                            child->mIsDoneRotating = 0;
+                            if (deleteIndex == 0) mAnimationOrder = 3;
+                            else mAnimationOrder = 2;
+                        }
+                    }
+                    index++;
+                }
+            } 
+            else {
+                for (auto &child : mSceneLayers[CLLArrow]->getChildren()) {
+                    if (!child->mIsScaling && !child->mIsDoneScaling) {
+                        child->triggerRotateAnimation(dt, speed, 66.8);
+                        child->triggerScaleAnimation(dt, speed, -(110/std::cos(66.8*std::atan(1)*4/180)) + 110, 0, 0);
+                        child->triggerMoveAnimation(dt, speed, 270, 94.5 + 180);
+                    } else if (!child->mIsScaling && child->mIsDoneScaling && !mIsActionPaused) {
+                        child->mIsDoneScaling = 0;  
+                        child->mIsDoneMoving = 0;
+                        child->mIsDoneRotating = 0;
+                        mAnimationOrder = 2;
+                    }
+                    break;
+                }
+                for (auto &child : mSceneLayers[Arrow]->getChildren()) {
+                    if (index == deleteIndex) {
+                        if (!child->mIsScaling && !child->mIsDoneScaling) {
+                            child->triggerScaleAnimation(dt, speed, -250, 0, 0);
+                        } else if (!child->mIsScaling && child->mIsDoneScaling && !mIsActionPaused) {
+                            child->mIsDoneScaling = 0;
+                            mSceneLayers[Arrow]->getChildren().pop_back();
+                            std::unique_ptr<SpriteNode> newArrow = std::make_unique<SpriteNode>(
+                                mTexturesHolder[Textures::rightArrow], sf::Vector2f(110, 50), 
+                                sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + (deleteIndex)*250 - 120, 285), 0
+                            );
+                            mSceneLayers[Arrow]->attachChild(std::move(newArrow));
+                        }
+                    }
+                    index++;
+                }
+            }
+            index = 0;
+            for (auto &child : mSceneLayers[Nodes]->getChildren()) {
+                if (index == deleteIndex) {
+                    if (!child->mIsMoving && !child->mIsDoneMoving) {
+                        child->triggerMoveAnimation(dt, speed, 250, -90);
+                    } else if (!child->mIsMoving && child->mIsDoneMoving && !mIsActionPaused) {
+                        child->mIsDoneMoving = 0;
+                    }
+                }
+                index++;
+            }
+            break;
+        }
+        case 3: {
+            int index = 0;
+            for (auto &child : mSceneLayers[Nodes]->getChildren()) {
+                if (index == this->mColorIndex) {
+                    if (!child->mIsColoring && !child->mIsDoneColoring) {
+                        child->triggerColorAnimation(
+                            dt, speed, 
+                            sf::Color::White, sf::Color(237, 139, 26, 255), sf::Color(237, 139, 26, 255),
+                            sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
+                        );
+                    } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
+                        child->mIsDoneColoring = 0;
+                        this->mColorIndex--;
+                        if (this->mColorIndex < 0) {
+                            mAnimationOrder = 1;
+                        }
+                    }
+                }
+                index++;
+            }
+            if (this->mColorIndex >= mListData.size()) {
+                for (auto &child : mSceneLayers[Nodes]->getChildren()) {
+                    if (!child->mIsColoring && !child->mIsDoneColoring) {
+                        child->triggerColorAnimation(
+                            dt, speed, 
+                            sf::Color::White, sf::Color(150, 0, 25, 255), sf::Color(150, 0, 25, 255),
+                            sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
+                        );
+                    } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
+                        child->mIsDoneColoring = 0;
+                        this->mColorIndex--;
+                    }
+                    break;
+                }
+            }
+            break;
+        }
+        case 2: {
+            int index = 0;
+            for (auto &child : mSceneLayers[Nodes]->getChildren()) {
+                if (index == this->mColorIndex && index < deleteIndex) {
+                    if (!child->mIsColoring && !child->mIsDoneColoring) {
+                        child->triggerColorAnimation(
+                            dt, speed, 
+                            sf::Color::White, sf::Color(237, 139, 26, 255), sf::Color(237, 139, 26, 255),
+                            sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
+                        );
+                    } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
+                        child->mIsDoneColoring = 0;
+                        this->mColorIndex--;
+                        if (this->mColorIndex < 0) {
+                            this->mColorIndex = 0;
+                            mAnimationOrder = 1;
+                        }
+                    }
+                } else if (index == this->mColorIndex) {
+                    if (!child->mIsColoring && !child->mIsDoneColoring) {
+                        child->triggerColorAnimation(
+                            dt, speed, 
+                            sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255),
+                            sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
+                        );
+                    } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
+                        child->mIsDoneColoring = 0;
+                        this->mColorIndex--;
+                    }  
+                }
+                index++;
+            }
+            break;
+        }
+    }
+}
+
+void CLLState::updateAnimation(sf::Time dt, double speed, int updateIndex, int updateValue) {
+    switch (mAnimationOrder) {
+        case 1: {
+            for (auto &child : mSceneLayers[Nodes]->getChildren()) {
+                if (!child->mIsColoring && !child->mIsDoneColoring) {
+                    child->triggerColorAnimation(
+                        dt, 100, 
+                        sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255),
+                        sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
+                    );
+                } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
+                    child->mIsDoneColoring = 0;
+                    mAnimationOrder = 2;
+                }
+            }
+            break;
+        }
+        case 2: {
+            int index = 0;
+            for (auto &child : mSceneLayers[Nodes]->getChildren()) {
+                if (index == this->mColorIndex) {
+                    if (!child->mIsColoring && !child->mIsDoneColoring) {
+                        child->triggerColorAnimation(
+                            dt, speed, 
+                            sf::Color::White, sf::Color(237, 139, 26, 255), sf::Color(237, 139, 26, 255),
+                            sf::Color(237, 139, 26, 255), sf::Color::White, sf::Color(237, 139, 26, 255)
+                        );
+                    } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
+                        child->mIsDoneColoring = 0;
+                        this->mColorIndex++;
+                        if (this->mColorIndex > updateIndex && !mIsActionPaused) {
+                            this->mColorIndex--;
+                            mAnimationOrder = 3;
+                            break;
+                        }
+                    }
+                }
+                index++;
+            }
+            break;
+        }
+        case 3: {
+            int index = 0;
+            for (auto &child : mSceneLayers[Nodes]->getChildren()) {
+                if (index == updateIndex) {
+                    if (!child->mIsColoring && !child->mIsDoneColoring) {
+                        child->triggerColorAnimation(
+                            dt, speed, 
+                            sf::Color::White, sf::Color(78, 62, 222, 255), sf::Color(78, 62, 222, 255),
+                            sf::Color(78, 62, 222, 255), sf::Color::White, sf::Color(78, 62, 222, 255)
+                        );
+                    } else if (!child->mIsColoring && child->mIsDoneColoring) {
+                        child->mIsDoneColoring = 0;
+                        child->triggerChangeContent(std::to_string(updateValue));
+                        mAnimationOrder = 4;
+                    }
+                }
+                index++;
+            }
+            break;
+        }
+        case 4: {
+            if (!mIsEndAnimation) {
+                mListData[updateIndex] = updateValue;
                 mIsEndAnimation = 1;
             }
             break;
         }
     }
 }
-void CLLState::deleteAnimationReversed(sf::Time dt, double speed, int deleteIndex, int deleteValue) {}
-void CLLState::updateAnimation(sf::Time dt, double speed, int updateIndex, int updateValue) {}
-void CLLState::updateAnimationReversed(sf::Time dt, double speed, int updateIndex, int prevValue) {}
-void CLLState::searchAnimation(sf::Time dt, double speed, int searchValue) {}
-void CLLState::searchAnimationReversed(sf::Time dt, double speed, int searchValue) {}
+
+void CLLState::updateAnimationReversed(sf::Time dt, double speed, int updateIndex, int prevValue) {
+    mIsEndAnimation = 0;
+    switch (mAnimationOrder) {
+        case 4: {
+            mListData[updateIndex] = prevValue;
+            mAnimationOrder = 3;
+            break;
+        }
+        case 3: {
+            int index = 0;
+            for (auto &child : mSceneLayers[Nodes]->getChildren()) {
+                if (index == updateIndex) {
+                    if (!child->mIsColoring && !child->mIsDoneColoring) {
+                        child->triggerColorAnimation(
+                            dt, speed, 
+                            sf::Color::White, sf::Color(78, 62, 222, 255), sf::Color(78, 62, 222, 255),
+                            sf::Color(237, 139, 26, 255), sf::Color::White, sf::Color(237, 139, 26, 255)
+                        );
+                    } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
+                        child->mIsDoneColoring = 0;
+                        child->triggerChangeContent(std::to_string(prevValue));
+                        mAnimationOrder = 2;
+                    }
+                }
+                index++;
+            }
+            break;
+        }
+        case 2: {
+            int index = 0;
+            for (auto &child : mSceneLayers[Nodes]->getChildren()) {
+                if (index == this->mColorIndex) {
+                    if (!child->mIsColoring && !child->mIsDoneColoring) {
+                        child->triggerColorAnimation(
+                            dt, speed, 
+                            sf::Color::White, sf::Color(237, 139, 26, 255), sf::Color(237, 139, 26, 255),
+                            sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
+                        );
+                    } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
+                        child->mIsDoneColoring = 0;
+                        this->mColorIndex--;
+                        if (this->mColorIndex < 0 && !mIsActionPaused) {
+                            this->mColorIndex = 0;
+                            mAnimationOrder = 1;
+                            break;
+                        }
+                    }
+                }
+                index++;
+            }
+            break;
+        }
+    }
+}
+
+void CLLState::searchAnimation(sf::Time dt, double speed, int searchValue) {
+    switch(mAnimationOrder) {
+        case 1: {
+            for (auto &child : mSceneLayers[Nodes]->getChildren()) {
+                if (!child->mIsColoring && !child->mIsDoneColoring) {
+                    child->triggerColorAnimation(
+                        dt, 100, 
+                        sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255),
+                        sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
+                    );
+                } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
+                    child->mIsDoneColoring = 0;
+                    mAnimationOrder = 2;
+                }
+            }
+            break;
+        }
+        case 2: {
+            int index = 0;
+            for (auto &child : mSceneLayers[Nodes]->getChildren()) {
+                if (index == this->mColorIndex) {
+                    if (!child->mIsColoring && !child->mIsDoneColoring) {
+                        child->triggerColorAnimation(
+                            dt, speed, 
+                            sf::Color::White, sf::Color(237, 139, 26, 255), sf::Color(237, 139, 26, 255),
+                            sf::Color(237, 139, 26, 255), sf::Color::White, sf::Color(237, 139, 26, 255)
+                        );
+                    } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
+                        child->mIsDoneColoring = 0;
+                        this->mColorIndex++;
+                        if (std::stoi(child->getStringData()) == searchValue) {
+                            this->mColorIndex--;    
+                            mAnimationOrder = 3;
+                        } else if (this->mColorIndex == mListData.size()) {
+                            mAnimationOrder = 4;
+                        }
+                    }
+                }
+                index++;
+            }
+            break;
+        }
+        case 3: {
+            int index = 0;
+            for (auto &child : mSceneLayers[Nodes]->getChildren()) {
+                if (index == this->mColorIndex) {
+                    if (!child->mIsColoring && !child->mIsDoneColoring) {
+                        child->triggerColorAnimation(
+                            dt, speed, 
+                            sf::Color::White, sf::Color(221, 99, 230, 255), sf::Color(221, 99, 230, 255),
+                            sf::Color(221, 99, 230, 255), sf::Color::White, sf::Color(221, 99, 230, 255)
+                        );
+                    } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
+                        child->mIsDoneColoring = 0;
+                        mAnimationOrder = 4;
+                    }
+                }
+                index++;
+            }
+            break;
+        }
+        case 4: {
+            if (!mIsEndAnimation) {
+                mIsEndAnimation = 1;
+            }
+        }
+    }
+}
+
+void CLLState::searchAnimationReversed(sf::Time dt, double speed, int searchValue) {
+    mIsEndAnimation = 0;
+    switch(mAnimationOrder) {
+        case 4: {
+            if (this->mColorIndex == mListData.size()) {
+                this->mColorIndex--;
+                mAnimationOrder = 2;
+            } 
+            else mAnimationOrder = 3;
+            break;
+        }
+        case 3: {
+            int index = 0;
+            for (auto &child : mSceneLayers[Nodes]->getChildren()) {
+                if (index == this->mColorIndex) {
+                    if (!child->mIsColoring && !child->mIsDoneColoring) {
+                        child->triggerColorAnimation(
+                            dt, speed, 
+                            sf::Color::White, sf::Color(221, 99, 230, 255), sf::Color(221, 99, 230, 255),
+                            sf::Color(237, 139, 26, 255), sf::Color::White, sf::Color(237, 139, 26, 255)
+                        );
+                    } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
+                        child->mIsDoneColoring = 0;
+                        mAnimationOrder = 2;
+                    }
+                }
+                index++;
+            }
+            break;
+        }
+        case 2: {
+            int index = 0;
+            for (auto &child : mSceneLayers[Nodes]->getChildren()) {
+                if (index == this->mColorIndex) {
+                    if (!child->mIsColoring && !child->mIsDoneColoring) {
+                        child->triggerColorAnimation(
+                            dt, speed, 
+                            sf::Color::White, sf::Color(237, 139, 26, 255), sf::Color(237, 139, 26, 255),
+                            sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
+                        );
+                    } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
+                        child->mIsDoneColoring = 0;
+                        this->mColorIndex--;
+                        if (this->mColorIndex < 0) {
+                            mAnimationOrder = 1;
+                        }
+                    }
+                }
+                index++;
+            }
+            break;
+        }
+    }
+}

@@ -13,4 +13,6 @@ public:
     virtual void updateAnimationReversed(sf::Time dt, double speed, int updateIndex, int prevValue);
     virtual void searchAnimation(sf::Time dt, double speed, int searchValue);
     virtual void searchAnimationReversed(sf::Time dt, double speed, int searchValue);
+private: 
+    bool mIsReplay = 0;
 };

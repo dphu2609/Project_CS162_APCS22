@@ -1078,7 +1078,7 @@ void SLLState::deleteAnimationReversed(sf::Time dt, double speed, int deleteInde
                 } else if (index == this->mColorIndex) {
                     if (!child->mIsColoring && !child->mIsDoneColoring) {
                         child->triggerColorAnimation(
-                            dt, 100, 
+                            dt, speed, 
                             sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255),
                             sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
                         );
