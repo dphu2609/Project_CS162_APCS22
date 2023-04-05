@@ -325,7 +325,14 @@ void CLLState::insertAnimation(sf::Time dt, double speed, int insertIndex, int i
             );
 
             mSceneLayers[Nodes]->getChildren().insert(mSceneLayers[Nodes]->getChildren().begin() + insertIndex, std::move(addedNode));
-            if (insertIndex != mListData.size()) {
+            if (mListData.size() == 0) {
+                std::unique_ptr<SpriteNode> newArrow = std::make_unique<SpriteNode>(
+                    mTexturesHolder[Textures::rightArrow], sf::Vector2f(110, 50), 
+                    sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 - 120, 285), 0
+                );
+                mSceneLayers[Arrow]->attachChild(std::move(newArrow)); 
+            }
+            else if (insertIndex != mListData.size()) {
                 std::unique_ptr<SpriteNode> newArrow = std::make_unique<SpriteNode>(
                     mTexturesHolder[Textures::rightArrow], sf::Vector2f(110, 50), 
                     sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + (insertIndex + 1)*250 - 120, 285), 0
@@ -427,13 +434,13 @@ void CLLState::insertAnimationReversed(sf::Time dt, double speed, int insertInde
         }
         case 9: {
             mSceneLayers[Nodes]->getChildren().erase(mSceneLayers[Nodes]->getChildren().begin() + insertIndex);
-            if (insertIndex != mListData.size() - 1) 
+            if (insertIndex != mListData.size() - 1 || mListData.size() == 1)
                 mSceneLayers[Arrow]->getChildren().erase(mSceneLayers[Arrow]->getChildren().begin() + insertIndex); 
 
             mListData.erase(mListData.begin() + insertIndex);
 
             std::unique_ptr<DisplayNode> addedNode = std::make_unique<DisplayNode>(
-                insertValue, mFontsHolder[Fonts::FiraSansRegular], 100,
+                insertValue, mFontsHolder[Fonts::FiraSansRegular], 100, 
                 sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + (insertIndex)*250, 250), 
                 sf::Color(31, 224, 205, 255), sf::Color::White, sf::Color(31, 224, 205, 255)
             );
@@ -716,22 +723,24 @@ void CLLState::deleteAnimation(sf::Time dt, double speed, int deleteIndex) {
             break;
         }
         case 3: {
-            int index = 0;
-            for (auto &child : mSceneLayers[Nodes]->getChildren()) {
-                if (index == this->mColorIndex) {
-                    if (!child->mIsColoring && !child->mIsDoneColoring) {
-                        child->triggerColorAnimation(
-                            dt, speed, 
-                            sf::Color::White, sf::Color(237, 139, 26, 255), sf::Color(237, 139, 26, 255),
-                            sf::Color(237, 139, 26, 255), sf::Color::White, sf::Color(237, 139, 26, 255)
-                        );
-                    } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
-                        child->mIsDoneColoring = 0;
-                        this->mColorIndex++;
+            if (mListData.size() != 1) {
+                int index = 0;
+                for (auto &child : mSceneLayers[Nodes]->getChildren()) {
+                    if (index == this->mColorIndex) {
+                        if (!child->mIsColoring && !child->mIsDoneColoring) {
+                            child->triggerColorAnimation(
+                                dt, speed, 
+                                sf::Color::White, sf::Color(237, 139, 26, 255), sf::Color(237, 139, 26, 255),
+                                sf::Color(237, 139, 26, 255), sf::Color::White, sf::Color(237, 139, 26, 255)
+                            );
+                        } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
+                            child->mIsDoneColoring = 0;
+                            this->mColorIndex++;
+                        }
                     }
+                    index++;
                 }
-                index++;
-            }
+            } else mColorIndex = 1;
             if (this->mColorIndex >= mListData.size()) {
                 for (auto &child : mSceneLayers[Nodes]->getChildren()) {
                     if (!child->mIsColoring && !child->mIsDoneColoring) {
@@ -779,9 +788,9 @@ void CLLState::deleteAnimation(sf::Time dt, double speed, int deleteIndex) {
             else {
                 for (auto &child : mSceneLayers[CLLArrow]->getChildren()) {
                     if (!child->mIsScaling && !child->mIsDoneScaling) {
-                        child->triggerRotateAnimation(dt, speed, -66.8);
-                        child->triggerScaleAnimation(dt, speed, (110/std::cos(66.8*std::atan(1)*4/180)) - 110, 0, 0);
-                        child->triggerMoveAnimation(dt, speed, 270, 94.5);
+                        child->triggerRotateAnimation(dt, speed, -66.4);
+                        child->triggerScaleAnimation(dt, speed, (110/std::cos(66.8*std::atan(1)*4/180)) - 55, 0, 0);
+                        child->triggerMoveAnimation(dt, speed, 310, 94.5);
                         mSceneLayers[Arrow]->getChildren().pop_back();
                         std::unique_ptr<ContainerNode> newCLLArrow1st = std::make_unique<ContainerNode>(
                             mWindow, sf::Vector2f(110, 5), 0, sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + (mListData.size() - 1)*250 - 130, 305),
@@ -837,7 +846,7 @@ void CLLState::deleteAnimation(sf::Time dt, double speed, int deleteIndex) {
             else {
                 for (auto &child : mSceneLayers[CLLArrow]->getChildren()) {
                     if (!child->mIsScaling && !child->mIsDoneScaling) {
-                        child->triggerScaleAnimation(dt, speed*2, -(110/std::cos(66.8*std::atan(1)*4/180)), speed, -5);
+                        child->triggerScaleAnimation(dt, speed*2, -(110/std::cos(66.8*std::atan(1)*4/180)) - 55, speed, -5);
                     } else if (!child->mIsScaling && child->mIsDoneScaling && !mIsActionPaused) {
                         mAnimationOrder = 6;
                     }
@@ -954,17 +963,17 @@ void CLLState::deleteAnimation(sf::Time dt, double speed, int deleteIndex) {
             for (auto &child : mSceneLayers[CLLArrow]->getChildren()) {
                 if (index == 0) {
                     if (!child->mIsScaling && !child->mIsDoneScaling) {
-                        child->triggerScaleAnimation(dt, speed*2, -110, speed, -5);
+                        child->triggerScaleAnimation(dt, 0, 0, speed, -5);
                     }
                 }
                 else if (index == 1 || index == 3) {
                     if (!child->mIsScaling && !child->mIsDoneScaling) {
-                        child->triggerScaleAnimation(dt, speed, -5, speed*2, -175);
+                        child->triggerScaleAnimation(dt, speed, -5, 0, 0);
                     }
                 }
                 else if (index == 2) {
                     if (!child->mIsScaling && !child->mIsDoneScaling) {
-                        child->triggerScaleAnimation(dt, speed*2, -(mListData.size()*250) - 100, speed, -5);
+                        child->triggerScaleAnimation(dt, 0, 0, speed, -5);
                     }
                 }
                 index++;
@@ -1001,12 +1010,21 @@ void CLLState::deleteAnimationReversed(sf::Time dt, double speed, int deleteInde
         case 8: {
             if (!mIsReplay) {
                 mListData.insert(mListData.begin() + deleteIndex, deleteValue);
-                std::unique_ptr<DisplayNode> newNode = std::make_unique<DisplayNode>(
-                    deleteValue, mFontsHolder[Fonts::FiraSansRegular], 0,
-                    sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + (deleteIndex)*250 + 60, 560), 
-                    sf::Color::White, sf::Color(150, 0, 25, 255), sf::Color(150, 0, 25, 255)
-                );
-                mSceneLayers[Nodes]->getChildren().insert(mSceneLayers[Nodes]->getChildren().begin() + deleteIndex, std::move(newNode));
+                if (mListData.size() != 1) {
+                    std::unique_ptr<DisplayNode> newNode = std::make_unique<DisplayNode>(
+                        deleteValue, mFontsHolder[Fonts::FiraSansRegular], 0,
+                        sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + (deleteIndex)*250 + 60, 560), 
+                        sf::Color::White, sf::Color(150, 0, 25, 255), sf::Color(150, 0, 25, 255)
+                    );
+                    mSceneLayers[Nodes]->getChildren().insert(mSceneLayers[Nodes]->getChildren().begin() + deleteIndex, std::move(newNode));
+                } else {
+                    std::unique_ptr<DisplayNode> newNode = std::make_unique<DisplayNode>(
+                        deleteValue, mFontsHolder[Fonts::FiraSansRegular], 0,
+                        sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + (deleteIndex)*250 + 60, 310), 
+                        sf::Color::White, sf::Color(150, 0, 25, 255), sf::Color(150, 0, 25, 255)
+                    );
+                    mSceneLayers[Nodes]->getChildren().insert(mSceneLayers[Nodes]->getChildren().begin() + deleteIndex, std::move(newNode));
+                }
             }
             if (deleteIndex != mListData.size() - 1) {
                 std::unique_ptr<SpriteNode> newArrow = std::make_unique<SpriteNode>(
@@ -1020,15 +1038,15 @@ void CLLState::deleteAnimationReversed(sf::Time dt, double speed, int deleteInde
                 if (!mIsReplay) {
                     mSceneLayers[Arrow]->getChildren().push_back(std::move(mSceneLayers[CLLArrow]->getChildren()[0]));
                     std::unique_ptr<ContainerNode> newCLLArrow = std::make_unique<ContainerNode>(
-                        mWindow, sf::Vector2f(0, 0), 0, sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + deleteIndex*250 + 130 - 22, 555),
+                        mWindow, sf::Vector2f(0, 0), 0, sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + deleteIndex*250 + 130 - 30, 610),
                         sf::Color(240, 114, 53, 255), sf::Color::Transparent
                     );
                     mSceneLayers[CLLArrow]->getChildren()[0] = std::move(newCLLArrow);
                     mIsReplay = 1;
                 }
-                for (auto &child : mSceneLayers[CLLArrow]->getChildren()) {
+                for (auto &child : mSceneLayers[CLLArrow]->getChildren()) { 
                     if (!child->mIsRotating && !child->mIsDoneRotating) {
-                        child->triggerRotateAnimation(dt, 100, -66.8);
+                        child->triggerRotateAnimation(dt, 100, -83.f);
                     }
                     else if (!child->mIsRotating && child->mIsDoneRotating) {
                         child->mIsDoneRotating = 0;
@@ -1039,29 +1057,30 @@ void CLLState::deleteAnimationReversed(sf::Time dt, double speed, int deleteInde
             } else {
                 std::unique_ptr<SpriteNode> newArrow = std::make_unique<SpriteNode>(
                     mTexturesHolder[Textures::rightArrow], sf::Vector2f(0, 0), 
-                    sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + deleteIndex*250 + 130 - 22, 555), -66.8
+                    sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + deleteIndex*250 - 120, 285), 0
                 );
-                mSceneLayers[Arrow]->getChildren().insert(mSceneLayers[Arrow]->getChildren().begin() + deleteIndex + 1, std::move(newArrow));
+                mSceneLayers[Arrow]->attachChild(std::move(newArrow));
+                
                 std::unique_ptr<ContainerNode> newCLLArrow1st = std::make_unique<ContainerNode>(
-                    mWindow, sf::Vector2f(0, 0), 0, sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + mListData.size()*250 - 130, 305),
+                    mWindow, sf::Vector2f(110, 5), 0, sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + mListData.size()*250 - 130, 305),
                     sf::Color(240, 114, 53, 255), sf::Color::Transparent
                 );
                 mSceneLayers[CLLArrow]->attachChild(std::move(newCLLArrow1st));
 
                 std::unique_ptr<ContainerNode> newCLLArrow2nd = std::make_unique<ContainerNode>(
-                    mWindow, sf::Vector2f(0, 0), 0, sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + mListData.size()*250 - 20, 135),
+                    mWindow, sf::Vector2f(0, 175), 0, sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + mListData.size()*250 - 20, 135),
                     sf::Color(240, 114, 53, 255), sf::Color::Transparent
                 );
                 mSceneLayers[CLLArrow]->attachChild(std::move(newCLLArrow2nd));
 
                 std::unique_ptr<ContainerNode> newCLLArrow3rd = std::make_unique<ContainerNode>(
-                    mWindow, sf::Vector2f(0, 0), 0, sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 - 120, 135),
+                    mWindow, sf::Vector2f(mListData.size()*250 + 100, 0), 0, sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 - 120, 135),
                     sf::Color(240, 114, 53, 255), sf::Color::Transparent
                 );
                 mSceneLayers[CLLArrow]->attachChild(std::move(newCLLArrow3rd));
 
                 std::unique_ptr<ContainerNode> newCLLArrow4th = std::make_unique<ContainerNode>(
-                    mWindow, sf::Vector2f(0, 0), 0, sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 - 120, 135),
+                    mWindow, sf::Vector2f(0, 175), 0, sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 - 120, 135),
                     sf::Color(240, 114, 53, 255), sf::Color::Transparent
                 );
                 mSceneLayers[CLLArrow]->attachChild(std::move(newCLLArrow4th));
@@ -1073,7 +1092,7 @@ void CLLState::deleteAnimationReversed(sf::Time dt, double speed, int deleteInde
         case 7: {
             for (auto &child : mSceneLayers[Nodes]->getChildren()) {
                 if (!child->mIsScaling && !child->mIsDoneScaling) {
-                    child->triggerScaleAnimation(dt, speed*2, -100, 0, 0);
+                    child->triggerScaleAnimation(dt, speed*2, 100, 0, 0);
                 } else if (!child->mIsScaling && child->mIsDoneScaling && !mIsActionPaused) {
                     mAnimationOrder = 3;
                 }
@@ -1081,19 +1100,14 @@ void CLLState::deleteAnimationReversed(sf::Time dt, double speed, int deleteInde
             }
             int index = 0;
             for (auto &child : mSceneLayers[CLLArrow]->getChildren()) {
-                if (index == 0) {
+                if (index == 0 || index == 2) {
                     if (!child->mIsScaling && !child->mIsDoneScaling) {
-                        child->triggerScaleAnimation(dt, speed*2, 110, speed, 5);
+                        child->triggerScaleAnimation(dt, 0, 0, speed*2, 5);
                     }
                 }
                 else if (index == 1 || index == 3) {
                     if (!child->mIsScaling && !child->mIsDoneScaling) {
-                        child->triggerScaleAnimation(dt, speed, 5, speed*2, 175);
-                    }
-                }
-                else if (index == 2) {
-                    if (!child->mIsScaling && !child->mIsDoneScaling) {
-                        child->triggerScaleAnimation(dt, speed*2, (mListData.size()*250) + 100, speed, 5);
+                        child->triggerScaleAnimation(dt, speed*2, 5, 0, 0);
                     }
                 }
                 index++;
@@ -1211,7 +1225,7 @@ void CLLState::deleteAnimationReversed(sf::Time dt, double speed, int deleteInde
             else {
                 for (auto &child : mSceneLayers[CLLArrow]->getChildren()) {
                     if (!child->mIsScaling && !child->mIsDoneScaling) {
-                        child->triggerScaleAnimation(dt, speed*2, (110/std::cos(66.8*std::atan(1)*4/180)), speed, 5);
+                        child->triggerScaleAnimation(dt, speed*2, (110/std::cos(66.8*std::atan(1)*4/180)) + 50, speed, 5);
                     } else if (!child->mIsScaling && child->mIsDoneScaling && !mIsActionPaused) {
                         child->mIsDoneScaling = 0;
                         mAnimationOrder = 4;
@@ -1260,9 +1274,9 @@ void CLLState::deleteAnimationReversed(sf::Time dt, double speed, int deleteInde
             else {
                 for (auto &child : mSceneLayers[CLLArrow]->getChildren()) {
                     if (!child->mIsScaling && !child->mIsDoneScaling) {
-                        child->triggerRotateAnimation(dt, speed, 66.8);
-                        child->triggerScaleAnimation(dt, speed, -(110/std::cos(66.8*std::atan(1)*4/180)) + 110, 0, 0);
-                        child->triggerMoveAnimation(dt, speed, 270, 94.5 + 180);
+                        child->triggerRotateAnimation(dt, speed, 66.4);
+                        child->triggerScaleAnimation(dt, speed, -(110/std::cos(66.8*std::atan(1)*4/180)) + 60, 0, 0);
+                        child->triggerMoveAnimation(dt, speed, 305, 94.5 + 180);
                     } else if (!child->mIsScaling && child->mIsDoneScaling && !mIsActionPaused) {
                         child->mIsDoneScaling = 0;  
                         child->mIsDoneMoving = 0;
@@ -1274,7 +1288,7 @@ void CLLState::deleteAnimationReversed(sf::Time dt, double speed, int deleteInde
                 for (auto &child : mSceneLayers[Arrow]->getChildren()) {
                     if (index == deleteIndex) {
                         if (!child->mIsScaling && !child->mIsDoneScaling) {
-                            child->triggerScaleAnimation(dt, speed, -250, 0, 0);
+                            child->triggerScaleAnimation(dt, speed, -240, 0, 0);
                         } else if (!child->mIsScaling && child->mIsDoneScaling && !mIsActionPaused) {
                             child->mIsDoneScaling = 0;
                             mSceneLayers[Arrow]->getChildren().pop_back();
@@ -1303,24 +1317,26 @@ void CLLState::deleteAnimationReversed(sf::Time dt, double speed, int deleteInde
         }
         case 3: {
             int index = 0;
-            for (auto &child : mSceneLayers[Nodes]->getChildren()) {
-                if (index == this->mColorIndex) {
-                    if (!child->mIsColoring && !child->mIsDoneColoring) {
-                        child->triggerColorAnimation(
-                            dt, speed, 
-                            sf::Color::White, sf::Color(237, 139, 26, 255), sf::Color(237, 139, 26, 255),
-                            sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
-                        );
-                    } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
-                        child->mIsDoneColoring = 0;
-                        this->mColorIndex--;
-                        if (this->mColorIndex < 0) {
-                            mAnimationOrder = 1;
+            if (mListData.size() != 1) {
+                for (auto &child : mSceneLayers[Nodes]->getChildren()) {
+                    if (index == this->mColorIndex) {
+                        if (!child->mIsColoring && !child->mIsDoneColoring) {
+                            child->triggerColorAnimation(
+                                dt, speed, 
+                                sf::Color::White, sf::Color(237, 139, 26, 255), sf::Color(237, 139, 26, 255),
+                                sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
+                            );
+                        } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
+                            child->mIsDoneColoring = 0;
+                            this->mColorIndex--;
+                            if (this->mColorIndex < 0) {
+                                mAnimationOrder = 1;
+                            }
                         }
                     }
+                    index++;
                 }
-                index++;
-            }
+            } else mColorIndex = 1;
             if (this->mColorIndex >= mListData.size()) {
                 for (auto &child : mSceneLayers[Nodes]->getChildren()) {
                     if (!child->mIsColoring && !child->mIsDoneColoring) {
@@ -1331,6 +1347,7 @@ void CLLState::deleteAnimationReversed(sf::Time dt, double speed, int deleteInde
                         );
                     } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
                         child->mIsDoneColoring = 0;
+                        if (mListData.size() == 1) mAnimationOrder = 1;
                         this->mColorIndex--;
                     }
                     break;
