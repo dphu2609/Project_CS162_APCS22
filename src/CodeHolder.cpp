@@ -44,9 +44,6 @@ void CodeHolder::load() {
         "void update(int index, int value, Node* head) {",
         "    Node* cur = head;",
         "    for (int i = 0; i < index; i++) {",
-        "        if (cur == nullptr) {",
-        "            return;",
-        "        }",
         "        cur = cur->next;",
         "    }",
         "    cur->data = value;",
@@ -63,6 +60,24 @@ void CodeHolder::load() {
         "        cur = cur->next;",
         "    }",
         "    return nullptr;",
+        "}"
+    };
+
+    mCodeMap[Code::DoublyLinkedListInsert] = {
+        "void insert(int index, int value, Node*& head) {",
+        "    if (index == 0) {",
+        "        Node* newNode = new Node(value, nullptr, head);",
+        "        if (head != nullptr) head->prev = newNode;",
+        "        head = newNode;",
+        "        return;",
+        "    }",
+        "    Node* cur = head;",
+        "    for (int i = 0; i < index - 1; i++) {",
+        "        cur = cur->next;",
+        "    }",
+        "    Node* newNode = new Node(value, cur, cur->next);",
+        "    if (cur->next != nullptr) cur->next->prev = newNode;",
+        "    cur->next = newNode;",
         "}"
     };
 

@@ -1,7 +1,8 @@
 #include <Program2.hpp>
 
-Program2::Program2() : mWindow(sf::VideoMode(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height), "Data Visual", sf::Style::Default), 
+Program2::Program2() : mWindow(sf::VideoMode(sf::VideoMode::getDesktopMode().width - 35, sf::VideoMode::getDesktopMode().height - 70), "Data Visual", sf::Style::Default), 
 mSettings(mWindow), mSLL(mWindow), mDLL(mWindow), mCLL(mWindow), mStack(mWindow), mQueue(mWindow), mStaticArray(mWindow), mDynamicArray(mWindow) {
+    mWindow.setPosition(sf::Vector2i(0, 0));
 }
 
 void Program2::run() {
@@ -16,13 +17,16 @@ void Program2::run() {
             timeSinceLastUpdate -= dt;
             mSettings.activeSettings(dt);
             if (mSettings.mStateActivated[States::SinglyLinkedList]) {
-                dataStructureDisplay(dt, mCLL);
+                dataStructureDisplay(dt, mSLL);
+            } else if (mSettings.mStateActivated[States::DynamicArray]) {
+                dataStructureDisplay(dt, mDynamicArray);
             }
             mSettings.update(dt);
             mSettings.controlBoxUpdate();
         }
         mWindow.clear(sf::Color(18, 18, 18, 255));
-        if (mSettings.mStateActivated[States::SinglyLinkedList]) mCLL.draw();
+        if (mSettings.mStateActivated[States::SinglyLinkedList]) mSLL.draw();
+        else if (mSettings.mStateActivated[States::DynamicArray]) mDynamicArray.draw();
         mSettings.draw();
         mWindow.display();
     }

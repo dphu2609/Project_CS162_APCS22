@@ -3,11 +3,27 @@
 DisplayNode::DisplayNode(int val, sf::Font &font, double size, sf::Vector2f pos, sf::Color numColor, sf::Color boxColor, sf::Color boxOutlineColor) {
     std::string string = std::to_string(val);
     this->mNode.set(string, font, size, pos, numColor, boxColor, boxOutlineColor);
+    this->mLabel.setFont(font);
+    this->mLabel.setString("");
+    this->mLabel.setCharacterSize(size*0.5);
+    this->mLabel.setPosition(this->mNode.box.getPosition() + sf::Vector2f(this->mNode.box.getSize().x*0.5, this->mNode.box.getSize().y + 20) - sf::Vector2f(this->mLabel.getLocalBounds().width/2 + size*0.05, 0));
+    this->mLabel.setFillColor(sf::Color(250, 152, 132, 255));
+}
+
+DisplayNode::DisplayNode(int val, sf::Font &font, double size, std::string label, double labelSize, sf::Vector2f pos, sf::Color numColor, sf::Color boxColor, sf::Color boxOutlineColor) {
+    std::string string = std::to_string(val);
+    this->mNode.set(string, font, size, pos, numColor, boxColor, boxOutlineColor);
+    this->mLabel.setFont(font);
+    this->mLabel.setString(label);
+    this->mLabel.setCharacterSize(labelSize);
+    this->mLabel.setPosition(this->mNode.box.getPosition() + sf::Vector2f(this->mNode.box.getSize().x*0.5, this->mNode.box.getSize().y + 20) - sf::Vector2f(this->mLabel.getLocalBounds().width/2 + size*0.05, 0));
+    this->mLabel.setFillColor(sf::Color(250, 152, 132, 255));
 }
 
 void DisplayNode::drawCurrent(sf::RenderTarget &target, sf::RenderStates states) const {
     target.draw(mNode.box);
     target.draw(mNode.number);
+    target.draw(mLabel);
 }
 
 void DisplayNode::updateCurrent(sf::Time dt) {
@@ -17,6 +33,7 @@ void DisplayNode::updateCurrent(sf::Time dt) {
             this->mStartPos.y + (-std::pow(this->mCurrentPos, 4) + this->mMovingDistance)*std::sin(this->mAngleMovement*std::atan(1)*4/180)
         );
         this->mNode.setPos(newPos);
+        this->mLabel.setPosition(this->mNode.box.getPosition() + sf::Vector2f(this->mNode.box.getSize().x*0.5, this->mNode.box.getSize().y + 20) - sf::Vector2f(this->mLabel.getLocalBounds().width/2 + this->mNode.box.getOutlineThickness(), 0));
         if (this->mCurrentPos > 0) this->mCurrentPos -= this->mMovingStep;
         else {
             this->mAnimationType["move"] = 0;
@@ -32,6 +49,8 @@ void DisplayNode::updateCurrent(sf::Time dt) {
         else    
             newSize = this->mStartScale.x + std::pow(this->mCurrentLengthScale, 4) + this->mScalingLengthDistance;
         this->mNode.setSize(newSize);
+        this->mLabel.setCharacterSize(mNode.box.getSize().x*5/12);
+        this->mLabel.setPosition(this->mNode.box.getPosition() + sf::Vector2f(this->mNode.box.getSize().x*0.5, this->mNode.box.getSize().y + 20) - sf::Vector2f(this->mLabel.getLocalBounds().width/2 + this->mNode.box.getOutlineThickness(), 0));
         if (this->mCurrentLengthScale > 0) this->mCurrentLengthScale -= this->mScalingLengthStep;
         else {
             this->mAnimationType["scale"] = 0;
@@ -107,4 +126,9 @@ void DisplayNode::triggerChangeContent(std::string string) {
 std::string DisplayNode::getStringData() {
     std::string str = this->mNode.number.getString();
     return str;
+}
+
+void DisplayNode::setLabel(std::string text) {
+    this->mLabel.setString(text);
+    this->mLabel.setPosition(this->mNode.box.getPosition() + sf::Vector2f(this->mNode.box.getSize().x*0.5, this->mNode.box.getSize().y + 20) - sf::Vector2f(this->mLabel.getLocalBounds().width/2 + this->mNode.box.getOutlineThickness(), 0));
 }

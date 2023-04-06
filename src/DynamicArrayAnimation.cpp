@@ -148,6 +148,7 @@ void DynamicArrayState::insertAnimation(sf::Time dt, double speed, int insertInd
         }
         case 5: {
             if (insertIndex == mListData.size()) {
+                mSceneLayers[BlankNode]->getChildren().clear();
                 mAnimationOrder = 6;
                 break;
             }

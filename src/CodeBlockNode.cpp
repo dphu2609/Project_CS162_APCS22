@@ -25,7 +25,7 @@ CodeBlockNode::CodeBlockNode(
         mLineActivated.push_back(0);
     }
 
-    sf::Vector2f initialPos(window.getSize().x - maxWidth - 150, window.getSize().y - textSize/0.5*codeContent.size() - 50);
+    sf::Vector2f initialPos(sf::VideoMode::getDesktopMode().width - maxWidth - 185, sf::VideoMode::getDesktopMode().height - textSize/0.5*codeContent.size() - 120);
 
     for (int i = 0; i < codeContent.size(); i++) {
         mBox[i].setSize(sf::Vector2f(maxWidth + 100, textSize/0.5));

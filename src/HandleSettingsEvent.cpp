@@ -5,7 +5,22 @@ void SettingsState::handleActionDropBoxEvent(sf::Event &event) {
     for (auto &child : this->mSceneLayers[DropBox]->getChildren()) {
         switch (index) {
             case 0: {
-                if (child->getClickedIndex(event) == 2) mStateActivated[States::SinglyLinkedList] = 1;
+                switch(child->getClickedIndex(event)) {
+                    case 0: {
+                        for (int i = 0; i < mStateActivated.size(); i++) {
+                            mStateActivated[i] = 0;
+                        }
+                        break;
+                    }
+                    case 1: {
+                        mStateActivated[States::DynamicArray] = 1;
+                        break;
+                    }
+                    case 2: {
+                        mStateActivated[States::SinglyLinkedList] = 1;
+                        break;
+                    }
+                }
                 break;
             }
             case 1: {
@@ -599,13 +614,13 @@ void SettingsState::handleControlBoxEvent(sf::Event &event) {
                     if (mIsActionPaused) {
                         std::unique_ptr<ImageButtonNode> playButton = std::make_unique<ImageButtonNode>(
                             mWindow, this->mTexturesHolder[Textures::playButton], this->mTexturesHolder[Textures::playButtonHoverred],
-                            sf::Vector2f(30, 30), sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2, sf::VideoMode::getDesktopMode().height - 150)
+                            sf::Vector2f(30, 30), sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2, sf::VideoMode::getDesktopMode().height - 220)
                         );
                         mSceneLayers[ControlBoxButtons]->getChildren()[0] = std::move(playButton);
                     } else {
                         std::unique_ptr<ImageButtonNode> pauseButton = std::make_unique<ImageButtonNode>(
                             mWindow, this->mTexturesHolder[Textures::pauseButton], this->mTexturesHolder[Textures::pauseButtonHoverred],
-                            sf::Vector2f(30, 30), sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2, sf::VideoMode::getDesktopMode().height - 150)
+                            sf::Vector2f(30, 30), sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2, sf::VideoMode::getDesktopMode().height - 220)
                         );
                         mSceneLayers[ControlBoxButtons]->getChildren()[0] = std::move(pauseButton);
                     }
@@ -617,7 +632,7 @@ void SettingsState::handleControlBoxEvent(sf::Event &event) {
                     if (!mIsActionPaused) {
                         std::unique_ptr<ImageButtonNode> playButton = std::make_unique<ImageButtonNode>(
                             mWindow, this->mTexturesHolder[Textures::playButton], this->mTexturesHolder[Textures::playButtonHoverred],
-                            sf::Vector2f(30, 30), sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2, sf::VideoMode::getDesktopMode().height - 150)
+                            sf::Vector2f(30, 30), sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2, sf::VideoMode::getDesktopMode().height - 220)
                         );
                         mSceneLayers[ControlBoxButtons]->getChildren()[0] = std::move(playButton);
                     }
@@ -636,7 +651,7 @@ void SettingsState::handleControlBoxEvent(sf::Event &event) {
                     if (!mIsActionPaused) {
                         std::unique_ptr<ImageButtonNode> playButton = std::make_unique<ImageButtonNode>(
                             mWindow, this->mTexturesHolder[Textures::playButton], this->mTexturesHolder[Textures::playButtonHoverred],
-                            sf::Vector2f(30, 30), sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2, sf::VideoMode::getDesktopMode().height - 150)
+                            sf::Vector2f(30, 30), sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2, sf::VideoMode::getDesktopMode().height - 220)
                         );
                         mSceneLayers[ControlBoxButtons]->getChildren()[0] = std::move(playButton);
                     }
@@ -656,14 +671,14 @@ void SettingsState::controlBoxUpdate() {
     if (mIsEndAnimation.first && !mIsEndAnimation.second && !mIsPrev) {
         std::unique_ptr<ImageButtonNode> replayButton = std::make_unique<ImageButtonNode>(
             mWindow, this->mTexturesHolder[Textures::replayButton], this->mTexturesHolder[Textures::replayButtonHoverred],
-            sf::Vector2f(30, 30), sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2, sf::VideoMode::getDesktopMode().height - 150)
+            sf::Vector2f(30, 30), sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2, sf::VideoMode::getDesktopMode().height - 220)
         );
         mSceneLayers[ControlBoxButtons]->getChildren()[0] = std::move(replayButton);
         mIsEndAnimation.second = 1;
     } else if (!mIsEndAnimation.first && mIsEndAnimation.second) {
         std::unique_ptr<ImageButtonNode> playButton = std::make_unique<ImageButtonNode>(
             mWindow, this->mTexturesHolder[Textures::playButton], this->mTexturesHolder[Textures::playButtonHoverred],
-            sf::Vector2f(30, 30), sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2, sf::VideoMode::getDesktopMode().height - 150)
+            sf::Vector2f(30, 30), sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2, sf::VideoMode::getDesktopMode().height - 220)
         );
         mSceneLayers[ControlBoxButtons]->getChildren()[0] = std::move(playButton);
         mIsEndAnimation.second = 0;

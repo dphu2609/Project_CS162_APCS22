@@ -38,7 +38,7 @@ void SettingsState::buildScence() {
     }
 
     std::unique_ptr<ContainerNode> container = std::make_unique<ContainerNode>(
-        mWindow, sf::Vector2f(500, sf::VideoMode::getDesktopMode().height - 100), 0,
+        mWindow, sf::Vector2f(500, sf::VideoMode::getDesktopMode().height - 170), 0,
         sf::Vector2f(20 - 600, 50), sf::Color(52, 53, 59, 255), sf::Color::Black
     );
     mSceneLayers[Containers]->attachChild(std::move(container));
@@ -67,25 +67,25 @@ void SettingsState::buildScence() {
 
     std::unique_ptr<ContainerNode> controlBoxContainer = std::make_unique<ContainerNode>(
         mWindow, sf::Vector2f(500, 150), 0,
-        sf::Vector2f((sf::VideoMode::getDesktopMode().width - 500)/2, sf::VideoMode::getDesktopMode().height - 200 + 300), sf::Color(52, 53, 59, 255), sf::Color::Black
+        sf::Vector2f((sf::VideoMode::getDesktopMode().width - 500)/2, sf::VideoMode::getDesktopMode().height - 270 + 300), sf::Color(52, 53, 59, 255), sf::Color::Black
     );
     mSceneLayers[ControlBoxContainer]->attachChild(std::move(controlBoxContainer));
 
     std::unique_ptr<ImageButtonNode> pauseButton = std::make_unique<ImageButtonNode>(
         mWindow, this->mTexturesHolder[Textures::pauseButton], this->mTexturesHolder[Textures::pauseButtonHoverred],
-        sf::Vector2f(30, 30), sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2, sf::VideoMode::getDesktopMode().height - 150 + 300)
+        sf::Vector2f(30, 30), sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2, sf::VideoMode::getDesktopMode().height - 220 + 300)
     );
     mSceneLayers[ControlBoxButtons]->attachChild(std::move(pauseButton));
 
     std::unique_ptr<ImageButtonNode> nextButton = std::make_unique<ImageButtonNode>(
         mWindow, this->mTexturesHolder[Textures::nextButton], this->mTexturesHolder[Textures::nextButtonHoverred],
-        sf::Vector2f(30, 30), sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 + 70, sf::VideoMode::getDesktopMode().height - 150 + 300)
+        sf::Vector2f(30, 30), sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 + 70, sf::VideoMode::getDesktopMode().height - 220 + 300)
     );
     mSceneLayers[ControlBoxButtons]->attachChild(std::move(nextButton));
 
     std::unique_ptr<ImageButtonNode> prevButton = std::make_unique<ImageButtonNode>(
         mWindow, this->mTexturesHolder[Textures::prevButton], this->mTexturesHolder[Textures::prevButtonHoverred],
-        sf::Vector2f(30, 30), sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 - 70, sf::VideoMode::getDesktopMode().height - 150 + 300)
+        sf::Vector2f(30, 30), sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 - 70, sf::VideoMode::getDesktopMode().height - 220 + 300)
     );
     mSceneLayers[ControlBoxButtons]->attachChild(std::move(prevButton));
 }

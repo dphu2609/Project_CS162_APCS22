@@ -32,6 +32,7 @@ public:
     virtual bool isActivated() {return 0;};
     virtual void changeCodeBoxColor(std::vector<int> index) {}
     virtual void resetCodeBoxColor() {}
+    virtual void setLabel(std::string text) {}
 private:
     virtual void drawCurrent(sf::RenderTarget &target, sf::RenderStates states) const {}
     virtual void updateCurrent(sf::Time dt) {}
