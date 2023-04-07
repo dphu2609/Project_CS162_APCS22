@@ -59,8 +59,10 @@ void SLLState::insertAnimation(sf::Time dt, double speed, int insertIndex, int i
                         sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255),
                         sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
                     );
-                    mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
-                    mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({7});
+                    if (insertIndex != 0 && insertIndex != mListData.size()) {
+                        mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
+                        mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({7});
+                    }
                 } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
                     child->mIsDoneColoring = 0;
                     mAnimationOrder = 2;
@@ -190,7 +192,7 @@ void SLLState::insertAnimation(sf::Time dt, double speed, int insertIndex, int i
                             child->triggerScaleAnimation(dt, speed*0.8, (110/std::cos(66.8*std::atan(1)*4/180)) - 110, 0, 0);
                             mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
                             mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({13});
-                             child->triggerMoveAnimation(dt, speed*2, 25, 30);
+                            child->triggerMoveAnimation(dt, speed*2, 25, 30);
                         }
                         else {
                             child->triggerScaleAnimation(dt, speed*0.8, 110, 0, 0);
@@ -1019,6 +1021,7 @@ void SLLState::deleteAnimationReversed(sf::Time dt, double speed, int deleteInde
                         }
                     } else if (index == 1) {
                         child->setLabel("");
+                        break;
                     }
                     index++;
                 }
@@ -1280,9 +1283,9 @@ void SLLState::updateAnimation(sf::Time dt, double speed, int updateIndex, int u
                         if (index != 0) child->setLabel("cur");
                         else child->setLabel("head/cur");
                     } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
-                        child->mIsDoneColoring = 0;
                         if (index != 0) child->setLabel("");
                         else child->setLabel("head");
+                        child->mIsDoneColoring = 0;
                         this->mColorIndex++;
                         if (this->mColorIndex > updateIndex && !mIsActionPaused) {
                             this->mColorIndex--;
@@ -1540,7 +1543,11 @@ void SLLState::searchAnimationReversed(sf::Time dt, double speed, int searchValu
                         );
                         mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
                         mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({2, 6, 7});
+                        if (index != 0) child->setLabel("cur");
+                        else child->setLabel("head/cur");
                     } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
+                        if (index != 0) child->setLabel("");
+                        else child->setLabel("head");
                         child->mIsDoneColoring = 0;
                         this->mColorIndex--;
                         if (this->mColorIndex < 0) {

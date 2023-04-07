@@ -2,6 +2,8 @@
 #include <State/DataStructureState.hpp>
 
 class StaticArrayState : public DataStructureState {
+private: 
+    bool mIsReversedAtFirst = 1;
 public: 
     StaticArrayState(sf::RenderWindow &window) : DataStructureState(window) {}
     virtual void createDataStructure(std::vector<int> list);

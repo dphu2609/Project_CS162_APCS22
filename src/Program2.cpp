@@ -17,16 +17,16 @@ void Program2::run() {
             timeSinceLastUpdate -= dt;
             mSettings.activeSettings(dt);
             if (mSettings.mStateActivated[States::SinglyLinkedList]) {
-                dataStructureDisplay(dt, mSLL);
+                dataStructureDisplay(dt, mDLL);
             } else if (mSettings.mStateActivated[States::DynamicArray]) {
-                dataStructureDisplay(dt, mDynamicArray);
+                dataStructureDisplay(dt, mStaticArray);
             }
             mSettings.update(dt);
             mSettings.controlBoxUpdate();
         }
         mWindow.clear(sf::Color(18, 18, 18, 255));
-        if (mSettings.mStateActivated[States::SinglyLinkedList]) mSLL.draw();
-        else if (mSettings.mStateActivated[States::DynamicArray]) mDynamicArray.draw();
+        if (mSettings.mStateActivated[States::SinglyLinkedList]) mDLL.draw();
+        else if (mSettings.mStateActivated[States::DynamicArray]) mStaticArray.draw();
         mSettings.draw();
         mWindow.display();
     }

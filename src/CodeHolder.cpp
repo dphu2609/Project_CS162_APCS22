@@ -81,6 +81,50 @@ void CodeHolder::load() {
         "}"
     };
 
+    mCodeMap[Code::DoublyLinkedListDelete] = {
+        "void delete(Node*& head, int index) {",
+        "    if (index == 0) {",
+        "        Node* temp = head;",
+        "        head = head->next;",
+        "        head->prev = nullptr;",
+        "        delete temp;",
+        "    } else {",
+        "        Node* cur = head;",
+        "        for (int i = 0; i < index - 1; i++) {",
+        "            cur = cur->next;",
+        "        }",
+        "        Node* temp = cur->next;",
+        "        cur->next = temp->next;",
+        "        if (temp->next != nullptr) temp->next->prev = cur;",
+        "        delete temp;",
+        "    }",
+        "}"
+    };
+
+    mCodeMap[Code::DoublyLinkedListUpdate] = {
+        "void update(int index, int value, Node* head) {",
+        "    Node* cur = head;",
+        "    for (int i = 0; i < index; i++) {",
+        "        cur = cur->next;",
+        "    }",
+        "    cur->data = value;",
+        "}"
+    };
+
+    mCodeMap[Code::DoublyLinkedListSearch] = {
+        "Node* search(int value, Node* head) {",
+        "    Node* cur = head;",
+        "    while (cur != nullptr) {",
+        "        if (cur->data == value) {",
+        "            return cur;",
+        "        }",
+        "        cur = cur->next;",
+        "    }",
+        "    return nullptr;",
+        "}"
+    };
+
+
     mCodeMap[Code::StaticArrayInsert] = {
         "void insert(int *arr, int& size, int index, int value) {", // 0
         "    for (int i = size; i > index; i--) {",                              // 1
@@ -89,6 +133,32 @@ void CodeHolder::load() {
         "    arr[index] = value;",                                               // 4
         "    size++;",                                                           // 5
         "}"                                                                      // 6
+    };
+
+    mCodeMap[Code::StaticArrayDelete] = {
+        "void delete(int *arr, int& size, int index) {",     // 0
+        "    for (int i = index; i < size - 1; i++) {",                  // 1
+        "        arr[i] = arr[i+1];",                                   // 2
+        "    }",                                                         // 3
+        "    size--;",                                                    // 4
+        "}"                                                              // 5
+    };
+
+    mCodeMap[Code::StaticArrayUpdate] = {
+        "void update(int *arr, int size, int index, int value) {",   // 0
+        "    arr[index] = value;",                                    // 1
+        "}"                                                            // 2
+    };
+
+    mCodeMap[Code::StaticArraySearch] = {
+        "int search(int *arr, int size, int value) {",     // 0
+        "    for (int i = 0; i < size; i++) {",             // 1
+        "        if (arr[i] == value) {",                   // 2
+        "            return i;",                            // 3
+        "        }",                                         // 4
+        "    }",                                             // 5
+        "    return -1;",                                    // 6
+        "}"                                                 // 7
     };
 
 }

@@ -15,6 +15,7 @@ public:
 private:
     sf::RenderWindow &mWindow;
     sf::RectangleShape mBox;
+    sf::Text mLabel;
 private:
     virtual void drawCurrent(sf::RenderTarget &target, sf::RenderStates states) const;
     virtual void updateCurrent(sf::Time dt);
