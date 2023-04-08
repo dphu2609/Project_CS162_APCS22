@@ -229,6 +229,22 @@ void CodeHolder::load() {
         "    delete temp;",         // 3
         "}"                         // 4
     };
+
+    mCodeMap[Code::StackPush] = {
+        "void push(int value, Node*& top) {",   
+        "    Node* newNode = new Node(value, top);",   
+        "    top = newNode;", 
+        "}"
+    };
+
+    mCodeMap[Code::StackPop] = {
+    "void pop(Node*& top) {",                                               
+    "    Node* temp = top;",                              
+    "    top = top->next;",                              
+    "    delete temp;",                                    
+    "}"
+};
+
 }
 
 std::vector<std::string>& CodeHolder::operator[] (int id) {

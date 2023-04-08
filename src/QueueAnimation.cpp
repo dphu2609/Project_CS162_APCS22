@@ -104,7 +104,7 @@ void QueueState::insertAnimation(sf::Time dt, double speed, int insertIndex, int
         case 3: {
             if (mSceneLayers[NewNode]->getChildren().size() == 0) {
                 std::unique_ptr<DisplayNode> addedNode = std::make_unique<DisplayNode>(
-                    insertValue, mFontsHolder[Fonts::FiraSansRegular], 100,
+                    insertValue, mFontsHolder[Fonts::FiraSansRegular], 100, "newNode", 50,
                     sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + (insertIndex)*250, 500), 
                     sf::Color(31, 224, 205, 255), sf::Color::White, sf::Color(31, 224, 205, 255)
                 );
