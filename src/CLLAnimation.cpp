@@ -7,12 +7,21 @@ void CLLState::createDataStructure(std::vector<int> list) {
     if (list.size() == 0) return;
     mListData = list;
     for (int i = 0; i < mListData.size(); i++) {
-        std::unique_ptr<DisplayNode> newNode = std::make_unique<DisplayNode>(
-            mListData[i], mFontsHolder[Fonts::FiraSansRegular], 100, 
-            sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + i*250, 250), 
-            sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
-        );
-        mSceneLayers[Nodes]->attachChild(std::move(newNode));
+        if (i != 0) {
+            std::unique_ptr<DisplayNode> newNode = std::make_unique<DisplayNode>(
+                mListData[i], mFontsHolder[Fonts::FiraSansRegular], 100, 
+                sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + i*250, 250), 
+                sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
+            );
+            mSceneLayers[Nodes]->attachChild(std::move(newNode));
+        } else {
+            std::unique_ptr<DisplayNode> newNode = std::make_unique<DisplayNode>(
+                mListData[i], mFontsHolder[Fonts::FiraSansRegular], 100, "head", 50, 
+                sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + i*250, 250), 
+                sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
+            );
+            mSceneLayers[Nodes]->attachChild(std::move(newNode));
+        }
     }
     
     for (int i = 0; i < mListData.size(); i++) {
@@ -49,7 +58,9 @@ void CLLState::createDataStructure(std::vector<int> list) {
 }
 
 void CLLState::insertAnimation(sf::Time dt, double speed, int insertIndex, int insertValue) {
-    if (mSceneLayers[CodeBox]->getChildren().size() == 0 || (mSceneLayers[CodeBox]->getChildren().size() == 1 && !mCodeHolder.mStateActivated[Code::SinglyLinkedListInsert])) {
+    if (mSceneLayers[CodeBox]->getChildren().size() == 0 || 
+        (mSceneLayers[CodeBox]->getChildren().size() == 1 && !mCodeHolder.mStateActivated[Code::CircularLinkedListInsert])
+    ) {
         mSceneLayers[CodeBox]->getChildren().clear();
         std::unique_ptr<CodeBlockNode> codeBlock = std::make_unique<CodeBlockNode>(
             mWindow, mCodeHolder[Code::CircularLinkedListInsert], mFontsHolder[Fonts::FiraMonoRegular], 25,
@@ -70,7 +81,7 @@ void CLLState::insertAnimation(sf::Time dt, double speed, int insertIndex, int i
             for (auto &child : mSceneLayers[Nodes]->getChildren()) {
                 if (!child->mIsColoring && !child->mIsDoneColoring) {
                     child->triggerColorAnimation(
-                        dt, 1, 
+                        dt, speed, 
                         sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255),
                         sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
                     );
@@ -99,15 +110,22 @@ void CLLState::insertAnimation(sf::Time dt, double speed, int insertIndex, int i
                         );
                         // mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
                         // mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({8, 9, 10});
+                        if (index != 0) child->setLabel("cur");
+                        else child->setLabel("head/cur");
                     } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
                         child->mIsDoneColoring = 0;
                         this->mColorIndex++;
+                        if (index != 0) child->setLabel("");
+                        else child->setLabel("head");
                         if (insertIndex != 0 && this->mColorIndex >= insertIndex) {
                             this->mColorIndex--;
+                            if (insertIndex != 1) child->setLabel("cur");
+                            else child->setLabel("head/cur");
                             mAnimationOrder = 3;
                             break;
                         } else if (this->mColorIndex >= mListData.size() && insertIndex == 0) {
                             this->mColorIndex--;
+                            child->setLabel("cur");
                             mAnimationOrder = 3;
                             break;
                         }
@@ -121,14 +139,14 @@ void CLLState::insertAnimation(sf::Time dt, double speed, int insertIndex, int i
             if (mSceneLayers[NewNode]->getChildren().size() == 0) {
                 if (mListData.size() > 0) {
                     std::unique_ptr<DisplayNode> addedNode = std::make_unique<DisplayNode>(
-                        insertValue, mFontsHolder[Fonts::FiraSansRegular], 100,
+                        insertValue, mFontsHolder[Fonts::FiraSansRegular], 100, "newNode", 50,
                         sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + (insertIndex)*250, 750), 
                         sf::Color(31, 224, 205, 255), sf::Color::White, sf::Color(31, 224, 205, 255)
                     );
                     mSceneLayers[NewNode]->attachChild(std::move(addedNode));
                 } else {
                     std::unique_ptr<DisplayNode> addedNode = std::make_unique<DisplayNode>(
-                        insertValue, mFontsHolder[Fonts::FiraSansRegular], 100,
+                        insertValue, mFontsHolder[Fonts::FiraSansRegular], 100, "newNode", 50,
                         sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + (insertIndex)*250, 500), 
                         sf::Color(31, 224, 205, 255), sf::Color::White, sf::Color(31, 224, 205, 255)
                     );
@@ -318,13 +336,23 @@ void CLLState::insertAnimation(sf::Time dt, double speed, int insertIndex, int i
             break;
         }
         case 9: {
+            std::string str;
+            if (insertIndex == 0) {
+                for (auto &child : mSceneLayers[Nodes]->getChildren()) {
+                    child->setLabel("");
+                    break;
+                }
+                str = "head";
+            }
+            else str = "newNode";
+
             std::unique_ptr<DisplayNode> addedNode = std::make_unique<DisplayNode>(
-                insertValue, mFontsHolder[Fonts::FiraSansRegular], 100,
+                insertValue, mFontsHolder[Fonts::FiraSansRegular], 100, str, 50,
                 sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + (insertIndex)*250, 250), 
                 sf::Color(31, 224, 205, 255), sf::Color::White, sf::Color(31, 224, 205, 255)
             );
-
             mSceneLayers[Nodes]->getChildren().insert(mSceneLayers[Nodes]->getChildren().begin() + insertIndex, std::move(addedNode));
+
             if (mListData.size() == 0) {
                 std::unique_ptr<SpriteNode> newArrow = std::make_unique<SpriteNode>(
                     mTexturesHolder[Textures::rightArrow], sf::Vector2f(110, 50), 
@@ -435,12 +463,12 @@ void CLLState::insertAnimationReversed(sf::Time dt, double speed, int insertInde
         case 9: {
             mSceneLayers[Nodes]->getChildren().erase(mSceneLayers[Nodes]->getChildren().begin() + insertIndex);
             if (insertIndex != mListData.size() - 1 || mListData.size() == 1)
-                mSceneLayers[Arrow]->getChildren().erase(mSceneLayers[Arrow]->getChildren().begin() + insertIndex); 
+                mSceneLayers[Arrow]->getChildren().erase(mSceneLayers[Arrow]->getChildren().begin() + insertIndex + 1); 
 
             mListData.erase(mListData.begin() + insertIndex);
 
             std::unique_ptr<DisplayNode> addedNode = std::make_unique<DisplayNode>(
-                insertValue, mFontsHolder[Fonts::FiraSansRegular], 100, 
+                insertValue, mFontsHolder[Fonts::FiraSansRegular], 100, "newNode", 50,
                 sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + (insertIndex)*250, 250), 
                 sf::Color(31, 224, 205, 255), sf::Color::White, sf::Color(31, 224, 205, 255)
             );
@@ -514,7 +542,7 @@ void CLLState::insertAnimationReversed(sf::Time dt, double speed, int insertInde
                         child->triggerMoveAnimation(dt, speed*2, 25, 30);
                         // mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
                         // mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({14});
-                    } else if (!child->mIsScaling && child->mIsDoneScaling) {
+                    } else if (!child->mIsScaling && child->mIsDoneScaling && !mIsActionPaused) {
                         child->mIsDoneMoving = 0;
                         child->mIsDoneScaling = 0;
                         child->mIsDoneRotating = 0;
@@ -528,7 +556,7 @@ void CLLState::insertAnimationReversed(sf::Time dt, double speed, int insertInde
                 if (index >= insertIndex) {
                     if (!child->mIsMoving && !child->mIsDoneMoving) {
                         child->triggerMoveAnimation(dt, speed, 250, 180);
-                    } else if (!child->mIsMoving && child->mIsDoneMoving) {
+                    } else if (!child->mIsMoving && child->mIsDoneMoving && !mIsActionPaused) {
                         child->mIsDoneMoving = 0;
                     }
                 }
@@ -539,7 +567,7 @@ void CLLState::insertAnimationReversed(sf::Time dt, double speed, int insertInde
                 if (index >= insertIndex + 1) {
                     if (!child->mIsMoving && !child->mIsDoneMoving) {
                         child->triggerMoveAnimation(dt, speed, 250, 180);
-                    } else if (!child->mIsMoving && child->mIsDoneMoving) {
+                    } else if (!child->mIsMoving && child->mIsDoneMoving && !mIsActionPaused) {
                         child->mIsDoneMoving = 0;
                     }
                 }
@@ -548,7 +576,7 @@ void CLLState::insertAnimationReversed(sf::Time dt, double speed, int insertInde
             for (auto &child : this->mSceneLayers[NewNode]->getChildren()) {
                 if (!child->mIsMoving && !child->mIsDoneMoving) {
                     child->triggerMoveAnimation(dt, speed, 250, 90);
-                } else if (!child->mIsMoving && child->mIsDoneMoving) {
+                } else if (!child->mIsMoving && child->mIsDoneMoving && !mIsActionPaused) {
                     child->mIsDoneMoving = 0;
                     mAnimationOrder = 5;
                 }
@@ -557,7 +585,7 @@ void CLLState::insertAnimationReversed(sf::Time dt, double speed, int insertInde
                 if (!child->mIsRotating && !child->mIsDoneRotating) {
                     child->triggerRotateAnimation(dt, speed, -90);
                     child->triggerMoveAnimation(dt, speed, 225.05318547, -66.16125981683 + 180);
-                } else if (!child->mIsRotating && child->mIsDoneRotating) {
+                } else if (!child->mIsRotating && child->mIsDoneRotating && !mIsActionPaused) {
                     child->mIsDoneRotating = 0;
                 }
             }
@@ -566,7 +594,7 @@ void CLLState::insertAnimationReversed(sf::Time dt, double speed, int insertInde
                 if (index == 0 || index == 1) {
                     if (!child->mIsMoving && !child->mIsDoneMoving) {
                         child->triggerMoveAnimation(dt, speed, 250, 180);
-                    } else if (!child->mIsMoving && child->mIsDoneMoving) {
+                    } else if (!child->mIsMoving && child->mIsDoneMoving && !mIsActionPaused) {
                         child->mIsDoneMoving = 0;
                     }
                 } else if (index == 2) {
@@ -644,7 +672,11 @@ void CLLState::insertAnimationReversed(sf::Time dt, double speed, int insertInde
                         );
                         // mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
                         // mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({8, 9, 10});
+                        if (index != 0) child->setLabel("cur");
+                        else child->setLabel("head/cur");
                     } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
+                        if (index != 0) child->setLabel("");
+                        else child->setLabel("head");
                         child->mIsDoneColoring = 0;
                         this->mColorIndex--;
                         if (this->mColorIndex < 0) {

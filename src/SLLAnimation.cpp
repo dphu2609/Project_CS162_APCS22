@@ -55,7 +55,7 @@ void SLLState::insertAnimation(sf::Time dt, double speed, int insertIndex, int i
             for (auto &child : mSceneLayers[Nodes]->getChildren()) {
                 if (!child->mIsColoring && !child->mIsDoneColoring) {
                     child->triggerColorAnimation(
-                        dt, 1, 
+                        dt, speed, 
                         sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255),
                         sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
                     );
@@ -99,7 +99,8 @@ void SLLState::insertAnimation(sf::Time dt, double speed, int insertIndex, int i
                         if (this->mColorIndex >= insertIndex && !mIsActionPaused) {
                             this->mColorIndex--;
                             mAnimationOrder = 3;
-                            child->setLabel("cur");
+                            if (insertIndex != 1) child->setLabel("cur");
+                            else child->setLabel("head/cur");
                             break;
                         }
                     }
