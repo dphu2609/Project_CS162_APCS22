@@ -176,6 +176,40 @@ void CodeHolder::load() {
         "    arr = newArr;",                                               // 11
         "}"                                                                // 12
     };
+
+    mCodeMap[Code::DynamicArrayDelete] = {
+        "void delete(int* arr, int& size, int index) {", // 0
+        "    int* temp = new int[size - 1];", // 1
+        "    for (int i = 0; i < index; i++) {", // 2
+        "        temp[i] = arr[i];", // 3
+        "    }", // 4
+        "    for (int i = index + 1; i < size; i++) {", // 5
+        "        temp[i - 1] = arr[i];", // 6
+        "    }", // 7
+        "    delete[] arr;", // 8
+        "    arr = temp;", // 9
+        "    size--;", // 10
+        "}" // 11
+    };
+
+     mCodeMap[Code::DynamicArrayUpdate] = {
+        "void update(int *arr, int size, int index, int value) {",   // 0
+        "    arr[index] = value;",                                    // 1
+        "}"                                                            // 2
+    };
+
+    mCodeMap[Code::DynamicArraySearch] = {
+        "int search(int *arr, int size, int value) {",     // 0
+        "    for (int i = 0; i < size; i++) {",             // 1
+        "        if (arr[i] == value) {",                   // 2
+        "            return i;",                            // 3
+        "        }",                                         // 4
+        "    }",                                             // 5
+        "    return -1;",                                    // 6
+        "}"                                                 // 7
+    };
+
+
 }
 
 std::vector<std::string>& CodeHolder::operator[] (int id) {

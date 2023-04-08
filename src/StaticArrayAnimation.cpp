@@ -704,7 +704,7 @@ void StaticArrayState::searchAnimation(sf::Time dt, double speed, int searchValu
         }
         mCodeHolder.mStateActivated[Code::StaticArraySearch] = 1;
     }
-     switch(mAnimationOrder) {
+        switch(mAnimationOrder) {
         case 1: {
             for (auto &child : mSceneLayers[Nodes]->getChildren()) {
                 if (!child->mIsColoring && !child->mIsDoneColoring) {
@@ -780,7 +780,7 @@ void StaticArrayState::searchAnimation(sf::Time dt, double speed, int searchValu
             }
             break;
         }
-     }
+    }
 }
 void StaticArrayState::searchAnimationReversed(sf::Time dt, double speed, int searchValue) {
     mIsEndAnimation = 0;
