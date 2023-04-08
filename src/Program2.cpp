@@ -19,14 +19,14 @@ void Program2::run() {
             if (mSettings.mStateActivated[States::SinglyLinkedList]) {
                 dataStructureDisplay(dt, mDLL);
             } else if (mSettings.mStateActivated[States::DynamicArray]) {
-                dataStructureDisplay(dt, mStaticArray);
+                dataStructureDisplay(dt, mDynamicArray);
             }
             mSettings.update(dt);
             mSettings.controlBoxUpdate();
         }
         mWindow.clear(sf::Color(18, 18, 18, 255));
         if (mSettings.mStateActivated[States::SinglyLinkedList]) mDLL.draw();
-        else if (mSettings.mStateActivated[States::DynamicArray]) mStaticArray.draw();
+        else if (mSettings.mStateActivated[States::DynamicArray]) mDynamicArray.draw();
         mSettings.draw();
         mWindow.display();
     }

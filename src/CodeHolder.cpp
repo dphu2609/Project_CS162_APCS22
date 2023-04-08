@@ -161,6 +161,21 @@ void CodeHolder::load() {
         "}"                                                 // 7
     };
 
+    mCodeMap[Code::DynamicArrayInsert] = {
+        "void insert(int*& arr, int& size, int index, int value) {",     // 0
+        "    int* newArr = new int[size+1];",                             // 1
+        "    for (int i = 0; i < index; i++) {",                          // 2
+        "        newArr[i] = arr[i];",                                    // 3
+        "    }",                                                           // 4
+        "    newArr[index] = value;",                                     // 5
+        "    for (int i = index+1; i < size+1; i++) {",                   // 6
+        "        newArr[i] = arr[i-1];",                                  // 7
+        "    }",                                                           // 8
+        "    size++;",                                                     // 9
+        "    delete[] arr;",                                               // 10
+        "    arr = newArr;",                                               // 11
+        "}"                                                                // 12
+    };
 }
 
 std::vector<std::string>& CodeHolder::operator[] (int id) {
