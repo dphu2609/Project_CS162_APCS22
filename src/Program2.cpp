@@ -17,7 +17,7 @@ void Program2::run() {
             timeSinceLastUpdate -= dt;
             mSettings.activeSettings(dt);
             if (mSettings.mStateActivated[States::SinglyLinkedList]) {
-                dataStructureDisplay(dt, mDLL);
+                dataStructureDisplay(dt, mQueue);
             } else if (mSettings.mStateActivated[States::DynamicArray]) {
                 dataStructureDisplay(dt, mDynamicArray);
             }
@@ -25,7 +25,7 @@ void Program2::run() {
             mSettings.controlBoxUpdate();
         }
         mWindow.clear(sf::Color(18, 18, 18, 255));
-        if (mSettings.mStateActivated[States::SinglyLinkedList]) mDLL.draw();
+        if (mSettings.mStateActivated[States::SinglyLinkedList]) mQueue.draw();
         else if (mSettings.mStateActivated[States::DynamicArray]) mDynamicArray.draw();
         mSettings.draw();
         mWindow.display();

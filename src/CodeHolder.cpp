@@ -209,7 +209,26 @@ void CodeHolder::load() {
         "}"                                                 // 7
     };
 
+    mCodeMap[Code::QueuePush] = {
+        "void push(int value, Node*& front, Node*& rear) {", // 0
+        "    Node* newNode = new Node(value, nullptr);",      // 1
+        "    if (rear == nullptr) {",                         // 2
+        "        front = newNode;",                           // 3
+        "        rear = newNode;",                            // 4
+        "    } else {",                                       // 5
+        "        rear->next = newNode;",                      // 6
+        "        rear = newNode;",                            // 7
+        "    }",                                              // 8
+        "}"                                                   // 9
+    };
 
+    mCodeMap[Code::QueuePop] = {
+        "void pop(Node*& front) {", // 0
+        "    Node* temp = front;",  // 1
+        "    front = front->next;", // 2
+        "    delete temp;",         // 3
+        "}"                         // 4
+    };
 }
 
 std::vector<std::string>& CodeHolder::operator[] (int id) {
