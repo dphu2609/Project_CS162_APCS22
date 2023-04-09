@@ -238,11 +238,42 @@ void CodeHolder::load() {
     };
 
     mCodeMap[Code::StackPop] = {
-    "void pop(Node*& top) {",                                               
-    "    Node* temp = top;",                              
-    "    top = top->next;",                              
-    "    delete temp;",                                    
-    "}"
+        "void pop(Node*& top) {",                                               
+        "    Node* temp = top;",                              
+        "    top = top->next;",                              
+        "    delete temp;",                                    
+        "}"
+    };
+
+    mCodeMap[Code::CircularLinkedListInsert] = {
+        "void insert(int index, int value, Node*& head) {",     // 0
+        "    Node* cur = head;",                                // 1
+        "    for (int i = 0; i < index - 1; i++) {",            // 2
+        "        cur = cur->next;",                             // 3
+        "    }",                                                // 4
+        "    Node* newNode = new Node(value, nullptr);",        // 5
+        "    newNode->next = cur->next;",                       // 6
+        "    cur->next = newNode;",                             // 7
+        "}"                                                     // 8
+    };
+
+    mCodeMap[Code::CircularLinkedListInsertHead] = {
+    "void insertAtHead(Node*& head, int value) {",      // 0
+    "    if (!head) {",                                 // 1
+    "        Node* newNode = new Node(value);",         // 2
+    "        newNode->next = head;",                    // 3
+    "        head = newNode;",                          // 4
+    "    } else {",                                     // 5
+    "        Node* cur = head;",                        // 6
+    "        while (cur->next != head) {",              // 7
+    "            cur = cur->next;",                     // 8
+    "        }",                                        // 9
+    "        Node* newNode = new Node(value, nullptr);",// 10
+    "        newNode->next = head;",                    // 11
+    "        cur->next = newNode;",                     // 12
+    "        head = newNode;",                          // 13
+    "    }",                                            // 14
+    "}"                                                 // 15
 };
 
 }

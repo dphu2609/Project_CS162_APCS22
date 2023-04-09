@@ -675,9 +675,9 @@ void SettingsState::controlBoxUpdate() {
         );
         mSceneLayers[ControlBoxButtons]->getChildren()[0] = std::move(replayButton);
         mIsEndAnimation.second = 1;
-    } else if (!mIsEndAnimation.first && mIsEndAnimation.second) {
+    } else if (!mIsEndAnimation.first && mIsEndAnimation.second && !mIsPrev) {
         std::unique_ptr<ImageButtonNode> playButton = std::make_unique<ImageButtonNode>(
-            mWindow, this->mTexturesHolder[Textures::playButton], this->mTexturesHolder[Textures::playButtonHoverred],
+            mWindow, this->mTexturesHolder[Textures::pauseButton], this->mTexturesHolder[Textures::pauseButtonHoverred],
             sf::Vector2f(30, 30), sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2, sf::VideoMode::getDesktopMode().height - 220)
         );
         mSceneLayers[ControlBoxButtons]->getChildren()[0] = std::move(playButton);
