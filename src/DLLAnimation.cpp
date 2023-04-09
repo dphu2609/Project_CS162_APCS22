@@ -1661,18 +1661,18 @@ void DLLState::deleteAnimationReversed(sf::Time dt, double speed, int deleteInde
 
 void DLLState::updateAnimation(sf::Time dt, double speed, int updateIndex, int updateValue) {
     if (mSceneLayers[CodeBox]->getChildren().size() == 0 || 
-        (mSceneLayers[CodeBox]->getChildren().size() == 1 && !mCodeHolder.mStateActivated[Code::DoublyLinkedListUpdate])
+        (mSceneLayers[CodeBox]->getChildren().size() == 1 && !mCodeHolder.mStateActivated[Code::SinglyLinkedListUpdate])
     ) {
         mSceneLayers[CodeBox]->getChildren().clear();
         std::unique_ptr<CodeBlockNode> codeBlock = std::make_unique<CodeBlockNode>(
-            mWindow, mCodeHolder[Code::DoublyLinkedListUpdate], mFontsHolder[Fonts::FiraMonoRegular], 25,
+            mWindow, mCodeHolder[Code::SinglyLinkedListUpdate], mFontsHolder[Fonts::FiraMonoRegular], 25,
             sf::Color::Black, sf::Color(145, 174, 226, 255), sf::Color::Black, sf::Color(86, 114, 163, 255)
         );
         mSceneLayers[CodeBox]->attachChild(std::move(codeBlock));
         for (int i = 0; i < mCodeHolder.mStateActivated.size(); i++) {
             mCodeHolder.mStateActivated[i] = 0;
         }
-        mCodeHolder.mStateActivated[Code::DoublyLinkedListUpdate] = 1;
+        mCodeHolder.mStateActivated[Code::SinglyLinkedListUpdate] = 1;
     }
     switch (mAnimationOrder) {
         case 1: {
@@ -1822,18 +1822,18 @@ void DLLState::updateAnimationReversed(sf::Time dt, double speed, int updateInde
 
 void DLLState::searchAnimation(sf::Time dt, double speed, int searchValue) {
     if (mSceneLayers[CodeBox]->getChildren().size() == 0 || 
-        (mSceneLayers[CodeBox]->getChildren().size() == 1 && !mCodeHolder.mStateActivated[Code::DoublyLinkedListSearch])
+        (mSceneLayers[CodeBox]->getChildren().size() == 1 && !mCodeHolder.mStateActivated[Code::SinglyLinkedListSearch])
     ) {
         mSceneLayers[CodeBox]->getChildren().clear();
         std::unique_ptr<CodeBlockNode> codeBlock = std::make_unique<CodeBlockNode>(
-            mWindow, mCodeHolder[Code::DoublyLinkedListSearch], mFontsHolder[Fonts::FiraMonoRegular], 25,
+            mWindow, mCodeHolder[Code::SinglyLinkedListSearch], mFontsHolder[Fonts::FiraMonoRegular], 25,
             sf::Color::Black, sf::Color(145, 174, 226, 255), sf::Color::Black, sf::Color(86, 114, 163, 255)
         );
         mSceneLayers[CodeBox]->attachChild(std::move(codeBlock));
         for (int i = 0; i < mCodeHolder.mStateActivated.size(); i++) {
             mCodeHolder.mStateActivated[i] = 0;
         }
-        mCodeHolder.mStateActivated[Code::DoublyLinkedListSearch] = 1;
+        mCodeHolder.mStateActivated[Code::SinglyLinkedListSearch] = 1;
     }
     switch(mAnimationOrder) {
         case 1: {

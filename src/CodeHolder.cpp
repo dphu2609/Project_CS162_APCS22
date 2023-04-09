@@ -101,30 +101,6 @@ void CodeHolder::load() {
         "}"
     };
 
-    mCodeMap[Code::DoublyLinkedListUpdate] = {
-        "void update(int index, int value, Node* head) {",
-        "    Node* cur = head;",
-        "    for (int i = 0; i < index; i++) {",
-        "        cur = cur->next;",
-        "    }",
-        "    cur->data = value;",
-        "}"
-    };
-
-    mCodeMap[Code::DoublyLinkedListSearch] = {
-        "Node* search(int value, Node* head) {",
-        "    Node* cur = head;",
-        "    while (cur != nullptr) {",
-        "        if (cur->data == value) {",
-        "            return cur;",
-        "        }",
-        "        cur = cur->next;",
-        "    }",
-        "    return nullptr;",
-        "}"
-    };
-
-
     mCodeMap[Code::StaticArrayInsert] = {
         "void insert(int *arr, int& size, int index, int value) {", // 0
         "    for (int i = size; i > index; i--) {",                              // 1
@@ -258,24 +234,48 @@ void CodeHolder::load() {
     };
 
     mCodeMap[Code::CircularLinkedListInsertHead] = {
-    "void insertAtHead(Node*& head, int value) {",      // 0
-    "    if (!head) {",                                 // 1
-    "        Node* newNode = new Node(value);",         // 2
-    "        newNode->next = head;",                    // 3
-    "        head = newNode;",                          // 4
-    "    } else {",                                     // 5
-    "        Node* cur = head;",                        // 6
-    "        while (cur->next != head) {",              // 7
-    "            cur = cur->next;",                     // 8
-    "        }",                                        // 9
-    "        Node* newNode = new Node(value, nullptr);",// 10
-    "        newNode->next = head;",                    // 11
-    "        cur->next = newNode;",                     // 12
-    "        head = newNode;",                          // 13
-    "    }",                                            // 14
-    "}"                                                 // 15
-};
+        "void insertAtHead(Node*& head, int value) {",      // 0
+        "    if (!head) {",                                 // 1
+        "        Node* newNode = new Node(value);",         // 2
+        "        newNode->next = head;",                    // 3
+        "        head = newNode;",                          // 4
+        "    } else {",                                     // 5
+        "        Node* cur = head;",                        // 6
+        "        while (cur->next != head) {",              // 7
+        "            cur = cur->next;",                     // 8
+        "        }",                                        // 9
+        "        Node* newNode = new Node(value, nullptr);",// 10
+        "        newNode->next = head;",                    // 11
+        "        cur->next = newNode;",                     // 12
+        "        head = newNode;",                          // 13
+        "    }",                                            // 14
+        "}"                                                 // 15
+    };
 
+    mCodeMap[Code::CircularLinkedListDelete] = {
+        "void delete(Node*& head, int index) {",            // 0    
+        "   Node* cur = head;",                             // 1
+        "   for (int i = 0; i < index - 1; i++) {",         // 2
+        "       cur = cur->next;",                          // 3
+        "   }",                                             // 4
+        "   Node* temp = cur->next;",                       // 5
+        "   cur->next = temp->next;",                       // 6
+        "   delete temp;",                                  // 7
+        "}"                                                 // 8
+    };      
+
+    mCodeMap[Code::CircularLinkedListDeleteHead] = {
+        "void deleteAtHead(Node*& head, int index) {",            // 0    
+        "   Node* cur = head;",                             // 1
+        "   while (cur->next != head) {",                   // 2 
+        "       cur = cur->next;",                          // 3
+        "   }",                                             // 4
+        "   Node* temp = head;",                            // 5
+        "   head = head->next;",                            // 6
+        "   cur->next = head->next;",                       // 7
+        "   delete temp;",                                  // 8
+        "}"                                                 // 9
+    };  
 }
 
 std::vector<std::string>& CodeHolder::operator[] (int id) {
