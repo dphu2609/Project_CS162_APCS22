@@ -1072,6 +1072,8 @@ void CLLState::deleteAnimation(sf::Time dt, double speed, int deleteIndex) {
             for (auto &child : mSceneLayers[Nodes]->getChildren()) {
                 if (!child->mIsScaling && !child->mIsDoneScaling) {
                     child->triggerScaleAnimation(dt, speed*2, -100, 0, 0);
+                    mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
+                    mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({8});
                 } else if (!child->mIsScaling && child->mIsDoneScaling && !mIsActionPaused) {
                     mAnimationOrder = 8;
                 }
