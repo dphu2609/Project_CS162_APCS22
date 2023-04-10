@@ -19,7 +19,10 @@ namespace Textures {
         pauseButton,
         pauseButtonHoverred,
         replayButton,
-        replayButtonHoverred
+        replayButtonHoverred,
+        speedButton,
+        speedButtonHoverred,
+        speedCheckMark
     };
 };
 

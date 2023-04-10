@@ -246,8 +246,6 @@ void CLLState::insertAnimation(sf::Time dt, double speed, int insertIndex, int i
                         child->triggerMoveAnimation(dt, speed*2, 25, -150);
                     } else if (!child->mIsScaling && child->mIsDoneScaling) {
                         child->mIsDoneMoving = 0;
-                        child->mIsDoneScaling = 0;
-                        child->mIsDoneRotating = 0;
                     }
                     break;
                 }

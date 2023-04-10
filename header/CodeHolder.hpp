@@ -5,10 +5,12 @@
 namespace Code {
     enum ID {
         SinglyLinkedListInsert,
+        SinglyLinkedListInsertTail,
         SinglyLinkedListDelete,
         SinglyLinkedListUpdate,
         SinglyLinkedListSearch,
         DoublyLinkedListInsert,
+        DoublyLinkedListInsertTail,
         DoublyLinkedListDelete,
         DoublyLinkedListUpdate,
         DoublyLinkedListSearch,

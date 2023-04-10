@@ -4,11 +4,14 @@
 
 namespace States {
     enum ID {
+        None,
+        StaticArray,
+        DynamicArray,
         SinglyLinkedList,
         DoublyLinkedList,
         CircularLinkedList,
-        StaticArray,
-        DynamicArray,
+        Stack,
+        Queue,
         StatesCount
     };
 };
@@ -55,21 +58,29 @@ public:
 
     bool mIsReplay = 0;
     std::pair<bool, bool> mIsEndAnimation = {0, 0};
+
+    double mSpeed = 1;
 private:
     enum Layers {
         Containers,
-        DropBox,
+        DataDropBox,
+        ActionDropBox,
+        StackQueueDropBox,
         InputBox,
         ActionButtons,
         Error,
         ControlBoxContainer,
         ControlBoxButtons,
+        ControlBoxSpeedButton,
+        ControlBoxSpeedOptions,
         LayerCount
     };
     sf::Clock clock;
     double elapsedTime;
-    bool mIsEmerged = 0;
+    bool mIsEmerged = 1;
     bool mIsControlBoxEmerged = 0;
+    bool mFirstTimeVisited = 1;
+    bool mIsSpeedBoxEmerged = 0;
 private:
     virtual void loadTextures();
     virtual void loadFonts();
@@ -84,6 +95,7 @@ private:
     void controlBoxOut(sf::Time dt);
     void controlBoxIn(sf::Time dt); 
     void handleAction(sf::Event &event);
+    void handleDataDropBoxEvent(sf::Event &event);
     void handleActionDropBoxEvent(sf::Event &event);
     void handleControlBoxEvent(sf::Event &event);
 };

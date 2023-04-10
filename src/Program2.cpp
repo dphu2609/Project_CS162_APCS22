@@ -16,17 +16,32 @@ void Program2::run() {
         while (timeSinceLastUpdate > dt) {
             timeSinceLastUpdate -= dt;
             mSettings.activeSettings(dt);
-            if (mSettings.mStateActivated[States::SinglyLinkedList]) {
-                dataStructureDisplay(dt, mCLL);
+            if (mSettings.mStateActivated[States::StaticArray]) {
+                dataStructureDisplay(dt, mStaticArray);
             } else if (mSettings.mStateActivated[States::DynamicArray]) {
                 dataStructureDisplay(dt, mDynamicArray);
+            } else if (mSettings.mStateActivated[States::SinglyLinkedList]) {
+                dataStructureDisplay(dt, mSLL);
+            } else if (mSettings.mStateActivated[States::DoublyLinkedList]) {
+                dataStructureDisplay(dt, mDLL);
+            } else if (mSettings.mStateActivated[States::CircularLinkedList]) {
+                dataStructureDisplay(dt, mCLL);
+            } else if (mSettings.mStateActivated[States::Stack]) {
+                dataStructureDisplay(dt, mStack);
+            } else if (mSettings.mStateActivated[States::Queue]) {
+                dataStructureDisplay(dt, mQueue);
             }
             mSettings.update(dt);
             mSettings.controlBoxUpdate();
         }
         mWindow.clear(sf::Color(18, 18, 18, 255));
-        if (mSettings.mStateActivated[States::SinglyLinkedList]) mCLL.draw();
+        if (mSettings.mStateActivated[States::StaticArray]) mStaticArray.draw();
         else if (mSettings.mStateActivated[States::DynamicArray]) mDynamicArray.draw();
+        else if (mSettings.mStateActivated[States::SinglyLinkedList]) mSLL.draw();
+        else if (mSettings.mStateActivated[States::DoublyLinkedList]) mDLL.draw();
+        else if (mSettings.mStateActivated[States::CircularLinkedList]) mCLL.draw();
+        else if (mSettings.mStateActivated[States::Stack]) mStack.draw();
+        else if (mSettings.mStateActivated[States::Queue]) mQueue.draw();
         mSettings.draw();
         mWindow.display();
     }
@@ -101,10 +116,10 @@ void Program2::dataStructureDisplay(sf::Time dt, DataStructureState &dataStructu
                 mSettings.mPrevColorIndex = mSettings.mColorIndex - 1;
                 dataStructure.resetNodeState();
             }
-            if (dataStructure.mInsertActivated) dataStructure.insertAnimation(dt, 1, mSettings.mActionIndex, mSettings.mActionValue); 
-            else if (dataStructure.mDeleteActivated) dataStructure.deleteAnimation(dt, 1, mSettings.mActionIndex);
-            else if (dataStructure.mUpdateActivated) dataStructure.updateAnimation(dt, 1, mSettings.mActionIndex, mSettings.mActionValue);
-            else if (dataStructure.mSearchActivated) dataStructure.searchAnimation(dt, 1, mSettings.mActionValue);
+            if (dataStructure.mInsertActivated) dataStructure.insertAnimation(dt, mSettings.mSpeed, mSettings.mActionIndex, mSettings.mActionValue); 
+            else if (dataStructure.mDeleteActivated) dataStructure.deleteAnimation(dt, mSettings.mSpeed, mSettings.mActionIndex);
+            else if (dataStructure.mUpdateActivated) dataStructure.updateAnimation(dt, mSettings.mSpeed, mSettings.mActionIndex, mSettings.mActionValue);
+            else if (dataStructure.mSearchActivated) dataStructure.searchAnimation(dt, mSettings.mSpeed, mSettings.mActionValue);
         }
         else if (mSettings.mIsPrev) {  
             if (mSettings.mPrevPrev != mSettings.mIsPrev && !dataStructure.isProcessing()) {
@@ -115,10 +130,10 @@ void Program2::dataStructureDisplay(sf::Time dt, DataStructureState &dataStructu
                 mSettings.mPrevColorIndex = mSettings.mColorIndex + 1;
                 dataStructure.resetNodeState();
             }
-            if (dataStructure.mInsertActivated) dataStructure.insertAnimationReversed(dt, 1, mSettings.mActionIndex, mSettings.mActionValue); 
-            else if (dataStructure.mDeleteActivated) dataStructure.deleteAnimationReversed(dt, 1, mSettings.mActionIndex, mSettings.mActionValue);
-            else if (dataStructure.mUpdateActivated) dataStructure.updateAnimationReversed(dt, 1, mSettings.mActionIndex, mSettings.mPrevActionValue);
-            else if (dataStructure.mSearchActivated) dataStructure.searchAnimationReversed(dt, 1, mSettings.mActionValue);
+            if (dataStructure.mInsertActivated) dataStructure.insertAnimationReversed(dt, mSettings.mSpeed, mSettings.mActionIndex, mSettings.mActionValue); 
+            else if (dataStructure.mDeleteActivated) dataStructure.deleteAnimationReversed(dt, mSettings.mSpeed, mSettings.mActionIndex, mSettings.mActionValue);
+            else if (dataStructure.mUpdateActivated) dataStructure.updateAnimationReversed(dt, mSettings.mSpeed, mSettings.mActionIndex, mSettings.mPrevActionValue);
+            else if (dataStructure.mSearchActivated) dataStructure.searchAnimationReversed(dt, mSettings.mSpeed, mSettings.mActionValue);
         } 
         else {
             if (mSettings.mPrevPlay != mSettings.mIsPlay && !dataStructure.isProcessing()) {
@@ -127,10 +142,10 @@ void Program2::dataStructureDisplay(sf::Time dt, DataStructureState &dataStructu
                 mSettings.mPrevNext = 1;
                 dataStructure.resetNodeState();
             }
-            if (dataStructure.mInsertActivated) dataStructure.insertAnimation(dt, 1, mSettings.mActionIndex, mSettings.mActionValue); 
-            else if (dataStructure.mDeleteActivated) dataStructure.deleteAnimation(dt, 1, mSettings.mActionIndex);
-            else if (dataStructure.mUpdateActivated) dataStructure.updateAnimation(dt, 1, mSettings.mActionIndex, mSettings.mActionValue);
-            else if (dataStructure.mSearchActivated) dataStructure.searchAnimation(dt, 1, mSettings.mActionValue);
+            if (dataStructure.mInsertActivated) dataStructure.insertAnimation(dt, mSettings.mSpeed, mSettings.mActionIndex, mSettings.mActionValue); 
+            else if (dataStructure.mDeleteActivated) dataStructure.deleteAnimation(dt, mSettings.mSpeed, mSettings.mActionIndex);
+            else if (dataStructure.mUpdateActivated) dataStructure.updateAnimation(dt, mSettings.mSpeed, mSettings.mActionIndex, mSettings.mActionValue);
+            else if (dataStructure.mSearchActivated) dataStructure.searchAnimation(dt, mSettings.mSpeed, mSettings.mActionValue);
         }
     }
     mSettings.mAnimationOrder = dataStructure.mAnimationOrder;

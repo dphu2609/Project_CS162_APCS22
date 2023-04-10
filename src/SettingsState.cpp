@@ -4,7 +4,6 @@ SettingsState::SettingsState(sf::RenderWindow &window) : State(window) {
     loadTextures();
     loadFonts();
     buildScence();
-    this->mIsEmerged = 0;
     for (int i = 0; i < States::StatesCount; i++) {
         mStateActivated.push_back(0);
     }
@@ -24,6 +23,9 @@ void SettingsState::loadTextures() {
     this->mTexturesHolder.load(Textures::nextButtonHoverred, "img/nextButtonHoverred.png");
     this->mTexturesHolder.load(Textures::prevButton, "img/prevButton.png");
     this->mTexturesHolder.load(Textures::prevButtonHoverred, "img/prevButtonHoverred.png");
+    this->mTexturesHolder.load(Textures::speedButton, "img/speedButton.png");
+    this->mTexturesHolder.load(Textures::speedButtonHoverred, "img/speedButtonHoverred.png");
+    this->mTexturesHolder.load(Textures::speedCheckMark, "img/speedCheckMark.png");
 }
 
 void SettingsState::loadFonts() {
@@ -39,55 +41,52 @@ void SettingsState::buildScence() {
 
     std::unique_ptr<ContainerNode> container = std::make_unique<ContainerNode>(
         mWindow, sf::Vector2f(500, sf::VideoMode::getDesktopMode().height - 170), 0,
-        sf::Vector2f(20 - 600, 50), sf::Color(52, 53, 59, 255), sf::Color::Black
+        sf::Vector2f(20, 50), sf::Color(52, 53, 59, 255), sf::Color::Black
     );
     mSceneLayers[Containers]->attachChild(std::move(container));
 
-    std::vector<std::string> dataTypeOptions = {"Array", "Linked List"}; //data drop box
+    std::vector<std::string> dataTypeOptions = 
+    {"Static Array", "Dynamic Array", "Singly Linked List",
+    "Doubly Linked List", "Circular Linked List", "Stack", "Queue"}; 
     std::unique_ptr<DropBoxNode> newDataDropBox = std::make_unique<DropBoxNode>(
         mWindow, "SELECT DATA TYPE", dataTypeOptions, mFontsHolder[Fonts::RobotoRegular],
-        sf::Vector2f(320, 50), 0, 0, sf::Vector2f(100 - 600, 100), 
+        sf::Vector2f(320, 50), 0, 0, sf::Vector2f(100, 100), 
         sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
         sf::Color::White, sf::Color(85, 93, 120, 255), sf::Color(41, 58, 117, 255),
         sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color::White,
         sf::Color::White, sf::Color(41, 58, 117, 255), sf::Color::White
     );
-    mSceneLayers[DropBox]->attachChild(std::move(newDataDropBox));
-
-    std::vector<std::string> actionOptions = {"Create", "Insert", "Delete", "Update", "Search"}; //action drop box
-    std::unique_ptr<DropBoxNode> newActionDropBox = std::make_unique<DropBoxNode>(
-        mWindow, "ACTION", actionOptions, mFontsHolder[Fonts::RobotoRegular],
-        sf::Vector2f(180, 50), 0, 0, sf::Vector2f(160 - 600, sf::VideoMode::getDesktopMode().height - 500), 
-        sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
-        sf::Color::White, sf::Color(85, 93, 120, 255), sf::Color(41, 58, 117, 255),
-        sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color::White,
-        sf::Color::White, sf::Color(41, 58, 117, 255), sf::Color::White
-    );
-    mSceneLayers[DropBox]->attachChild(std::move(newActionDropBox));
+    mSceneLayers[DataDropBox]->attachChild(std::move(newDataDropBox));
 
     std::unique_ptr<ContainerNode> controlBoxContainer = std::make_unique<ContainerNode>(
-        mWindow, sf::Vector2f(500, 150), 0,
-        sf::Vector2f((sf::VideoMode::getDesktopMode().width - 500)/2, sf::VideoMode::getDesktopMode().height - 270 + 300), sf::Color(52, 53, 59, 255), sf::Color::Black
+        mWindow, sf::Vector2f(800, 150), 0,
+        sf::Vector2f((sf::VideoMode::getDesktopMode().width - 800)/2, sf::VideoMode::getDesktopMode().height - 270 + 300), sf::Color(52, 53, 59, 255), sf::Color::Black
     );
     mSceneLayers[ControlBoxContainer]->attachChild(std::move(controlBoxContainer));
 
     std::unique_ptr<ImageButtonNode> pauseButton = std::make_unique<ImageButtonNode>(
         mWindow, this->mTexturesHolder[Textures::pauseButton], this->mTexturesHolder[Textures::pauseButtonHoverred],
-        sf::Vector2f(30, 30), sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2, sf::VideoMode::getDesktopMode().height - 220 + 300)
+        sf::Vector2f(30, 30), sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 - 100, sf::VideoMode::getDesktopMode().height - 220 + 300)
     );
     mSceneLayers[ControlBoxButtons]->attachChild(std::move(pauseButton));
 
     std::unique_ptr<ImageButtonNode> nextButton = std::make_unique<ImageButtonNode>(
         mWindow, this->mTexturesHolder[Textures::nextButton], this->mTexturesHolder[Textures::nextButtonHoverred],
-        sf::Vector2f(30, 30), sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 + 70, sf::VideoMode::getDesktopMode().height - 220 + 300)
+        sf::Vector2f(30, 30), sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 + 70 - 100, sf::VideoMode::getDesktopMode().height - 220 + 300)
     );
     mSceneLayers[ControlBoxButtons]->attachChild(std::move(nextButton));
 
     std::unique_ptr<ImageButtonNode> prevButton = std::make_unique<ImageButtonNode>(
         mWindow, this->mTexturesHolder[Textures::prevButton], this->mTexturesHolder[Textures::prevButtonHoverred],
-        sf::Vector2f(30, 30), sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 - 70, sf::VideoMode::getDesktopMode().height - 220 + 300)
+        sf::Vector2f(30, 30), sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 - 70 - 100, sf::VideoMode::getDesktopMode().height - 220 + 300)
     );
     mSceneLayers[ControlBoxButtons]->attachChild(std::move(prevButton));
+
+    std::unique_ptr<ImageButtonNode> speedButton = std::make_unique<ImageButtonNode>(
+        mWindow, this->mTexturesHolder[Textures::speedButton], this->mTexturesHolder[Textures::speedButtonHoverred],
+        sf::Vector2f(30, 30), sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 + 100, sf::VideoMode::getDesktopMode().height - 220 + 300)
+    );
+    mSceneLayers[ControlBoxSpeedButton]->attachChild(std::move(speedButton));
 }
 
 void SettingsState::activeSettings(sf::Time dt) {
@@ -108,7 +107,7 @@ void SettingsState::activeSettings(sf::Time dt) {
             controlBoxIn(dt);
         }
     }
-    else if (localPositionF.x >= 520 && this->mIsEmerged && !isInputBoxActivated) {
+    else if (localPositionF.x >= 520 && this->mIsEmerged && !isInputBoxActivated && !mFirstTimeVisited) {
         this->elapsedTime += clock.restart().asSeconds(); 
         if (elapsedTime >= 3.f)
             settingsOut(dt);
@@ -166,14 +165,11 @@ void SettingsState::settingsOut(sf::Time dt) {
             }
         }
     }
-    for (auto &child : this->mSceneLayers[Error]->getChildren()) {
-        if (!child->mIsMoving) {
-            child->triggerMoveAnimation(dt, 1.6, 200, 90);
-        }
-    }
+    this->mSceneLayers[Error]->getChildren().clear();
 }
 
 void SettingsState::controlEvent(sf::Event &event) {
+    handleDataDropBoxEvent(event);
     handleActionDropBoxEvent(event);
     handleAction(event);
     handleControlBoxEvent(event);

@@ -7,16 +7,31 @@ void DLLState::createDataStructure(std::vector<int> list) {
     if (list.size() == 0) return;
     mListData = list;
     for (int i = 0; i < mListData.size(); i++) {
-        if (i != 0) {
+        if (mListData.size() == 1) {
             std::unique_ptr<DisplayNode> newNode = std::make_unique<DisplayNode>(
-                mListData[i], mFontsHolder[Fonts::FiraSansRegular], 100, 
+                mListData[i], mFontsHolder[Fonts::FiraSansRegular], 100, "head/tail", 50, 
+                sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + i*250, 250), 
+                sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
+            );
+            mSceneLayers[Nodes]->attachChild(std::move(newNode));
+        }
+        else if (i == 0) {
+            std::unique_ptr<DisplayNode> newNode = std::make_unique<DisplayNode>(
+                mListData[i], mFontsHolder[Fonts::FiraSansRegular], 100, "head", 50, 
+                sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + i*250, 250), 
+                sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
+            );
+            mSceneLayers[Nodes]->attachChild(std::move(newNode));
+        } else if (i == mListData.size() - 1) {
+            std::unique_ptr<DisplayNode> newNode = std::make_unique<DisplayNode>(
+                mListData[i], mFontsHolder[Fonts::FiraSansRegular], 100, "tail", 50, 
                 sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + i*250, 250), 
                 sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
             );
             mSceneLayers[Nodes]->attachChild(std::move(newNode));
         } else {
             std::unique_ptr<DisplayNode> newNode = std::make_unique<DisplayNode>(
-                mListData[i], mFontsHolder[Fonts::FiraSansRegular], 100, "head", 50, 
+                mListData[i], mFontsHolder[Fonts::FiraSansRegular], 100, 
                 sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + i*250, 250), 
                 sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
             );
@@ -41,20 +56,38 @@ void DLLState::createDataStructure(std::vector<int> list) {
     }
 }
 
+
 void DLLState::insertAnimation(sf::Time dt, double speed, int insertIndex, int insertValue) {
-    if (mSceneLayers[CodeBox]->getChildren().size() == 0 || 
-        (mSceneLayers[CodeBox]->getChildren().size() == 1 && !mCodeHolder.mStateActivated[Code::DoublyLinkedListInsert])
-    ) {
-        mSceneLayers[CodeBox]->getChildren().clear();
-        std::unique_ptr<CodeBlockNode> codeBlock = std::make_unique<CodeBlockNode>(
-            mWindow, mCodeHolder[Code::DoublyLinkedListInsert], mFontsHolder[Fonts::FiraMonoRegular], 25,
-            sf::Color::Black, sf::Color(145, 174, 226, 255), sf::Color::Black, sf::Color(86, 114, 163, 255)
-        );
-        mSceneLayers[CodeBox]->attachChild(std::move(codeBlock));
-        for (int i = 0; i < mCodeHolder.mStateActivated.size(); i++) {
-            mCodeHolder.mStateActivated[i] = 0;
+    if (insertIndex != mListData.size() && !(mAnimationOrder == 8 && insertIndex == mListData.size() - 1)) {
+        if (mSceneLayers[CodeBox]->getChildren().size() == 0 || 
+            (mSceneLayers[CodeBox]->getChildren().size() == 1 && !mCodeHolder.mStateActivated[Code::DoublyLinkedListInsert])
+        ) {
+            mSceneLayers[CodeBox]->getChildren().clear();
+            std::unique_ptr<CodeBlockNode> codeBlock = std::make_unique<CodeBlockNode>(
+                mWindow, mCodeHolder[Code::DoublyLinkedListInsert], mFontsHolder[Fonts::FiraMonoRegular], 25,
+                sf::Color::Black, sf::Color(145, 174, 226, 255), sf::Color::Black, sf::Color(86, 114, 163, 255)
+            );
+            mSceneLayers[CodeBox]->attachChild(std::move(codeBlock));
+            for (int i = 0; i < mCodeHolder.mStateActivated.size(); i++) {
+                mCodeHolder.mStateActivated[i] = 0;
+            }
+            mCodeHolder.mStateActivated[Code::DoublyLinkedListInsert] = 1;
         }
-        mCodeHolder.mStateActivated[Code::DoublyLinkedListInsert] = 1;
+    } else {
+        if (mSceneLayers[CodeBox]->getChildren().size() == 0 || 
+            (mSceneLayers[CodeBox]->getChildren().size() == 1 && !mCodeHolder.mStateActivated[Code::DoublyLinkedListInsertTail])
+        ) {
+            mSceneLayers[CodeBox]->getChildren().clear();
+            std::unique_ptr<CodeBlockNode> codeBlock = std::make_unique<CodeBlockNode>(
+                mWindow, mCodeHolder[Code::DoublyLinkedListInsertTail], mFontsHolder[Fonts::FiraMonoRegular], 25,
+                sf::Color::Black, sf::Color(145, 174, 226, 255), sf::Color::Black, sf::Color(86, 114, 163, 255)
+            );
+            mSceneLayers[CodeBox]->attachChild(std::move(codeBlock));
+            for (int i = 0; i < mCodeHolder.mStateActivated.size(); i++) {
+                mCodeHolder.mStateActivated[i] = 0;
+            }
+            mCodeHolder.mStateActivated[Code::DoublyLinkedListInsertTail] = 1;
+        }
     }
     switch (mAnimationOrder) {  
         case 1: {
@@ -72,6 +105,9 @@ void DLLState::insertAnimation(sf::Time dt, double speed, int insertIndex, int i
                     if (insertIndex != 0 && insertIndex != mListData.size()) {
                         mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
                         mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({7});
+                    } else if (insertIndex == mListData.size()) {
+                        mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
+                        mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({0});
                     }
                 } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
                     child->mIsDoneColoring = 0;
@@ -97,10 +133,12 @@ void DLLState::insertAnimation(sf::Time dt, double speed, int insertIndex, int i
                             sf::Color::White, sf::Color(237, 139, 26, 255), sf::Color(237, 139, 26, 255),
                             sf::Color(237, 139, 26, 255), sf::Color::White, sf::Color(237, 139, 26, 255)
                         );
-                        mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
-                        mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({8, 9, 10});
-                        if (index != 0) child->setLabel("cur");
-                        else child->setLabel("head/cur");
+                        if (insertIndex != mListData.size()) {
+                            mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
+                            mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({8, 9, 10});
+                            if (index != 0) child->setLabel("cur");
+                            else child->setLabel("head/cur");
+                        }
                     } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
                         child->mIsDoneColoring = 0;
                         this->mColorIndex++;
@@ -109,7 +147,14 @@ void DLLState::insertAnimation(sf::Time dt, double speed, int insertIndex, int i
                         if (this->mColorIndex >= insertIndex && !mIsActionPaused) {
                             this->mColorIndex--;
                             mAnimationOrder = 3;
-                            child->setLabel("cur");
+                            if (insertIndex != 1) {
+                                if (insertIndex != mListData.size()) child->setLabel("cur");
+                                else child->setLabel("tail");
+                            }
+                            else {
+                                if (mListData.size() != 1) child->setLabel("head/cur");
+                                else child->setLabel("head/tail");
+                            }
                             break;
                         }
                     }
@@ -134,7 +179,7 @@ void DLLState::insertAnimation(sf::Time dt, double speed, int insertIndex, int i
                         sf::Color(31, 224, 205, 255), sf::Color::White, sf::Color(31, 224, 205, 255)
                     );
                     mSceneLayers[NewNode]->attachChild(std::move(addedNode));
-                    if (mListData.size() == 0) {
+                    if (mListData.size() == 0) {    
                         mAnimationOrder  = 7;
                         break;
                     }
@@ -143,12 +188,13 @@ void DLLState::insertAnimation(sf::Time dt, double speed, int insertIndex, int i
             for (auto &child : this->mSceneLayers[NewNode]->getChildren()) {
                 if (!child->mIsMoving && !child->mIsDoneMoving) {
                     child->triggerMoveAnimation(dt, speed, 250, -90);
-                    if (insertIndex != 0) {
-                        mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
-                        mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({11});
-                    } else {
-                        mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
+                    mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
+                    if (insertIndex == 0) {
                         mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({2});
+                    } else if (insertIndex == mListData.size()) {
+                        mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({1});
+                    } else {
+                        mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({11});
                     }
                 } else if (!child->mIsMoving && child->mIsDoneMoving && !mIsActionPaused) {
                     child->mIsDoneMoving = 0;
@@ -215,7 +261,7 @@ void DLLState::insertAnimation(sf::Time dt, double speed, int insertIndex, int i
                 mSceneLayers[Arrow]->attachChild(std::move(newArrow));
                 std::unique_ptr<SpriteNode> newDLLArrow = std::make_unique<SpriteNode>(
                     mTexturesHolder[Textures::rightArrow], sf::Vector2f(0, 50), 
-                    sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + (insertIndex - 1)*250 + 260, 295), 180
+                    sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + (insertIndex - 1)*250 + 240, 345), 180
                 );
                 mSceneLayers[DLLArrow]->attachChild(std::move(newDLLArrow));
             }
@@ -231,12 +277,19 @@ void DLLState::insertAnimation(sf::Time dt, double speed, int insertIndex, int i
                         }
                         else {
                             child->triggerScaleAnimation(dt, speed*0.8, 110, 0, 0);
+                            mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
+                            mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({6, 7});
                         }
                     } 
                     else if (!child->mIsScaling && child->mIsDoneScaling && !mIsActionPaused) {
                         child->mIsDoneScaling = 0;
                         child->mIsDoneRotating = 0;
-                        mAnimationOrder = 6;
+                        if (insertIndex != mListData.size()) mAnimationOrder = 6;
+                        else {
+                            mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
+                            mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({8});
+                            mAnimationOrder = 7;
+                        }
                     }
                     break;
                 }
@@ -287,8 +340,6 @@ void DLLState::insertAnimation(sf::Time dt, double speed, int insertIndex, int i
                             mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({15});
                         } else if (!child->mIsScaling && child->mIsDoneScaling) {
                             child->mIsDoneMoving = 0;
-                            child->mIsDoneScaling = 0;
-                            child->mIsDoneRotating = 0;
                         }
                         break;
                     }
@@ -375,9 +426,12 @@ void DLLState::insertAnimation(sf::Time dt, double speed, int insertIndex, int i
             break;
         }
         case 7: {
-            if (insertIndex == 0) {
+            if (insertIndex == 0 && mListData.size() != 0) {
                 mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
                 mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({5});
+            } else if (mListData.size() == 0) {
+                mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
+                mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({2, 3, 4});
             }
             std::string str;
             if (insertIndex == 0) {
@@ -385,9 +439,13 @@ void DLLState::insertAnimation(sf::Time dt, double speed, int insertIndex, int i
                     child->setLabel("");
                     break;
                 }
-                str = "head";
+                if (mListData.size() != 0) str = "head";
+                else str = "head/tail";
             }
+            else if (insertIndex == mListData.size()) str = "tail";
             else str = "newNode";
+            if (insertIndex == mListData.size()) 
+                mSceneLayers[Nodes]->getChildren().back()->setLabel("");
             std::unique_ptr<DisplayNode> addedNode = std::make_unique<DisplayNode>(
                 insertValue, mFontsHolder[Fonts::FiraSansRegular], 100, str, 50,
                 sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + (insertIndex)*250, 250), 
@@ -484,11 +542,16 @@ void DLLState::insertAnimationReversed(sf::Time dt, double speed, int insertInde
 
         case 7: {
             mSceneLayers[Nodes]->getChildren().erase(mSceneLayers[Nodes]->getChildren().begin() + insertIndex);
-            if (mListData.size() > 1 && insertIndex != mListData.size() - 1) 
+            if (mListData.size() > 1 && insertIndex != mListData.size() - 1) {
                 mSceneLayers[Arrow]->getChildren().erase(mSceneLayers[Arrow]->getChildren().begin() + insertIndex); 
                 mSceneLayers[DLLArrow]->getChildren().erase(mSceneLayers[DLLArrow]->getChildren().begin() + insertIndex); 
+            }
 
             mListData.erase(mListData.begin() + insertIndex);
+            if (insertIndex == mListData.size()) {
+                if (mListData.size() == 1) mSceneLayers[Nodes]->getChildren().back()->setLabel("head/tail");
+                else mSceneLayers[Nodes]->getChildren().back()->setLabel("tail");
+            }
 
             std::unique_ptr<DisplayNode> addedNode = std::make_unique<DisplayNode>(
                 insertValue, mFontsHolder[Fonts::FiraSansRegular], 100, "newNode", 50,
@@ -515,7 +578,8 @@ void DLLState::insertAnimationReversed(sf::Time dt, double speed, int insertInde
                 mSceneLayers[NewDLLArrow]->attachChild(std::move(newDLLArrow));
             }
             if (mListData.size() == 0) mAnimationOrder = 3;
-            else mAnimationOrder = 6;
+            else if (insertIndex != mListData.size()) mAnimationOrder = 6;
+            else mAnimationOrder = 5;
             break;
         }
         case 6: {
@@ -636,10 +700,12 @@ void DLLState::insertAnimationReversed(sf::Time dt, double speed, int insertInde
                         }
                         else {
                             child->triggerScaleAnimation(dt, speed*0.8, -110, 0, 0);
+                            mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
+                            mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({6, 7});
                             mSceneLayers[DLLArrow]->getChildren().pop_back();
                             std::unique_ptr<SpriteNode> newDLLArrow = std::make_unique<SpriteNode>(
                                 mTexturesHolder[Textures::rightArrow], sf::Vector2f(110, 50), 
-                                sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + (insertIndex - 1)*250 + 260, 295), 180
+                                sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + (insertIndex - 1)*250 + 240, 345), 180
                             );
                             mSceneLayers[DLLArrow]->attachChild(std::move(newDLLArrow));
                         }
@@ -664,12 +730,8 @@ void DLLState::insertAnimationReversed(sf::Time dt, double speed, int insertInde
                             child->triggerRotateAnimation(dt, speed, -66.8);
                             child->triggerScaleAnimation(dt, speed*0.8, -(110/std::cos(66.8*std::atan(1)*4/180)) + 110, 0, 0);
                             child->triggerMoveAnimation(dt, speed*2, 25, 210);
-                            // mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
-                            // mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({12});
-                        }
-                        else {
-                            child->triggerScaleAnimation(dt, speed, -110, 0, 0);
-                        }
+                        } 
+                        else child->triggerScaleAnimation(dt, speed, -110, 0, 0);
                     } 
                     else if (!child->mIsScaling && child->mIsDoneScaling && !mIsActionPaused) {
                         child->mIsDoneScaling = 0;
@@ -724,12 +786,13 @@ void DLLState::insertAnimationReversed(sf::Time dt, double speed, int insertInde
             for (auto &child : this->mSceneLayers[NewNode]->getChildren()) {
                 if (!child->mIsMoving && !child->mIsDoneMoving) {
                     child->triggerMoveAnimation(dt, speed, 250, 90);
-                    if (insertIndex != 0) {
-                        mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
-                        mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({8, 9, 10});
-                    } else {
-                        mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
+                    mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
+                    if (insertIndex == 0) {
                         mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({2});
+                    } else if (insertIndex == mListData.size()) {
+                        mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({1});
+                    } else {
+                        mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({8, 9, 10});
                     }
                 } else if (!child->mIsMoving && child->mIsDoneMoving) {
                     if (mSceneLayers[NewNode]->getChildren().size() != 0) 
@@ -753,13 +816,17 @@ void DLLState::insertAnimationReversed(sf::Time dt, double speed, int insertInde
                             sf::Color::White, sf::Color(237, 139, 26, 255), sf::Color(237, 139, 26, 255),
                             sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
                         );
-                        mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
-                        mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({8, 9, 10});
-                        if (index != 0) child->setLabel("cur");
-                        else child->setLabel("head/cur");
+                        if (insertIndex != mListData.size()) {
+                            mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
+                            mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({8, 9, 10});
+                            if (index != 0) child->setLabel("cur");
+                            else child->setLabel("head/cur");
+                        }
                     } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
-                        if (index != 0) child->setLabel("");
-                        else child->setLabel("head");
+                        if (insertIndex != mListData.size()) {
+                            if (index != 0) child->setLabel("");
+                            else child->setLabel("head");
+                        }
                         child->mIsDoneColoring = 0;
                         this->mColorIndex--;
                         if (insertIndex == mListData.size()) {

@@ -22,6 +22,19 @@ void CodeHolder::load() {
         "    cur->next = newNode;",
         "}"
     };
+
+    mCodeMap[Code::SinglyLinkedListInsertTail] = {
+    "void insertAtTail(int value, Node*& head, Node*& tail) {", // 0
+    "    Node* newNode = new Node(value, nullptr);",              // 1
+    "    if (tail == nullptr) {",                                 // 2
+    "        head = newNode;",                                    // 3
+    "        tail = newNode;",                                    // 4
+    "    } else {",                                               // 5
+    "        tail->next = newNode;",                              // 6
+    "        tail = newNode;",                                    // 7
+    "    }",                                                       // 8
+    "}"                                                            // 9
+};
     mCodeMap[Code::SinglyLinkedListDelete] = {
         "void delete(int index, Node*& head) {",
         "    if (index == 0) {",
@@ -80,6 +93,20 @@ void CodeHolder::load() {
         "    cur->next = newNode;",
         "}"
     };
+
+    mCodeMap[Code::DoublyLinkedListInsertTail] = {
+    "void insertAtTail(int value, Node*& head, Node*& tail) {",    // 0
+    "    Node* newNode = new Node(value, nullptr, nullptr);",       // 1
+    "    if (tail == nullptr) {",                                   // 2
+    "        head = newNode;",                                      // 3
+    "        tail = newNode;",                                      // 4
+    "    } else {",                                                 // 5
+    "        newNode->prev = tail;",                                // 6
+    "        tail->next = newNode;",                                // 7
+    "        tail = newNode;",                                      // 8
+    "    }",                                                         // 9
+    "}"                                                              // 10
+};
 
     mCodeMap[Code::DoublyLinkedListDelete] = {
         "void delete(Node*& head, int index) {",
