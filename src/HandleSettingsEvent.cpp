@@ -11,9 +11,7 @@ void SettingsState::handleDataDropBoxEvent(sf::Event &event) {
             mSceneLayers[ActionDropBox]->getChildren().clear();
             mSceneLayers[InputBox]->getChildren().clear();
             mSceneLayers[ActionButtons]->getChildren().clear();
-            for (int i = 0; i < mActionActivated.size(); i++) {
-                mActionActivated[i] = 0;
-            }
+            mIsReset = 1;
         } else if (optionIndex == States::Stack || optionIndex == States::Queue) {
             mSceneLayers[ActionDropBox]->getChildren().clear();
             std::vector<std::string> actionOptions = {"Create", "Push", "Pop"}; 
@@ -39,7 +37,10 @@ void SettingsState::handleDataDropBoxEvent(sf::Event &event) {
             );
             mSceneLayers[ActionDropBox]->attachChild(std::move(newActionDropBox));
         }
-        if (optionIndex > 0) mStateActivated[optionIndex] = 1;
+        if (optionIndex > 0) {
+            mStateActivated[optionIndex] = 1;
+            mIsReset = 0;
+        }
         break;
     }
 }
@@ -1008,7 +1009,7 @@ void SettingsState::controlBoxUpdate() {
         );
         mSceneLayers[ControlBoxButtons]->getChildren()[0] = std::move(replayButton);
         mIsEndAnimation.second = 1;
-    } else if (!mIsEndAnimation.first && mIsEndAnimation.second && !mIsPrev) {
+    } else if (!mIsEndAnimation.first && mIsEndAnimation.second && !mIsPrev && !mIsReset) {
         std::unique_ptr<ImageButtonNode> playButton = std::make_unique<ImageButtonNode>(
             mWindow, mTexturesHolder[Textures::pauseButton], mTexturesHolder[Textures::pauseButtonHoverred],
             sf::Vector2f(30, 30), sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 - 100, sf::VideoMode::getDesktopMode().height - 220)

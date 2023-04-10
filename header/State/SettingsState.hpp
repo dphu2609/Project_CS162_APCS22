@@ -57,6 +57,7 @@ public:
     int mColorIndex = 0;
 
     bool mIsReplay = 0;
+    bool mIsReset = 0;
     std::pair<bool, bool> mIsEndAnimation = {0, 0};
 
     double mSpeed = 1;

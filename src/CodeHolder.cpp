@@ -48,6 +48,7 @@ void CodeHolder::load() {
         "        }",
         "        Node* temp = cur->next;",
         "        cur->next = temp->next;",
+        "        if (!cur->next) tail = cur;",
         "        delete temp;",
         "    }",
         "}"
@@ -123,6 +124,7 @@ void CodeHolder::load() {
         "        Node* temp = cur->next;",
         "        cur->next = temp->next;",
         "        if (temp->next != nullptr) temp->next->prev = cur;",
+        "        if (!cur->next) tail = cur;",
         "        delete temp;",
         "    }",
         "}"
