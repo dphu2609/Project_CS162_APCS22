@@ -11,7 +11,7 @@ void SettingsState::handleDataDropBoxEvent(sf::Event &event) {
             mSceneLayers[ActionDropBox]->getChildren().clear();
             mSceneLayers[InputBox]->getChildren().clear();
             mSceneLayers[ActionButtons]->getChildren().clear();
-            mIsReset = 1;
+            mActionActivated[Action::ResetAction] = 1;
         } else if (optionIndex == States::Stack || optionIndex == States::Queue) {
             mSceneLayers[ActionDropBox]->getChildren().clear();
             std::vector<std::string> actionOptions = {"Create", "Push", "Pop"}; 
@@ -37,10 +37,7 @@ void SettingsState::handleDataDropBoxEvent(sf::Event &event) {
             );
             mSceneLayers[ActionDropBox]->attachChild(std::move(newActionDropBox));
         }
-        if (optionIndex > 0) {
-            mStateActivated[optionIndex] = 1;
-            mIsReset = 0;
-        }
+        if (optionIndex > 0) mStateActivated[optionIndex] = 1;
         break;
     }
 }
@@ -381,6 +378,16 @@ void SettingsState::handleActionDropBoxEvent(sf::Event &event) {
     }
 }
 
+void SettingsState::resetControlBox() {
+    if (mIsControlBoxEmerged) {
+        std::unique_ptr<ImageButtonNode> playButton = std::make_unique<ImageButtonNode>(
+            mWindow, mTexturesHolder[Textures::pauseButton], mTexturesHolder[Textures::pauseButtonHoverred],
+            sf::Vector2f(30, 30), sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 - 100, sf::VideoMode::getDesktopMode().height - 220)
+        );
+        mSceneLayers[ControlBoxButtons]->getChildren()[0] = std::move(playButton);
+    }
+}
+
 void SettingsState::createRandomList() {
     srand((unsigned int)time(NULL));
     int size = rand() % 4 + 3;
@@ -521,6 +528,7 @@ void SettingsState::handleAction(sf::Event &event) {
                                     throwError("Sorry, the maximum size is 10.");
                                 } 
                                 else {
+                                    resetControlBox();
                                     for (int i = 0; i < Action::ActionCount; i++) mActionActivated[i] = 0;
                                     mActionActivated[Action::Insert] = 1;
                                     mActionActivated[Action::Play] = 1;
@@ -583,6 +591,7 @@ void SettingsState::handleAction(sf::Event &event) {
                                     throwError("Error: List is empty! Can not perform this action.");
                                 }
                                 else {
+                                    resetControlBox();
                                     for (int i = 0; i < Action::ActionCount; i++) mActionActivated[i] = 0;
                                     mActionActivated[Action::Delete] = 1;
                                     mActionActivated[Action::Play] = 1;
@@ -632,6 +641,7 @@ void SettingsState::handleAction(sf::Event &event) {
                                     throwError("Error: Invalid value!");
                                 }
                                 else {
+                                    resetControlBox();
                                     for (int i = 0; i < Action::ActionCount; i++) mActionActivated[i] = 0;
                                     mActionActivated[Action::Update] = 1;
                                     mActionActivated[Action::Play] = 1;
@@ -676,6 +686,7 @@ void SettingsState::handleAction(sf::Event &event) {
                                     throwError("Error: Invalid value!");
                                 }
                                 else {
+                                    resetControlBox();
                                     for (int i = 0; i < Action::ActionCount; i++) mActionActivated[i] = 0;
                                     mActionActivated[Action::Search] = 1;
                                     mActionActivated[Action::Play] = 1;
@@ -748,6 +759,7 @@ void SettingsState::handleAction(sf::Event &event) {
                                     throwError("Sorry, the maximum size is 10.");
                                 } 
                                 else {
+                                    resetControlBox();
                                     for (int i = 0; i < Action::ActionCount; i++) mActionActivated[i] = 0;
                                     mActionActivated[Action::Insert] = 1;
                                     mActionActivated[Action::Play] = 1;
@@ -777,6 +789,7 @@ void SettingsState::handleAction(sf::Event &event) {
                             throwError("Error: List is empty! Can not perform this action.");
                         }
                         else {
+                            resetControlBox();
                             for (int i = 0; i < Action::ActionCount; i++) mActionActivated[i] = 0;
                             mActionActivated[Action::Delete] = 1;
                             mActionActivated[Action::Play] = 1;
@@ -823,6 +836,7 @@ void SettingsState::handleControlBoxEvent(sf::Event &event) {
                         mIsActionPaused = 1;
                         mIsEndAnimation.second = 0;
                         mIsEndAnimation.first = 0;
+                        mIsActionPaused = 1;
                     }
                     if (!mIsActionPaused) {
                         mIsActionPaused = 1;
@@ -895,7 +909,7 @@ void SettingsState::handleControlBoxEvent(sf::Event &event) {
             if (!mIsSpeedBoxEmerged) {
                 std::unique_ptr<RectangleButtonNode> speed2x = std::make_unique<RectangleButtonNode>(
                     mWindow, "2", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(200, 50), 0,
-                    sf::Vector2f(sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 + 70, sf::VideoMode::getDesktopMode().height - 330)),
+                    sf::Vector2f(sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 + 20, sf::VideoMode::getDesktopMode().height - 320)),
                     sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
                     sf::Color::White, sf::Color(85, 93, 120, 255), sf::Color(41, 58, 117, 255)
                 );
@@ -903,7 +917,7 @@ void SettingsState::handleControlBoxEvent(sf::Event &event) {
 
                 std::unique_ptr<RectangleButtonNode> speed175x = std::make_unique<RectangleButtonNode>(
                     mWindow, "1.75", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(200, 50), 0,
-                    sf::Vector2f(sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 + 70, sf::VideoMode::getDesktopMode().height - 380)),
+                    sf::Vector2f(sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 + 20, sf::VideoMode::getDesktopMode().height - 370)),
                     sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
                     sf::Color::White, sf::Color(85, 93, 120, 255), sf::Color(41, 58, 117, 255)
                 );
@@ -911,7 +925,7 @@ void SettingsState::handleControlBoxEvent(sf::Event &event) {
 
                 std::unique_ptr<RectangleButtonNode> speed15x = std::make_unique<RectangleButtonNode>(
                     mWindow, "1.5", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(200, 50), 0,
-                    sf::Vector2f(sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 + 70, sf::VideoMode::getDesktopMode().height - 430)),
+                    sf::Vector2f(sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 + 20, sf::VideoMode::getDesktopMode().height - 420)),
                     sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
                     sf::Color::White, sf::Color(85, 93, 120, 255), sf::Color(41, 58, 117, 255)
                 );
@@ -919,7 +933,7 @@ void SettingsState::handleControlBoxEvent(sf::Event &event) {
 
                 std::unique_ptr<RectangleButtonNode> speed125x = std::make_unique<RectangleButtonNode>(
                     mWindow, "1.25", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(200, 50), 0,
-                    sf::Vector2f(sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 + 70, sf::VideoMode::getDesktopMode().height - 480)),
+                    sf::Vector2f(sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 + 20, sf::VideoMode::getDesktopMode().height - 470)),
                     sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
                     sf::Color::White, sf::Color(85, 93, 120, 255), sf::Color(41, 58, 117, 255)
                 );
@@ -927,7 +941,7 @@ void SettingsState::handleControlBoxEvent(sf::Event &event) {
 
                 std::unique_ptr<RectangleButtonNode> speed1x = std::make_unique<RectangleButtonNode>(
                     mWindow, "Normal", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(200, 50), 0,
-                    sf::Vector2f(sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 + 70, sf::VideoMode::getDesktopMode().height - 530)),
+                    sf::Vector2f(sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 + 20, sf::VideoMode::getDesktopMode().height - 520)),
                     sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
                     sf::Color::White, sf::Color(85, 93, 120, 255), sf::Color(41, 58, 117, 255)
                 );
@@ -935,7 +949,7 @@ void SettingsState::handleControlBoxEvent(sf::Event &event) {
 
                 std::unique_ptr<RectangleButtonNode> speed075x = std::make_unique<RectangleButtonNode>(
                     mWindow, "0.75", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(200, 50), 0,
-                    sf::Vector2f(sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 + 70, sf::VideoMode::getDesktopMode().height - 580)),
+                    sf::Vector2f(sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 + 20, sf::VideoMode::getDesktopMode().height - 570)),
                     sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
                     sf::Color::White, sf::Color(85, 93, 120, 255), sf::Color(41, 58, 117, 255)
                 );
@@ -943,7 +957,7 @@ void SettingsState::handleControlBoxEvent(sf::Event &event) {
 
                 std::unique_ptr<RectangleButtonNode> speed05x = std::make_unique<RectangleButtonNode>(
                     mWindow, "0.5", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(200, 50), 0,
-                    sf::Vector2f(sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 + 70, sf::VideoMode::getDesktopMode().height - 630)),
+                    sf::Vector2f(sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 + 20, sf::VideoMode::getDesktopMode().height - 620)),
                     sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
                     sf::Color::White, sf::Color(85, 93, 120, 255), sf::Color(41, 58, 117, 255)
                 );
@@ -951,21 +965,21 @@ void SettingsState::handleControlBoxEvent(sf::Event &event) {
 
                 std::unique_ptr<RectangleButtonNode> speed025x = std::make_unique<RectangleButtonNode>(
                     mWindow, "0.25", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(200, 50), 0,
-                    sf::Vector2f(sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 + 70, sf::VideoMode::getDesktopMode().height - 680)),
+                    sf::Vector2f(sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 + 20, sf::VideoMode::getDesktopMode().height - 670)),
                     sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
                     sf::Color::White, sf::Color(85, 93, 120, 255), sf::Color(41, 58, 117, 255)
                 );
                 mSceneLayers[ControlBoxSpeedOptions]->attachChild(std::move(speed025x));
 
                 sf::Vector2f checkMarkPos;
-                if (mSpeed == 2) checkMarkPos = sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 + 240, sf::VideoMode::getDesktopMode().height - 310);
-                else if (mSpeed == 1.75) checkMarkPos = sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 + 240, sf::VideoMode::getDesktopMode().height - 360);
-                else if (mSpeed == 1.5) checkMarkPos = sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 + 240, sf::VideoMode::getDesktopMode().height - 410);
-                else if (mSpeed == 1.25) checkMarkPos = sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 + 240, sf::VideoMode::getDesktopMode().height - 460);
-                else if (mSpeed == 1) checkMarkPos = sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 + 240, sf::VideoMode::getDesktopMode().height - 510);
-                else if (mSpeed == 0.75) checkMarkPos = sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 + 240, sf::VideoMode::getDesktopMode().height - 560);
-                else if (mSpeed == 0.5) checkMarkPos = sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 + 240, sf::VideoMode::getDesktopMode().height - 610);
-                else if (mSpeed == 0.25) checkMarkPos = sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 + 240, sf::VideoMode::getDesktopMode().height - 660);
+                if (mSpeed == 2) checkMarkPos = sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 + 190, sf::VideoMode::getDesktopMode().height - 305);
+                else if (mSpeed == 1.75) checkMarkPos = sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 + 190, sf::VideoMode::getDesktopMode().height - 355);
+                else if (mSpeed == 1.5) checkMarkPos = sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 + 190, sf::VideoMode::getDesktopMode().height - 405);
+                else if (mSpeed == 1.25) checkMarkPos = sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 + 190, sf::VideoMode::getDesktopMode().height - 455);
+                else if (mSpeed == 1) checkMarkPos = sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 + 190, sf::VideoMode::getDesktopMode().height - 505);
+                else if (mSpeed == 0.75) checkMarkPos = sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 + 190, sf::VideoMode::getDesktopMode().height - 555);
+                else if (mSpeed == 0.5) checkMarkPos = sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 + 190, sf::VideoMode::getDesktopMode().height - 605);
+                else if (mSpeed == 0.25) checkMarkPos = sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 + 190, sf::VideoMode::getDesktopMode().height - 655);
 
                 std::unique_ptr<ImageButtonNode> checkMark = std::make_unique<ImageButtonNode>(
                     mWindow, mTexturesHolder[Textures::speedCheckMark], mTexturesHolder[Textures::speedCheckMark],
@@ -1009,12 +1023,5 @@ void SettingsState::controlBoxUpdate() {
         );
         mSceneLayers[ControlBoxButtons]->getChildren()[0] = std::move(replayButton);
         mIsEndAnimation.second = 1;
-    } else if (!mIsEndAnimation.first && mIsEndAnimation.second && !mIsPrev && !mIsReset) {
-        std::unique_ptr<ImageButtonNode> playButton = std::make_unique<ImageButtonNode>(
-            mWindow, mTexturesHolder[Textures::pauseButton], mTexturesHolder[Textures::pauseButtonHoverred],
-            sf::Vector2f(30, 30), sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 - 100, sf::VideoMode::getDesktopMode().height - 220)
-        );
-        mSceneLayers[ControlBoxButtons]->getChildren()[0] = std::move(playButton);
-        mIsEndAnimation.second = 0;
     }
 }

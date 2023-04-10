@@ -8,13 +8,13 @@ DataStructureState::DataStructureState(sf::RenderWindow &window) : State(window)
 } 
 
 void DataStructureState::loadTextures() {
-    this->mTexturesHolder.load(Textures::rightArrow, "img/rightArrow.png");
-    this->mTexturesHolder.load(Textures::leftArrow, "img/leftArrow.png");
+    this->mTexturesHolder.load(Textures::rightArrow, "resources/img/rightArrow.png");
+    this->mTexturesHolder.load(Textures::leftArrow, "resources/img/leftArrow.png");
 }
 
 void DataStructureState::loadFonts() {
-    this->mFontsHolder.load(Fonts::FiraSansRegular, "fonts/FiraSans-Regular.ttf");
-    this->mFontsHolder.load(Fonts::FiraMonoRegular, "fonts/Fira_Mono/FiraMono-Regular.ttf");
+    this->mFontsHolder.load(Fonts::FiraSansRegular, "resources/fonts/FiraSans-Regular.ttf");
+    this->mFontsHolder.load(Fonts::FiraMonoRegular, "resources/fonts/Fira_Mono/FiraMono-Regular.ttf");
 }
 
 void DataStructureState::loadCode() {

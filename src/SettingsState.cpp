@@ -13,19 +13,19 @@ SettingsState::SettingsState(sf::RenderWindow &window) : State(window) {
 }
 
 void SettingsState::loadTextures() {
-    this->mTexturesHolder.load(Textures::playButton, "img/playButton.png");
-    this->mTexturesHolder.load(Textures::playButtonHoverred, "img/playButtonHoverred.png");
-    this->mTexturesHolder.load(Textures::pauseButton, "img/pauseButton.png");
-    this->mTexturesHolder.load(Textures::pauseButtonHoverred, "img/pauseButtonHoverred.png");
-    this->mTexturesHolder.load(Textures::replayButton, "img/replayButton.png");
-    this->mTexturesHolder.load(Textures::replayButtonHoverred, "img/replayButtonHoverred.png");
-    this->mTexturesHolder.load(Textures::nextButton, "img/nextButton.png");
-    this->mTexturesHolder.load(Textures::nextButtonHoverred, "img/nextButtonHoverred.png");
-    this->mTexturesHolder.load(Textures::prevButton, "img/prevButton.png");
-    this->mTexturesHolder.load(Textures::prevButtonHoverred, "img/prevButtonHoverred.png");
-    this->mTexturesHolder.load(Textures::speedButton, "img/speedButton.png");
-    this->mTexturesHolder.load(Textures::speedButtonHoverred, "img/speedButtonHoverred.png");
-    this->mTexturesHolder.load(Textures::speedCheckMark, "img/speedCheckMark.png");
+    this->mTexturesHolder.load(Textures::playButton, "resources/img/playButton.png");
+    this->mTexturesHolder.load(Textures::playButtonHoverred, "resources/img/playButtonHoverred.png");
+    this->mTexturesHolder.load(Textures::pauseButton, "resources/img/pauseButton.png");
+    this->mTexturesHolder.load(Textures::pauseButtonHoverred, "resources/img/pauseButtonHoverred.png");
+    this->mTexturesHolder.load(Textures::replayButton, "resources/img/replayButton.png");
+    this->mTexturesHolder.load(Textures::replayButtonHoverred, "resources/img/replayButtonHoverred.png");
+    this->mTexturesHolder.load(Textures::nextButton, "resources/img/nextButton.png");
+    this->mTexturesHolder.load(Textures::nextButtonHoverred, "resources/img/nextButtonHoverred.png");
+    this->mTexturesHolder.load(Textures::prevButton, "resources/img/prevButton.png");
+    this->mTexturesHolder.load(Textures::prevButtonHoverred, "resources/img/prevButtonHoverred.png");
+    this->mTexturesHolder.load(Textures::speedButton, "resources/img/speedButton.png");
+    this->mTexturesHolder.load(Textures::speedButtonHoverred, "resources/img/speedButtonHoverred.png");
+    this->mTexturesHolder.load(Textures::speedCheckMark, "resources/img/speedCheckMark.png");
 }
 
 void SettingsState::loadFonts() {
@@ -59,8 +59,8 @@ void SettingsState::buildScence() {
     mSceneLayers[DataDropBox]->attachChild(std::move(newDataDropBox));
 
     std::unique_ptr<ContainerNode> controlBoxContainer = std::make_unique<ContainerNode>(
-        mWindow, sf::Vector2f(800, 150), 0,
-        sf::Vector2f((sf::VideoMode::getDesktopMode().width - 800)/2, sf::VideoMode::getDesktopMode().height - 270 + 300), sf::Color(52, 53, 59, 255), sf::Color::Black
+        mWindow, sf::Vector2f(700, 13resources/0), 0,
+        sf::Vector2f((sf::VideoMode::getDesktopMode().width - 700)/2, sf::VideoMode::getDesktopMode().height - 270 + 300), sf::Color(52, 53, 59, 255), sf::Color::Black
     );
     mSceneLayers[ControlBoxContainer]->attachChild(std::move(controlBoxContainer));
 
