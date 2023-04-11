@@ -1742,7 +1742,7 @@ void DLLState::updateAnimation(sf::Time dt, double speed, int updateIndex, int u
     ) {
         mSceneLayers[CodeBox]->getChildren().clear();
         std::unique_ptr<CodeBlockNode> codeBlock = std::make_unique<CodeBlockNode>(
-            mWindow, mCodeHolder[Code::SinglyLinkedListUpdate], mFontsHolder[Fonts::FiraMonoRegular], 25,
+            mWindow, mCodeHolder[Code::SinglyLinkedListUpdate], mFontsHolder[Fonts::FiraMonoRegular], 25*Constant::scaleX,
             sf::Color::Black, sf::Color(145, 174, 226, 255), sf::Color::Black, sf::Color(86, 114, 163, 255)
         );
         mSceneLayers[CodeBox]->attachChild(std::move(codeBlock));
@@ -1903,7 +1903,7 @@ void DLLState::searchAnimation(sf::Time dt, double speed, int searchValue) {
     ) {
         mSceneLayers[CodeBox]->getChildren().clear();
         std::unique_ptr<CodeBlockNode> codeBlock = std::make_unique<CodeBlockNode>(
-            mWindow, mCodeHolder[Code::SinglyLinkedListSearch], mFontsHolder[Fonts::FiraMonoRegular], 25,
+            mWindow, mCodeHolder[Code::SinglyLinkedListSearch], mFontsHolder[Fonts::FiraMonoRegular], 25*Constant::scaleX,
             sf::Color::Black, sf::Color(145, 174, 226, 255), sf::Color::Black, sf::Color(86, 114, 163, 255)
         );
         mSceneLayers[CodeBox]->attachChild(std::move(codeBlock));

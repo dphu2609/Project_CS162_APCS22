@@ -12,22 +12,22 @@ void QueueState::createDataStructure(std::vector<int> list) {
             if (mListData.size() == 1) str = "front/rear";
             else str = "front";
             std::unique_ptr<DisplayNode> newNode = std::make_unique<DisplayNode>(
-                mListData[i], mFontsHolder[Fonts::FiraSansRegular], 100, str, 50,
-                sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + i*250, 250), 
+                mListData[i], mFontsHolder[Fonts::FiraSansRegular], 100*Constant::scaleX, str, 50*Constant::scaleX,
+                sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250*Constant::scaleX + i*250*Constant::scaleX, 250*Constant::scaleX), 
                 sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
             );
             mSceneLayers[Nodes]->attachChild(std::move(newNode));
         } else if (i == mListData.size() - 1) {
             std::unique_ptr<DisplayNode> newNode = std::make_unique<DisplayNode>(
-                mListData[i], mFontsHolder[Fonts::FiraSansRegular], 100, "rear", 50,
-                sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + i*250, 250), 
+                mListData[i], mFontsHolder[Fonts::FiraSansRegular], 100*Constant::scaleX, "rear", 50*Constant::scaleX,
+                sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250*Constant::scaleX + i*250*Constant::scaleX, 250*Constant::scaleX), 
                 sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
             );
             mSceneLayers[Nodes]->attachChild(std::move(newNode));
         } else {
             std::unique_ptr<DisplayNode> newNode = std::make_unique<DisplayNode>(
-                mListData[i], mFontsHolder[Fonts::FiraSansRegular], 100, 
-                sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + i*250, 250), 
+                mListData[i], mFontsHolder[Fonts::FiraSansRegular], 100*Constant::scaleX, 
+                sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250*Constant::scaleX + i*250*Constant::scaleX, 250*Constant::scaleX), 
                 sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
             );
             mSceneLayers[Nodes]->attachChild(std::move(newNode));
@@ -36,8 +36,8 @@ void QueueState::createDataStructure(std::vector<int> list) {
     
     for (int i = 0; i < mListData.size() - 1; i++) {
         std::unique_ptr<SpriteNode> newArrow = std::make_unique<SpriteNode>(
-            mTexturesHolder[Textures::rightArrow], sf::Vector2f(110, 50), 
-            sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + i*250 + 130, 285), 0
+            mTexturesHolder[Textures::rightArrow], sf::Vector2f(110*Constant::scaleX, 50*Constant::scaleX), 
+            sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250*Constant::scaleX + i*250*Constant::scaleX + 130*Constant::scaleX, 285*Constant::scaleX), 0
         );
         mSceneLayers[Arrow]->attachChild(std::move(newArrow));
     }
@@ -50,7 +50,7 @@ void QueueState::insertAnimation(sf::Time dt, double speed, int insertIndex, int
     ) {
         mSceneLayers[CodeBox]->getChildren().clear();
         std::unique_ptr<CodeBlockNode> codeBlock = std::make_unique<CodeBlockNode>(
-            mWindow, mCodeHolder[Code::QueuePush], mFontsHolder[Fonts::FiraMonoRegular], 25,
+            mWindow, mCodeHolder[Code::QueuePush], mFontsHolder[Fonts::FiraMonoRegular], 25*Constant::scaleX,
             sf::Color::Black, sf::Color(145, 174, 226, 255), sf::Color::Black, sf::Color(86, 114, 163, 255)
         );
         mSceneLayers[CodeBox]->attachChild(std::move(codeBlock));
@@ -104,15 +104,15 @@ void QueueState::insertAnimation(sf::Time dt, double speed, int insertIndex, int
         case 3: {
             if (mSceneLayers[NewNode]->getChildren().size() == 0) {
                 std::unique_ptr<DisplayNode> addedNode = std::make_unique<DisplayNode>(
-                    insertValue, mFontsHolder[Fonts::FiraSansRegular], 100, "newNode", 50,
-                    sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + (insertIndex)*250, 500), 
+                    insertValue, mFontsHolder[Fonts::FiraSansRegular], 100*Constant::scaleX, "newNode", 50*Constant::scaleX,
+                    sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250*Constant::scaleX + (insertIndex)*250*Constant::scaleX, 500*Constant::scaleX), 
                     sf::Color(31, 224, 205, 255), sf::Color::White, sf::Color(31, 224, 205, 255)
                 );
                 mSceneLayers[NewNode]->attachChild(std::move(addedNode));
             }
             for (auto &child : this->mSceneLayers[NewNode]->getChildren()) {
                 if (!child->mIsMoving && !child->mIsDoneMoving) {
-                    child->triggerMoveAnimation(dt, speed, 250, -90);
+                    child->triggerMoveAnimation(dt, speed, 250*Constant::scaleX, -90);
                     mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
                     mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({1});
 
@@ -127,8 +127,8 @@ void QueueState::insertAnimation(sf::Time dt, double speed, int insertIndex, int
         case 4: {
             if (mSceneLayers[Arrow]->getChildren().size() == mListData.size() - 1) {
                 std::unique_ptr<SpriteNode> newArrow = std::make_unique<SpriteNode>(
-                    mTexturesHolder[Textures::rightArrow], sf::Vector2f(0, 50), 
-                    sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + (insertIndex - 1)*250 + 130, 285), 0
+                    mTexturesHolder[Textures::rightArrow], sf::Vector2f(0, 50*Constant::scaleX), 
+                    sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250*Constant::scaleX + (insertIndex - 1)*250*Constant::scaleX + 130*Constant::scaleX, 285*Constant::scaleX), 0
                 );
                 mSceneLayers[Arrow]->attachChild(std::move(newArrow));
             }
@@ -136,7 +136,7 @@ void QueueState::insertAnimation(sf::Time dt, double speed, int insertIndex, int
             for (auto &child : this->mSceneLayers[Arrow]->getChildren()) {
                 if (index == mListData.size() - 1) {
                     if (!child->mIsScaling && !child->mIsDoneScaling) {
-                        child->triggerScaleAnimation(dt, speed*0.8, 110, 0, 0);
+                        child->triggerScaleAnimation(dt, speed*0.8, 110*Constant::scaleX, 0, 0);
                         mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
                         mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({6});
                     }
@@ -152,8 +152,8 @@ void QueueState::insertAnimation(sf::Time dt, double speed, int insertIndex, int
         }
         case 5: {
             std::unique_ptr<DisplayNode> addedNode = std::make_unique<DisplayNode>(
-                insertValue, mFontsHolder[Fonts::FiraSansRegular], 100,
-                sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + (insertIndex)*250, 250), 
+                insertValue, mFontsHolder[Fonts::FiraSansRegular], 100*Constant::scaleX,
+                sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250*Constant::scaleX + (insertIndex)*250*Constant::scaleX, 250*Constant::scaleX), 
                 sf::Color(31, 224, 205, 255), sf::Color::White, sf::Color(31, 224, 205, 255)
             );
             mSceneLayers[Nodes]->attachChild(std::move(addedNode));
@@ -190,12 +190,12 @@ void QueueState::insertAnimation(sf::Time dt, double speed, int insertIndex, int
             if (mListData.size()%2 == 0) {
                 for (auto &child : this->mSceneLayers[Nodes]->getChildren()) {
                     if (!child->mIsMoving && !child->mIsDoneMoving) {
-                        child->triggerMoveAnimation(dt, speed, 250, 180);
+                        child->triggerMoveAnimation(dt, speed, 250*Constant::scaleX, 180);
                     }
                 }
                 for (auto &child : this->mSceneLayers[Arrow]->getChildren()) {
                     if (!child->mIsMoving && !child->mIsDoneMoving) {
-                        child->triggerMoveAnimation(dt, speed, 250, 180);
+                        child->triggerMoveAnimation(dt, speed, 250*Constant::scaleX, 180);
                     } else if (!child->mIsMoving && child->mIsDoneMoving) {
                         mIsEndAnimation = 1;
                     }
@@ -216,14 +216,14 @@ void QueueState::insertAnimationReversed(sf::Time dt, double speed, int insertIn
             if (mListData.size()%2 == 0) {
                 for (auto &child : this->mSceneLayers[Nodes]->getChildren()) {
                     if (!child->mIsMoving && !child->mIsDoneMoving) {
-                        child->triggerMoveAnimation(dt, speed, 250, 0);
+                        child->triggerMoveAnimation(dt, speed, 250*Constant::scaleX, 0);
                     } else if (!child->mIsMoving && child->mIsDoneMoving) {
                         child->mIsDoneMoving = 0;
                     }
                 }
                 for (auto &child : this->mSceneLayers[Arrow]->getChildren()) {
                     if (!child->mIsMoving && !child->mIsDoneMoving) {
-                        child->triggerMoveAnimation(dt, speed, 250, 0);
+                        child->triggerMoveAnimation(dt, speed, 250*Constant::scaleX, 0);
                     } else if (!child->mIsMoving && child->mIsDoneMoving) {
                         child->mIsDoneMoving = 0;
                         mAnimationOrder = 5;
@@ -236,8 +236,8 @@ void QueueState::insertAnimationReversed(sf::Time dt, double speed, int insertIn
         case 5: {
             mListData.pop_back();
             std::unique_ptr<DisplayNode> addedNode = std::make_unique<DisplayNode>(
-                insertValue, mFontsHolder[Fonts::FiraSansRegular], 100,
-                sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + (mListData.size())*250, 250), 
+                insertValue, mFontsHolder[Fonts::FiraSansRegular], 100*Constant::scaleX,
+                sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250*Constant::scaleX + (mListData.size())*250*Constant::scaleX, 250*Constant::scaleX), 
                 sf::Color(31, 224, 205, 255), sf::Color::White, sf::Color(31, 224, 205, 255)
             );
             mSceneLayers[NewNode]->attachChild(std::move(addedNode));
@@ -268,7 +268,7 @@ void QueueState::insertAnimationReversed(sf::Time dt, double speed, int insertIn
             for (auto &child : this->mSceneLayers[Arrow]->getChildren()) {
                 if (index == mListData.size() - 1) {
                     if (!child->mIsScaling && !child->mIsDoneScaling) {
-                        child->triggerScaleAnimation(dt, speed*0.8, -110, 0, 0);
+                        child->triggerScaleAnimation(dt, speed*0.8, -110*Constant::scaleX, 0, 0);
                     }
                     else if (!child->mIsScaling && child->mIsDoneScaling && !mIsActionPaused) {
                         child->mIsDoneScaling = 0;
@@ -284,7 +284,7 @@ void QueueState::insertAnimationReversed(sf::Time dt, double speed, int insertIn
         case 3: {
             for (auto &child : this->mSceneLayers[NewNode]->getChildren()) {
                 if (!child->mIsMoving && !child->mIsDoneMoving) {
-                    child->triggerMoveAnimation(dt, speed, 250, 90);
+                    child->triggerMoveAnimation(dt, speed, 250*Constant::scaleX, 90);
                     mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
                     mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({1});
                 } else if (!child->mIsMoving && child->mIsDoneMoving && !mIsActionPaused) {
@@ -329,7 +329,7 @@ void QueueState::deleteAnimation(sf::Time dt, double speed, int deleteIndex) {
     ) {
         mSceneLayers[CodeBox]->getChildren().clear();
         std::unique_ptr<CodeBlockNode> codeBlock = std::make_unique<CodeBlockNode>(
-            mWindow, mCodeHolder[Code::QueuePop], mFontsHolder[Fonts::FiraMonoRegular], 25,
+            mWindow, mCodeHolder[Code::QueuePop], mFontsHolder[Fonts::FiraMonoRegular], 25*Constant::scaleX,
             sf::Color::Black, sf::Color(145, 174, 226, 255), sf::Color::Black, sf::Color(86, 114, 163, 255)
         );
         mSceneLayers[CodeBox]->attachChild(std::move(codeBlock));
@@ -387,7 +387,7 @@ void QueueState::deleteAnimation(sf::Time dt, double speed, int deleteIndex) {
         case 3: {
             for (auto &child : mSceneLayers[Nodes]->getChildren()) {
                 if (!child->mIsScaling && !child->mIsDoneScaling) {
-                    child->triggerScaleAnimation(dt, speed*1.5, -100, 0, 0);
+                    child->triggerScaleAnimation(dt, speed*1.5, -100*Constant::scaleX, 0, 0);
                     mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
                     mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({3});
                 } else if (!child->mIsScaling && child->mIsDoneScaling) {
@@ -397,7 +397,7 @@ void QueueState::deleteAnimation(sf::Time dt, double speed, int deleteIndex) {
             }
             for (auto &child : mSceneLayers[Arrow]->getChildren()) {
                 if (!child->mIsScaling && !child->mIsDoneScaling) {
-                    child->triggerScaleAnimation(dt, speed*2, -110, speed, -50);
+                    child->triggerScaleAnimation(dt, speed*2, -110*Constant::scaleX, speed, -50*Constant::scaleX);
                     child->triggerMoveAnimation(dt, speed*2, 30, 45);
                 }
                 break;
@@ -410,7 +410,7 @@ void QueueState::deleteAnimation(sf::Time dt, double speed, int deleteIndex) {
                 for (auto &child : mSceneLayers[Nodes]->getChildren()) {
                     if (index > 0) {
                         if (!child->mIsMoving && !child->mIsDoneMoving) {
-                            child->triggerMoveAnimation(dt, speed, 250, 180);
+                            child->triggerMoveAnimation(dt, speed, 250*Constant::scaleX, 180);
                         } else if (!child->mIsMoving && child->mIsDoneMoving) {
                             child->mIsDoneMoving = 0;
                             mAnimationOrder = 5;
@@ -422,7 +422,7 @@ void QueueState::deleteAnimation(sf::Time dt, double speed, int deleteIndex) {
                 for (auto &child : mSceneLayers[Arrow]->getChildren()) {
                     if (index > 0) {
                         if (!child->mIsMoving && !child->mIsDoneMoving) {
-                            child->triggerMoveAnimation(dt, speed, 250, 180);
+                            child->triggerMoveAnimation(dt, speed, 250*Constant::scaleX, 180);
                         } else if (!child->mIsMoving && child->mIsDoneMoving) {
                             child->mIsDoneMoving = 0;
                         }
@@ -453,14 +453,14 @@ void QueueState::deleteAnimationReversed(sf::Time dt, double speed, int deleteIn
             mListData.insert(mListData.begin() + deleteIndex, deleteValue);
             std::unique_ptr<DisplayNode> newNode = std::make_unique<DisplayNode>(
                 deleteValue, mFontsHolder[Fonts::FiraSansRegular], 0, "temp", 0,
-                sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + (deleteIndex)*250 + 60, 310), 
+                sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250*Constant::scaleX + (deleteIndex)*250*Constant::scaleX + 60*Constant::scaleX, 310*Constant::scaleX), 
                 sf::Color::White, sf::Color(150, 0, 25, 255), sf::Color(150, 0, 25, 255)
             );
             mSceneLayers[Nodes]->getChildren().insert(mSceneLayers[Nodes]->getChildren().begin() + deleteIndex, std::move(newNode));
             if (mListData.size() != 1) {
                 std::unique_ptr<SpriteNode> newArrow = std::make_unique<SpriteNode>(
                     mTexturesHolder[Textures::rightArrow], sf::Vector2f(0, 0),  
-                    sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250 + deleteIndex*250 + 130 + 22, 305), 0
+                    sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250*Constant::scaleX + deleteIndex*250*Constant::scaleX + 130*Constant::scaleX + 22*Constant::scaleX, 305*Constant::scaleX), 0
                 );
                 mSceneLayers[Arrow]->getChildren().insert(mSceneLayers[Arrow]->getChildren().begin() + deleteIndex, std::move(newArrow));
             }
@@ -473,7 +473,7 @@ void QueueState::deleteAnimationReversed(sf::Time dt, double speed, int deleteIn
                 for (auto &child : mSceneLayers[Nodes]->getChildren()) {
                     if (index > 0) {
                         if (!child->mIsMoving && !child->mIsDoneMoving) {
-                            child->triggerMoveAnimation(dt, speed, 250, 0);
+                            child->triggerMoveAnimation(dt, speed, 250*Constant::scaleX, 0);
                         } else if (!child->mIsMoving && child->mIsDoneMoving && !mIsActionPaused) {
                             child->mIsDoneMoving = 0;
                             mAnimationOrder = 3;
@@ -485,7 +485,7 @@ void QueueState::deleteAnimationReversed(sf::Time dt, double speed, int deleteIn
                 for (auto &child : mSceneLayers[Arrow]->getChildren()) {
                     if (index > 0) {
                         if (!child->mIsMoving && !child->mIsDoneMoving) {
-                            child->triggerMoveAnimation(dt, speed, 250, 0);
+                            child->triggerMoveAnimation(dt, speed, 250*Constant::scaleX, 0);
                         } else if (!child->mIsMoving && child->mIsDoneMoving && !mIsActionPaused) {
                             child->mIsDoneMoving = 0;
                         }
@@ -499,7 +499,7 @@ void QueueState::deleteAnimationReversed(sf::Time dt, double speed, int deleteIn
         case 3: {
             for (auto &child : mSceneLayers[Nodes]->getChildren()) {
                 if (!child->mIsScaling && !child->mIsDoneScaling) {
-                    child->triggerScaleAnimation(dt, speed*1.5, 100, 0, 0);
+                    child->triggerScaleAnimation(dt, speed*1.5, 100*Constant::scaleX, 0, 0);
                     mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
                     mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({1, 2});
                 } else if (!child->mIsScaling && child->mIsDoneScaling && !mIsActionPaused) {
@@ -509,8 +509,8 @@ void QueueState::deleteAnimationReversed(sf::Time dt, double speed, int deleteIn
             }
             for (auto &child : mSceneLayers[Arrow]->getChildren()) {
                 if (!child->mIsScaling && !child->mIsDoneScaling) {
-                    child->triggerScaleAnimation(dt, speed*2, 110, speed, 50);
-                    child->triggerMoveAnimation(dt, speed*2, 30, 45 - 180);
+                    child->triggerScaleAnimation(dt, speed*2, 110*Constant::scaleX, speed, 50);
+                    child->triggerMoveAnimation(dt, speed*2, 30*Constant::scaleX, 45 - 180);
                 }
                 break;
             }

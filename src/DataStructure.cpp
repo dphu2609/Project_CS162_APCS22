@@ -30,23 +30,23 @@ void GraphicalNode::setPos(sf::Vector2f pos) {
     switch (str.size()) {
     case 1:
         this->box.setPosition(pos);
-        this->number.setPosition(pos.x + 40, pos.y + 6);
+        this->number.setPosition(pos.x + (box.getSize().x/1.2)*0.4, pos.y + (box.getSize().x/1.2)*0.06);
         break;
     case 2:
         this->box.setPosition(pos);
-        this->number.setPosition(pos.x + 20, pos.y + 6);
+        this->number.setPosition(pos.x + (box.getSize().x/1.2)*0.2, pos.y + (box.getSize().x/1.2)*0.06);
         break;
     case 3:
         this->box.setPosition(pos);
-        this->number.setPosition(pos.x + 8, pos.y + 14);
+        this->number.setPosition(pos.x + (box.getSize().x/1.2)*0.08, pos.y + (box.getSize().x/1.2)*0.14);
         break;
     case 4:
         this->box.setPosition(pos);
-        this->number.setPosition(pos.x + 8, pos.y + 26);
+        this->number.setPosition(pos.x + (box.getSize().x/1.2)*0.08, pos.y + (box.getSize().x/1.2)*0.26);
         break;
     case 5:
         this->box.setPosition(pos);
-        this->number.setPosition(pos.x + 8, pos.y + 33);
+        this->number.setPosition(pos.x + (box.getSize().x/1.2)*0.08, pos.y + (box.getSize().x/1.2)*0.33);
         break;
     };
 }

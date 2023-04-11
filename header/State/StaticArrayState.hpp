@@ -4,6 +4,7 @@
 class StaticArrayState : public DataStructureState {
 private: 
     bool mIsReversedAtFirst = 1;
+    bool mActivateInsertAt0 = 0;
 public: 
     StaticArrayState(sf::RenderWindow &window) : DataStructureState(window) {}
     virtual void createDataStructure(std::vector<int> list);

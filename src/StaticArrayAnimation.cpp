@@ -6,8 +6,8 @@ void StaticArrayState::createDataStructure(std::vector<int> list) {
     }
     for (int i = 0; i < 10; i++) {
         std::unique_ptr<ContainerNode> blankNode = std::make_unique<ContainerNode>(
-            mWindow, sf::Vector2f(120, 120), 10, 
-            sf::Vector2f(mWindow.getSize().x/2 - 645 + 130*i, 250),
+            mWindow, sf::Vector2f(120*Constant::scaleX, 120*Constant::scaleX), 10*Constant::scaleX, 
+            sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - 645*Constant::scaleX + 130*i*Constant::scaleX, 250*Constant::scaleX),
             sf::Color::White, sf::Color(145, 174, 226, 255)
         );
         mSceneLayers[BlankNode]->attachChild(std::move(blankNode));
@@ -36,7 +36,8 @@ void StaticArrayState::createDataStructure(std::vector<int> list) {
         mListData = list;
         for (int i = 0; i < list.size(); i++) {
             std::unique_ptr<DisplayNode> arrayNode = std::make_unique<DisplayNode>(
-                mListData[i], mFontsHolder[Fonts::FiraSansRegular], 100, sf::Vector2f(mWindow.getSize().x/2 - 645 + 130*i, 250),
+                mListData[i], mFontsHolder[Fonts::FiraSansRegular], 100*Constant::scaleX, 
+                sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - 645*Constant::scaleX + 130*i*Constant::scaleX, 250*Constant::scaleX),
                 sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
             );
             mSceneLayers[Nodes]->attachChild(std::move(arrayNode));
@@ -45,14 +46,16 @@ void StaticArrayState::createDataStructure(std::vector<int> list) {
         mListData = list;
         for (int i = 0; i < mTempListData.size(); i++) {
             std::unique_ptr<DisplayNode> arrayNode = std::make_unique<DisplayNode>(
-                mTempListData[i], mFontsHolder[Fonts::FiraSansRegular], 100, sf::Vector2f(mWindow.getSize().x/2 - 645 + 130*i, 250),
+                mTempListData[i], mFontsHolder[Fonts::FiraSansRegular], 100*Constant::scaleX, 
+                sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - 645*Constant::scaleX + 130*i*Constant::scaleX, 250*Constant::scaleX),
                 sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
             );
             mSceneLayers[Nodes]->attachChild(std::move(arrayNode));
         }
     }
     std::unique_ptr<ContainerNode> arrayBorder = std::make_unique<ContainerNode>(
-        mWindow, sf::Vector2f(120*mListData.size() + 10*(mListData.size() - 1), 120), 10, sf::Vector2f(mWindow.getSize().x/2 - 645, 250),
+        mWindow, sf::Vector2f((120*mListData.size() + 10*(mListData.size() - 1))*Constant::scaleX, 120*Constant::scaleX), 10*Constant::scaleX, 
+        sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - 645*Constant::scaleX, 250*Constant::scaleX),
         sf::Color::Transparent, sf::Color(201, 16, 16, 255)
     );
     mSceneLayers[ArrayBoder]->attachChild(std::move(arrayBorder));  
@@ -64,7 +67,7 @@ void StaticArrayState::insertAnimation(sf::Time dt, double speed, int insertInde
     ) {
         mSceneLayers[CodeBox]->getChildren().clear();
         std::unique_ptr<CodeBlockNode> codeBlock = std::make_unique<CodeBlockNode>(
-            mWindow, mCodeHolder[Code::StaticArrayInsert], mFontsHolder[Fonts::FiraMonoRegular], 25,
+            mWindow, mCodeHolder[Code::StaticArrayInsert], mFontsHolder[Fonts::FiraMonoRegular], 25*Constant::scaleX,
             sf::Color::Black, sf::Color(145, 174, 226, 255), sf::Color::Black, sf::Color(86, 114, 163, 255)
         );
         mSceneLayers[CodeBox]->attachChild(std::move(codeBlock));
@@ -99,7 +102,8 @@ void StaticArrayState::insertAnimation(sf::Time dt, double speed, int insertInde
             int index = 0;
             if (mListData.size() == 0) {
                 std::unique_ptr<DisplayNode> arrayNode = std::make_unique<DisplayNode>(
-                    mListData.back(), mFontsHolder[Fonts::FiraSansRegular], 100, sf::Vector2f(mWindow.getSize().x/2 - 645 + 130*mListData.size(), 250),
+                    mListData.back(), mFontsHolder[Fonts::FiraSansRegular], 100*Constant::scaleX, 
+                    sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - 645*Constant::scaleX + 130*mListData.size()*Constant::scaleX, 250*Constant::scaleX),
                     sf::Color(237, 139, 26, 255), sf::Color::White, sf::Color(237, 139, 26, 255)
                 );
                 mSceneLayers[Nodes]->attachChild(std::move(arrayNode));
@@ -132,13 +136,13 @@ void StaticArrayState::insertAnimation(sf::Time dt, double speed, int insertInde
                                 }
                                 tempIndex++;
                             }
-                            std::cout << 34;
                         }
                     } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
                         child->mIsDoneColoring = 0;
                         if (mTempListData.size() == mListData.size()) {
                             std::unique_ptr<DisplayNode> arrayNode = std::make_unique<DisplayNode>(
-                                mListData.back(), mFontsHolder[Fonts::FiraSansRegular], 100, sf::Vector2f(mWindow.getSize().x/2 - 645 + 130*mListData.size(), 250),
+                                mListData.back(), mFontsHolder[Fonts::FiraSansRegular], 100*Constant::scaleX, 
+                                sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - 645*Constant::scaleX + 130*mListData.size()*Constant::scaleX, 250*Constant::scaleX),
                                 sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
                             );
                             mSceneLayers[Nodes]->attachChild(std::move(arrayNode));
@@ -162,8 +166,9 @@ void StaticArrayState::insertAnimation(sf::Time dt, double speed, int insertInde
             break;
         }
         case 3: {
-            if (mColorIndex == 0) {
+            if (mColorIndex == 0 && !mActivateInsertAt0) {
                 mColorIndex = mListData.size() - 1;
+                mActivateInsertAt0 = 1;
             }
             int index = 0;
             for (auto &child : mSceneLayers[Nodes]->getChildren()) {
@@ -223,7 +228,7 @@ void StaticArrayState::insertAnimation(sf::Time dt, double speed, int insertInde
         case 5: {   
             for (auto &child : mSceneLayers[ArrayBoder]->getChildren()) {
                 if (!child->mIsScaling && !child->mIsDoneScaling) {
-                    child->triggerScaleAnimation(dt, speed, 130, 0, 0);
+                    child->triggerScaleAnimation(dt, speed, 130*Constant::scaleX, 0, 0);
                     mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
                     mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({5});
                 } else if (!child->mIsScaling && child->mIsDoneScaling) {
@@ -270,7 +275,7 @@ void StaticArrayState::insertAnimationReversed(sf::Time dt, double speed, int in
         case 5: {
             for (auto &child : mSceneLayers[ArrayBoder]->getChildren()) {
                 if (!child->mIsScaling && !child->mIsDoneScaling) {
-                    child->triggerScaleAnimation(dt, speed, -130, 0, 0);
+                    child->triggerScaleAnimation(dt, speed, -130*Constant::scaleX, 0, 0);
                     mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
                     mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({4});
                 } else if (!child->mIsScaling && child->mIsDoneScaling && !mIsActionPaused) {
@@ -387,7 +392,7 @@ void StaticArrayState::deleteAnimation(sf::Time dt, double speed, int deleteInde
     ) {
         mSceneLayers[CodeBox]->getChildren().clear();
         std::unique_ptr<CodeBlockNode> codeBlock = std::make_unique<CodeBlockNode>(
-            mWindow, mCodeHolder[Code::StaticArrayDelete], mFontsHolder[Fonts::FiraMonoRegular], 25,
+            mWindow, mCodeHolder[Code::StaticArrayDelete], mFontsHolder[Fonts::FiraMonoRegular], 25*Constant::scaleX,
             sf::Color::Black, sf::Color(145, 174, 226, 255), sf::Color::Black, sf::Color(86, 114, 163, 255)
         );
         mSceneLayers[CodeBox]->attachChild(std::move(codeBlock));
@@ -476,7 +481,7 @@ void StaticArrayState::deleteAnimation(sf::Time dt, double speed, int deleteInde
         case 4: {
             for (auto &child : mSceneLayers[ArrayBoder]->getChildren()) {
                 if (!child->mIsScaling && !child->mIsDoneScaling) {
-                    child->triggerScaleAnimation(dt, speed, -130, 0, 0);
+                    child->triggerScaleAnimation(dt, speed, -130*Constant::scaleX, 0, 0);
                     mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
                     mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({4});
                 } else if (!child->mIsScaling && child->mIsDoneScaling) {
@@ -512,7 +517,7 @@ void StaticArrayState::deleteAnimationReversed(sf::Time dt, double speed, int de
         case 4: {
             for (auto &child : mSceneLayers[ArrayBoder]->getChildren()) {
                 if (!child->mIsScaling && !child->mIsDoneScaling) {
-                    child->triggerScaleAnimation(dt, speed, 130, 0, 0);
+                    child->triggerScaleAnimation(dt, speed, 130*Constant::scaleX, 0, 0);
                     mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
                     mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({1, 2, 3});
                 } else if (!child->mIsScaling && child->mIsDoneScaling && !mIsActionPaused) {
@@ -593,7 +598,7 @@ void StaticArrayState::updateAnimation(sf::Time dt, double speed, int updateInde
     ) {
         mSceneLayers[CodeBox]->getChildren().clear();
         std::unique_ptr<CodeBlockNode> codeBlock = std::make_unique<CodeBlockNode>(
-            mWindow, mCodeHolder[Code::StaticArrayUpdate], mFontsHolder[Fonts::FiraMonoRegular], 25,
+            mWindow, mCodeHolder[Code::StaticArrayUpdate], mFontsHolder[Fonts::FiraMonoRegular], 25*Constant::scaleX,
             sf::Color::Black, sf::Color(145, 174, 226, 255), sf::Color::Black, sf::Color(86, 114, 163, 255)
         );
         mSceneLayers[CodeBox]->attachChild(std::move(codeBlock));
@@ -695,7 +700,7 @@ void StaticArrayState::searchAnimation(sf::Time dt, double speed, int searchValu
     ) {
         mSceneLayers[CodeBox]->getChildren().clear();
         std::unique_ptr<CodeBlockNode> codeBlock = std::make_unique<CodeBlockNode>(
-            mWindow, mCodeHolder[Code::StaticArraySearch], mFontsHolder[Fonts::FiraMonoRegular], 25,
+            mWindow, mCodeHolder[Code::StaticArraySearch], mFontsHolder[Fonts::FiraMonoRegular], 25*Constant::scaleX,
             sf::Color::Black, sf::Color(145, 174, 226, 255), sf::Color::Black, sf::Color(86, 114, 163, 255)
         );
         mSceneLayers[CodeBox]->attachChild(std::move(codeBlock));

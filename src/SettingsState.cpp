@@ -40,8 +40,8 @@ void SettingsState::buildScence() {
     }
 
     std::unique_ptr<ContainerNode> container = std::make_unique<ContainerNode>(
-        mWindow, sf::Vector2f(500, sf::VideoMode::getDesktopMode().height - 170), 0,
-        sf::Vector2f(20, 50), sf::Color(52, 53, 59, 255), sf::Color::Black
+        mWindow, sf::Vector2f(500*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 70 - 100*Constant::scaleY), 0,
+        sf::Vector2f(20*Constant::scaleX, 50*Constant::scaleY), sf::Color(52, 53, 59, 255), sf::Color::Black
     );
     mSceneLayers[Containers]->attachChild(std::move(container));
 
@@ -50,7 +50,7 @@ void SettingsState::buildScence() {
     "Doubly Linked List", "Circular Linked List", "Stack", "Queue"}; 
     std::unique_ptr<DropBoxNode> newDataDropBox = std::make_unique<DropBoxNode>(
         mWindow, "SELECT DATA TYPE", dataTypeOptions, mFontsHolder[Fonts::RobotoRegular],
-        sf::Vector2f(320, 50), 0, 0, sf::Vector2f(100, 100), 
+        sf::Vector2f(320*Constant::scaleX, 50*Constant::scaleY), 0, 0, sf::Vector2f(100*Constant::scaleX, 100*Constant::scaleX), 
         sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
         sf::Color::White, sf::Color(85, 93, 120, 255), sf::Color(41, 58, 117, 255),
         sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color::White,
@@ -59,32 +59,36 @@ void SettingsState::buildScence() {
     mSceneLayers[DataDropBox]->attachChild(std::move(newDataDropBox));
 
     std::unique_ptr<ContainerNode> controlBoxContainer = std::make_unique<ContainerNode>(
-        mWindow, sf::Vector2f(700, 130), 0,
-        sf::Vector2f((sf::VideoMode::getDesktopMode().width - 700)/2, sf::VideoMode::getDesktopMode().height - 270 + 300), sf::Color(52, 53, 59, 255), sf::Color::Black
+        mWindow, sf::Vector2f(700*Constant::scaleX, 130*Constant::scaleY), 0,
+        sf::Vector2f((sf::VideoMode::getDesktopMode().width - 700*Constant::scaleX)/2, sf::VideoMode::getDesktopMode().height - 270*Constant::scaleY + 300*Constant::scaleY), sf::Color(52, 53, 59, 255), sf::Color::Black
     );
     mSceneLayers[ControlBoxContainer]->attachChild(std::move(controlBoxContainer));
 
     std::unique_ptr<ImageButtonNode> pauseButton = std::make_unique<ImageButtonNode>(
         mWindow, this->mTexturesHolder[Textures::pauseButton], this->mTexturesHolder[Textures::pauseButtonHoverred],
-        sf::Vector2f(30, 30), sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 - 100, sf::VideoMode::getDesktopMode().height - 220 + 300)
+        sf::Vector2f(30*Constant::scaleX, 30*Constant::scaleX), 
+        sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30*Constant::scaleX)/2 - 100*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 220*Constant::scaleY + 300*Constant::scaleY)
     );
     mSceneLayers[ControlBoxButtons]->attachChild(std::move(pauseButton));
 
     std::unique_ptr<ImageButtonNode> nextButton = std::make_unique<ImageButtonNode>(
         mWindow, this->mTexturesHolder[Textures::nextButton], this->mTexturesHolder[Textures::nextButtonHoverred],
-        sf::Vector2f(30, 30), sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 + 70 - 100, sf::VideoMode::getDesktopMode().height - 220 + 300)
+        sf::Vector2f(30*Constant::scaleX, 30*Constant::scaleX), 
+        sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30*Constant::scaleX)/2 + 70*Constant::scaleX - 100*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 220*Constant::scaleY + 300*Constant::scaleY)
     );
     mSceneLayers[ControlBoxButtons]->attachChild(std::move(nextButton));
 
     std::unique_ptr<ImageButtonNode> prevButton = std::make_unique<ImageButtonNode>(
         mWindow, this->mTexturesHolder[Textures::prevButton], this->mTexturesHolder[Textures::prevButtonHoverred],
-        sf::Vector2f(30, 30), sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 - 70 - 100, sf::VideoMode::getDesktopMode().height - 220 + 300)
+        sf::Vector2f(30*Constant::scaleX, 30*Constant::scaleX), 
+        sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30*Constant::scaleX)/2 - 70*Constant::scaleX - 100*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 220*Constant::scaleY + 300*Constant::scaleY)
     );
     mSceneLayers[ControlBoxButtons]->attachChild(std::move(prevButton));
 
     std::unique_ptr<ImageButtonNode> speedButton = std::make_unique<ImageButtonNode>(
         mWindow, this->mTexturesHolder[Textures::speedButton], this->mTexturesHolder[Textures::speedButtonHoverred],
-        sf::Vector2f(30, 30), sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30)/2 + 100, sf::VideoMode::getDesktopMode().height - 220 + 300)
+        sf::Vector2f(30*Constant::scaleX, 30*Constant::scaleX), 
+        sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30*Constant::scaleX)/2 + 100*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 220*Constant::scaleY + 300*Constant::scaleY)
     );
     mSceneLayers[ControlBoxSpeedButton]->attachChild(std::move(speedButton));
 }
@@ -127,7 +131,7 @@ void SettingsState::controlBoxIn(sf::Time dt) {
     for (int i = Error + 1; i < LayerCount; i++) {
         for (auto &child : this->mSceneLayers[i]->getChildren()) {
             if (!child->mIsMoving) {
-                child->triggerMoveAnimation(dt, 3, 300, -90);
+                child->triggerMoveAnimation(dt, 3, 300*Constant::scaleY, -90);
                 this->mIsControlBoxEmerged = 1;
             }
         }
@@ -138,7 +142,7 @@ void SettingsState::controlBoxOut(sf::Time dt) {
     for (int i = Error + 1; i < LayerCount; i++) {
         for (auto &child : this->mSceneLayers[i]->getChildren()) {
             if (!child->mIsMoving) {
-                child->triggerMoveAnimation(dt, 1.6, 300, 90);
+                child->triggerMoveAnimation(dt, 1.6, 300*Constant::scaleY, 90);
                 this->mIsControlBoxEmerged = 0;
             }
         }
@@ -149,7 +153,7 @@ void SettingsState::settingsIn(sf::Time dt) {
     for (int i = 0; i < Error; i++) {
         for (auto &child : this->mSceneLayers[i]->getChildren()) {
             if (!child->mIsMoving) {
-                child->triggerMoveAnimation(dt, 1, 600, 0);
+                child->triggerMoveAnimation(dt, 1, 600*Constant::scaleX, 0);
                 this->mIsEmerged = 1;
             }
         }
@@ -160,7 +164,7 @@ void SettingsState::settingsOut(sf::Time dt) {
     for (int i = 0; i < Error; i++) {
         for (auto &child : this->mSceneLayers[i]->getChildren()) {
             if (!child->mIsMoving) {
-                child->triggerMoveAnimation(dt, 1.6, 600, 180);
+                child->triggerMoveAnimation(dt, 1.6, 600*Constant::scaleX, 180);
                 this->mIsEmerged = 0;
             }
         }

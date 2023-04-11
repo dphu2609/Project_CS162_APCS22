@@ -25,19 +25,19 @@ CodeBlockNode::CodeBlockNode(
         mLineActivated.push_back(0);
     }
 
-    sf::Vector2f initialPos(sf::VideoMode::getDesktopMode().width - maxWidth - 185, sf::VideoMode::getDesktopMode().height - textSize/0.5*codeContent.size() - 120);
+    sf::Vector2f initialPos(sf::VideoMode::getDesktopMode().width - maxWidth - 35 - 150*Constant::scaleX, sf::VideoMode::getDesktopMode().height - textSize/0.5*codeContent.size() - 70 - 50*Constant::scaleY);
 
     for (int i = 0; i < codeContent.size(); i++) {
-        mBox[i].setSize(sf::Vector2f(maxWidth + 100, textSize/0.5));
+        mBox[i].setSize(sf::Vector2f(maxWidth + 100*Constant::scaleX, textSize/0.5));
         mBox[i].setPosition(initialPos);
         mBox[i].setFillColor(boxColor);
 
-        mBoxActivated[i].setSize(sf::Vector2f(maxWidth + 100, textSize/0.5));
+        mBoxActivated[i].setSize(sf::Vector2f(maxWidth + 100*Constant::scaleX, textSize/0.5));
         mBoxActivated[i].setPosition(initialPos);
         mBoxActivated[i].setFillColor(boxColorActivated);
 
-        mCodeContent[i].setPosition(initialPos + sf::Vector2f(50, textSize/2));
-        mCodeContentActivated[i].setPosition(initialPos + sf::Vector2f(50, textSize/2));
+        mCodeContent[i].setPosition(initialPos + sf::Vector2f(50*Constant::scaleX, textSize/2));
+        mCodeContentActivated[i].setPosition(initialPos + sf::Vector2f(50*Constant::scaleX, textSize/2));
 
         initialPos += sf::Vector2f(0, textSize/0.5);
     }

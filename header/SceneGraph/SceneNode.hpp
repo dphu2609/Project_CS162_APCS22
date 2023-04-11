@@ -5,6 +5,7 @@
 #include <DataStructure.h>
 #include <Button.hpp>
 #include <Event.hpp>
+#include <Constant.hpp>
 
 class SceneNode : public sf::Transformable, public sf::Drawable, private sf::NonCopyable{
 public:
