@@ -6,6 +6,7 @@
 #include <SceneGraph/SceneNode.hpp>
 #include <Event.hpp>
 #include <CodeHolder.hpp>
+#include <Constant.hpp>
 
 
 class State : private sf::NonCopyable {

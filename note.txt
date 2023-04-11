@@ -1,2 +1,0 @@
-anm::InputBox inputBox;
-inputBox.type(event);

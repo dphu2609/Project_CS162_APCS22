@@ -1,6 +1,7 @@
 #pragma once
 
 #include <State/State.hpp>
+#include <Constant.hpp>
 
 
 class Program2 {

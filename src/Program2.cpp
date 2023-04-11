@@ -6,10 +6,10 @@ mSettings(mWindow), mSLL(mWindow), mDLL(mWindow), mCLL(mWindow), mStack(mWindow)
 }
 
 void Program2::run() {
+    sf::View view(sf::FloatRect(0.f, 0.f, 2880 - 35, 1800 - 70));
     const sf::Time dt = sf::seconds(1.0f / 120.0f);
-    sf::Clock clock;
+    sf::Clock clock;    
     sf::Time timeSinceLastUpdate = sf::Time::Zero;
-    bool isAnimationTriggered = 0;
     while (mWindow.isOpen()) {
         processEvents();
         timeSinceLastUpdate += clock.restart();

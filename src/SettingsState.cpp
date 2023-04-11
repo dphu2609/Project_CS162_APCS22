@@ -29,7 +29,7 @@ void SettingsState::loadTextures() {
 }
 
 void SettingsState::loadFonts() {
-    this->mFontsHolder.load(Fonts::RobotoRegular, "fonts/Roboto/Roboto-Regular.ttf");
+    this->mFontsHolder.load(Fonts::RobotoRegular, "resources/fonts/Roboto/Roboto-Regular.ttf");
 }
 
 void SettingsState::buildScence() {
@@ -59,7 +59,7 @@ void SettingsState::buildScence() {
     mSceneLayers[DataDropBox]->attachChild(std::move(newDataDropBox));
 
     std::unique_ptr<ContainerNode> controlBoxContainer = std::make_unique<ContainerNode>(
-        mWindow, sf::Vector2f(700, 13resources/0), 0,
+        mWindow, sf::Vector2f(700, 130), 0,
         sf::Vector2f((sf::VideoMode::getDesktopMode().width - 700)/2, sf::VideoMode::getDesktopMode().height - 270 + 300), sf::Color(52, 53, 59, 255), sf::Color::Black
     );
     mSceneLayers[ControlBoxContainer]->attachChild(std::move(controlBoxContainer));
