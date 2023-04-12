@@ -1,48 +1,52 @@
 #include <Program2.hpp>
 
 Program2::Program2() : mWindow(sf::VideoMode(sf::VideoMode::getDesktopMode().width - 35, sf::VideoMode::getDesktopMode().height - 70), "Data Visual", sf::Style::Default), 
-mSettings(mWindow), mSLL(mWindow), mDLL(mWindow), mCLL(mWindow), mStack(mWindow), mQueue(mWindow), mStaticArray(mWindow), mDynamicArray(mWindow) {
+mMenu(mWindow), mSettings(mWindow), mSLL(mWindow), mDLL(mWindow), mCLL(mWindow), mStack(mWindow), mQueue(mWindow), mStaticArray(mWindow), mDynamicArray(mWindow) {
     mWindow.setPosition(sf::Vector2i(0, 0));
 }
 
 void Program2::run() {
-    sf::View view(sf::FloatRect(0.f, 0.f, 2880 - 35, 1800 - 70));
-    const sf::Time dt = sf::seconds(1.0f / 120.0f);
+    const sf::Time dt = sf::seconds(1.0f / 144.0f);
     sf::Clock clock;    
     sf::Time timeSinceLastUpdate = sf::Time::Zero;
     while (mWindow.isOpen()) {
         processEvents();
-        timeSinceLastUpdate += clock.restart();
-        while (timeSinceLastUpdate > dt) {
-            timeSinceLastUpdate -= dt;
-            mSettings.activeSettings(dt);
-            if (mSettings.mStateActivated[States::StaticArray]) {
-                dataStructureDisplay(dt, mStaticArray);
-            } else if (mSettings.mStateActivated[States::DynamicArray]) {
-                dataStructureDisplay(dt, mDynamicArray);
-            } else if (mSettings.mStateActivated[States::SinglyLinkedList]) {
-                dataStructureDisplay(dt, mSLL);
-            } else if (mSettings.mStateActivated[States::DoublyLinkedList]) {
-                dataStructureDisplay(dt, mDLL);
-            } else if (mSettings.mStateActivated[States::CircularLinkedList]) {
-                dataStructureDisplay(dt, mCLL);
-            } else if (mSettings.mStateActivated[States::Stack]) {
-                dataStructureDisplay(dt, mStack);
-            } else if (mSettings.mStateActivated[States::Queue]) {
-                dataStructureDisplay(dt, mQueue);
+        if (mMenu.mIsProgramStarted) {
+            timeSinceLastUpdate += clock.restart();
+            while (timeSinceLastUpdate > dt) {
+                timeSinceLastUpdate -= dt;
+                mSettings.activeSettings(dt);
+                if (mSettings.mStateActivated[States::StaticArray]) {
+                    dataStructureDisplay(dt, mStaticArray);
+                } else if (mSettings.mStateActivated[States::DynamicArray]) {
+                    dataStructureDisplay(dt, mDynamicArray);
+                } else if (mSettings.mStateActivated[States::SinglyLinkedList]) {
+                    dataStructureDisplay(dt, mSLL);
+                } else if (mSettings.mStateActivated[States::DoublyLinkedList]) {
+                    dataStructureDisplay(dt, mDLL);
+                } else if (mSettings.mStateActivated[States::CircularLinkedList]) {
+                    dataStructureDisplay(dt, mCLL);
+                } else if (mSettings.mStateActivated[States::Stack]) {
+                    dataStructureDisplay(dt, mStack);
+                } else if (mSettings.mStateActivated[States::Queue]) {
+                    dataStructureDisplay(dt, mQueue);
+                }
+                mSettings.update(dt);
+                mSettings.controlBoxUpdate();
             }
-            mSettings.update(dt);
-            mSettings.controlBoxUpdate();
         }
         mWindow.clear(sf::Color(18, 18, 18, 255));
-        if (mSettings.mStateActivated[States::StaticArray]) mStaticArray.draw();
-        else if (mSettings.mStateActivated[States::DynamicArray]) mDynamicArray.draw();
-        else if (mSettings.mStateActivated[States::SinglyLinkedList]) mSLL.draw();
-        else if (mSettings.mStateActivated[States::DoublyLinkedList]) mDLL.draw();
-        else if (mSettings.mStateActivated[States::CircularLinkedList]) mCLL.draw();
-        else if (mSettings.mStateActivated[States::Stack]) mStack.draw();
-        else if (mSettings.mStateActivated[States::Queue]) mQueue.draw();
-        mSettings.draw();
+        if (mMenu.mIsProgramStarted) {
+            if (mSettings.mStateActivated[States::StaticArray]) mStaticArray.draw();
+            else if (mSettings.mStateActivated[States::DynamicArray]) mDynamicArray.draw();
+            else if (mSettings.mStateActivated[States::SinglyLinkedList]) mSLL.draw();
+            else if (mSettings.mStateActivated[States::DoublyLinkedList]) mDLL.draw();
+            else if (mSettings.mStateActivated[States::CircularLinkedList]) mCLL.draw();
+            else if (mSettings.mStateActivated[States::Stack]) mStack.draw();
+            else if (mSettings.mStateActivated[States::Queue]) mQueue.draw();
+            mSettings.draw();
+        }
+        else mMenu.draw();
         mWindow.display();
     }
 }
@@ -51,8 +55,11 @@ void Program2::processEvents()
 {
     sf::Event event;
     while (mWindow.pollEvent(event)) {
-        mSettings.handleEvent(event);
-        mSettings.controlEvent(event);
+        if (!mMenu.mIsProgramStarted) mMenu.handleMenuEvent(event);
+        else {
+            mSettings.handleEvent(event);
+            mSettings.controlEvent(event);
+        }
         if (event.type == sf::Event::Closed)
             mWindow.close();
     }

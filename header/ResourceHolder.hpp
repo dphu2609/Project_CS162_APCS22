@@ -30,7 +30,7 @@ namespace Fonts {
     enum ID {
         ComfortaaRegular,
         FiraSansRegular,
-        GreateVibesRegular,
+        GreatVibesRegular,
         TiltWarpRegular,
         RobotoRegular,
         FiraMonoRegular

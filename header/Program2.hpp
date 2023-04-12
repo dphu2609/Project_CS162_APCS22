@@ -12,6 +12,7 @@ private:
     void processEvents();
     void dataStructureDisplay(sf::Time dt, DataStructureState &dataStructure);
 private:
+    MenuState mMenu;
     SettingsState mSettings;
     SLLState mSLL;
     DLLState mDLL;

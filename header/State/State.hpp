@@ -31,5 +31,6 @@ private:
 
 #include <State/DataStructureState.hpp>
 #include <State/SettingsState.hpp>
+#include <State/MenuState.hpp>
 
 

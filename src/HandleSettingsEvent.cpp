@@ -17,7 +17,8 @@ void SettingsState::handleDataDropBoxEvent(sf::Event &event) {
             std::vector<std::string> actionOptions = {"Create", "Push", "Pop"}; 
             std::unique_ptr<DropBoxNode> newActionDropBox = std::make_unique<DropBoxNode>(
                 mWindow, "ACTION", actionOptions, mFontsHolder[Fonts::RobotoRegular],
-                sf::Vector2f(180*Constant::scaleX, 50*Constant::scaleY), 0, 0, sf::Vector2f(160*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 500*Constant::scaleY), 
+                sf::Vector2f(180*Constant::scaleX, 50*Constant::scaleY), 0, 0, 
+                sf::Vector2f(160*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 700*Constant::scaleY), 
                 sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
                 sf::Color::White, sf::Color(85, 93, 120, 255), sf::Color(41, 58, 117, 255),
                 sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color::White,
@@ -29,7 +30,8 @@ void SettingsState::handleDataDropBoxEvent(sf::Event &event) {
             std::vector<std::string> actionOptions = {"Create", "Insert", "Delete", "Update", "Search"}; 
             std::unique_ptr<DropBoxNode> newActionDropBox = std::make_unique<DropBoxNode>(
                 mWindow, "ACTION", actionOptions, mFontsHolder[Fonts::RobotoRegular],
-                sf::Vector2f(180*Constant::scaleX, 50*Constant::scaleY), 0, 0, sf::Vector2f(160*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 500*Constant::scaleY), 
+                sf::Vector2f(180*Constant::scaleX, 50*Constant::scaleY), 0, 0, 
+                sf::Vector2f(160*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 700*Constant::scaleY), 
                 sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
                 sf::Color::White, sf::Color(85, 93, 120, 255), sf::Color(41, 58, 117, 255),
                 sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color::White,
@@ -50,14 +52,14 @@ void SettingsState::handleActionDropBoxEvent(sf::Event &event) {
                     if (mSceneLayers[InputBox]->getChildren().size() == 0) {
                         std::unique_ptr<InputBoxNode> newInputBox = std::make_unique<InputBoxNode>(
                             mWindow, mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(300*Constant::scaleX, 40*Constant::scaleY), 2, 
-                            sf::Vector2f(100*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 280*Constant::scaleY), 
+                            sf::Vector2f(100*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 480*Constant::scaleY), 
                             sf::Color::Black, sf::Color::White, sf::Color::Black, sf::Color::Green
                         );
                         mSceneLayers[InputBox]->attachChild(std::move(newInputBox));
 
                         std::unique_ptr<RectangleButtonNode> newButton1 = std::make_unique<RectangleButtonNode>(
                             mWindow, "Random", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(280*Constant::scaleX, 50*Constant::scaleY), 0,
-                            sf::Vector2f(110*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 400*Constant::scaleY),
+                            sf::Vector2f(110*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 600*Constant::scaleY),
                             sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
                             sf::Color::White, sf::Color(41, 58, 117, 255), sf::Color::White
                         );
@@ -65,15 +67,15 @@ void SettingsState::handleActionDropBoxEvent(sf::Event &event) {
 
                         std::unique_ptr<RectangleButtonNode> newButton2 = std::make_unique<RectangleButtonNode>(
                             mWindow, "Custom input: ", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(180*Constant::scaleX, 45*Constant::scaleY), 0,
-                            sf::Vector2f(100*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 330*Constant::scaleY),
+                            sf::Vector2f(100*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 530*Constant::scaleY),
                             sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
                             sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255)
                         );
                         mSceneLayers[ActionButtons]->attachChild(std::move(newButton2));
 
                         std::unique_ptr<RectangleButtonNode> newButton3 = std::make_unique<RectangleButtonNode>(
-                            mWindow, "Go", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(80*Constant::scaleX, 40*Constant::scaleY), 0,
-                            sf::Vector2f(420*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 280*Constant::scaleY),
+                            mWindow, "GO", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(80*Constant::scaleX, 40*Constant::scaleY), 0,
+                            sf::Vector2f(420*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 480*Constant::scaleY),
                             sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
                             sf::Color::White, sf::Color(41, 58, 117, 255), sf::Color::White
                         );
@@ -86,21 +88,21 @@ void SettingsState::handleActionDropBoxEvent(sf::Event &event) {
                     if (mSceneLayers[InputBox]->getChildren().size() == 0) {
                         std::unique_ptr<InputBoxNode> newInputBox1 = std::make_unique<InputBoxNode>(
                             mWindow, mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(120*Constant::scaleX, 40*Constant::scaleY), 2, 
-                            sf::Vector2f(120*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 230*Constant::scaleY), 
+                            sf::Vector2f(120*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 430*Constant::scaleY), 
                             sf::Color::Black, sf::Color::White, sf::Color::Black, sf::Color::Green
                         );
                         mSceneLayers[InputBox]->attachChild(std::move(newInputBox1));
 
                         std::unique_ptr<InputBoxNode> newInputBox2 = std::make_unique<InputBoxNode>(
                             mWindow, mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(120*Constant::scaleX, 40*Constant::scaleY), 2, 
-                            sf::Vector2f(260*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 230*Constant::scaleY), 
+                            sf::Vector2f(260*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 430*Constant::scaleY), 
                             sf::Color::Black, sf::Color::White, sf::Color::Black, sf::Color::Green
                         );
                         mSceneLayers[InputBox]->attachChild(std::move(newInputBox2));
 
                         std::unique_ptr<RectangleButtonNode> newButton1 = std::make_unique<RectangleButtonNode>(
                             mWindow, "Insert Head", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(280*Constant::scaleX, 50*Constant::scaleY), 0,
-                            sf::Vector2f(110*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 420*Constant::scaleY),
+                            sf::Vector2f(110*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 620*Constant::scaleY),
                             sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
                             sf::Color::White, sf::Color(41, 58, 117, 255), sf::Color::White
                         );
@@ -108,7 +110,7 @@ void SettingsState::handleActionDropBoxEvent(sf::Event &event) {
 
                         std::unique_ptr<RectangleButtonNode> newButton2 = std::make_unique<RectangleButtonNode>(
                             mWindow, "Insert Tail", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(280*Constant::scaleX, 50*Constant::scaleY), 0,
-                            sf::Vector2f(110*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 360*Constant::scaleY),
+                            sf::Vector2f(110*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 560*Constant::scaleY),
                             sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
                             sf::Color::White, sf::Color(41, 58, 117, 255), sf::Color::White
                         );
@@ -116,23 +118,23 @@ void SettingsState::handleActionDropBoxEvent(sf::Event &event) {
 
                         std::unique_ptr<RectangleButtonNode> newButton3 = std::make_unique<RectangleButtonNode>(
                             mWindow, "Index", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(130*Constant::scaleX, 50*Constant::scaleY), 0,
-                            sf::Vector2f(110*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 300*Constant::scaleY),
+                            sf::Vector2f(110*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 500*Constant::scaleY),
                             sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
-                            sf::Color::White, sf::Color(41, 58, 117, 255), sf::Color::White
+                            sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255)
                         );
                         mSceneLayers[ActionButtons]->attachChild(std::move(newButton3));
 
                         std::unique_ptr<RectangleButtonNode> newButton4 = std::make_unique<RectangleButtonNode>(
                             mWindow, "Value", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(130*Constant::scaleX, 50*Constant::scaleY), 0,
-                            sf::Vector2f(250*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 300*Constant::scaleY),
+                            sf::Vector2f(250*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 500*Constant::scaleY),
                             sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
-                            sf::Color::White, sf::Color(41, 58, 117, 255), sf::Color::White
+                            sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255)
                         );
                         mSceneLayers[ActionButtons]->attachChild(std::move(newButton4));
 
                         std::unique_ptr<RectangleButtonNode> newButton5 = std::make_unique<RectangleButtonNode>(
-                            mWindow, "Go", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(80*Constant::scaleX, 40*Constant::scaleY), 0,
-                            sf::Vector2f(420*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 230*Constant::scaleY),
+                            mWindow, "GO", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(80*Constant::scaleX, 40*Constant::scaleY), 0,
+                            sf::Vector2f(420*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 430*Constant::scaleY),
                             sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
                             sf::Color::White, sf::Color(41, 58, 117, 255), sf::Color::White
                         );
@@ -145,14 +147,14 @@ void SettingsState::handleActionDropBoxEvent(sf::Event &event) {
                     if (mSceneLayers[InputBox]->getChildren().size() == 0) {
                         std::unique_ptr<InputBoxNode> newInputBox = std::make_unique<InputBoxNode>(
                             mWindow, mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(250*Constant::scaleX, 40*Constant::scaleY), 2, 
-                            sf::Vector2f(125*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 230*Constant::scaleY), 
+                            sf::Vector2f(125*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 430*Constant::scaleY), 
                             sf::Color::Black, sf::Color::White, sf::Color::Black, sf::Color::Green
                         );
                         mSceneLayers[InputBox]->attachChild(std::move(newInputBox));
 
                         std::unique_ptr<RectangleButtonNode> newButton1 = std::make_unique<RectangleButtonNode>(
                             mWindow, "Delete Head", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(280*Constant::scaleX, 50*Constant::scaleY), 0,
-                            sf::Vector2f(110*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 420*Constant::scaleY),
+                            sf::Vector2f(110*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 620*Constant::scaleY),
                             sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
                             sf::Color::White, sf::Color(41, 58, 117, 255), sf::Color::White
                         );
@@ -160,7 +162,7 @@ void SettingsState::handleActionDropBoxEvent(sf::Event &event) {
 
                         std::unique_ptr<RectangleButtonNode> newButton2 = std::make_unique<RectangleButtonNode>(
                             mWindow, "Delete Tail", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(280*Constant::scaleX, 50*Constant::scaleY), 0,
-                            sf::Vector2f(110*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 360*Constant::scaleY),
+                            sf::Vector2f(110*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 560*Constant::scaleY),
                             sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
                             sf::Color::White, sf::Color(41, 58, 117, 255), sf::Color::White
                         );
@@ -168,15 +170,15 @@ void SettingsState::handleActionDropBoxEvent(sf::Event &event) {
 
                         std::unique_ptr<RectangleButtonNode> newButton3 = std::make_unique<RectangleButtonNode>(
                             mWindow, "Custom Index", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(280*Constant::scaleX, 50*Constant::scaleY), 0,
-                            sf::Vector2f(110*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 300*Constant::scaleY),
+                            sf::Vector2f(110*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 500*Constant::scaleY),
                             sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
-                            sf::Color::White, sf::Color(41, 58, 117, 255), sf::Color::White
+                            sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255)
                         );
                         mSceneLayers[ActionButtons]->attachChild(std::move(newButton3));
 
                         std::unique_ptr<RectangleButtonNode> newButton4 = std::make_unique<RectangleButtonNode>(
-                            mWindow, "Go", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(80*Constant::scaleX, 40*Constant::scaleY), 0,
-                            sf::Vector2f(420*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 230*Constant::scaleY),
+                            mWindow, "GO", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(80*Constant::scaleX, 40*Constant::scaleY), 0,
+                            sf::Vector2f(420*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 430*Constant::scaleY),
                             sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
                             sf::Color::White, sf::Color(41, 58, 117, 255), sf::Color::White
                         );
@@ -189,21 +191,21 @@ void SettingsState::handleActionDropBoxEvent(sf::Event &event) {
                     if (mSceneLayers[InputBox]->getChildren().size() == 0) {
                         std::unique_ptr<InputBoxNode> newInputBox1 = std::make_unique<InputBoxNode>(
                             mWindow, mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(120*Constant::scaleX, 40*Constant::scaleY), 2, 
-                            sf::Vector2f(120*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 350*Constant::scaleY), 
+                            sf::Vector2f(120*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 550*Constant::scaleY), 
                             sf::Color::Black, sf::Color::White, sf::Color::Black, sf::Color::Green
                         );
                         mSceneLayers[InputBox]->attachChild(std::move(newInputBox1));
 
                         std::unique_ptr<InputBoxNode> newInputBox2 = std::make_unique<InputBoxNode>(
                             mWindow, mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(120*Constant::scaleX, 40*Constant::scaleY), 2, 
-                            sf::Vector2f(260*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 350*Constant::scaleY), 
+                            sf::Vector2f(260*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 550*Constant::scaleY), 
                             sf::Color::Black, sf::Color::White, sf::Color::Black, sf::Color::Green
                         );
                         mSceneLayers[InputBox]->attachChild(std::move(newInputBox2));
 
                         std::unique_ptr<RectangleButtonNode> newButton1 = std::make_unique<RectangleButtonNode>(
                             mWindow, "Index", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(130*Constant::scaleX, 50*Constant::scaleY), 0,
-                            sf::Vector2f(110*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 420*Constant::scaleY),
+                            sf::Vector2f(110*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 620*Constant::scaleY),
                             sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
                             sf::Color::White, sf::Color(41, 58, 117, 255), sf::Color::White
                         );
@@ -211,15 +213,15 @@ void SettingsState::handleActionDropBoxEvent(sf::Event &event) {
 
                         std::unique_ptr<RectangleButtonNode> newButton2 = std::make_unique<RectangleButtonNode>(
                             mWindow, "Value", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(130*Constant::scaleX, 50*Constant::scaleY), 0,
-                            sf::Vector2f(250*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 420*Constant::scaleY),
+                            sf::Vector2f(250*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 620*Constant::scaleY),
                             sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
                             sf::Color::White, sf::Color(41, 58, 117, 255), sf::Color::White
                         );
                         mSceneLayers[ActionButtons]->attachChild(std::move(newButton2));
 
                         std::unique_ptr<RectangleButtonNode> newButton3 = std::make_unique<RectangleButtonNode>(
-                            mWindow, "Go", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(80*Constant::scaleX, 40*Constant::scaleY), 0,
-                            sf::Vector2f(420*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 350*Constant::scaleY),
+                            mWindow, "GO", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(80*Constant::scaleX, 40*Constant::scaleY), 0,
+                            sf::Vector2f(420*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 550*Constant::scaleY),
                             sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
                             sf::Color::White, sf::Color(41, 58, 117, 255), sf::Color::White
                         );
@@ -232,14 +234,14 @@ void SettingsState::handleActionDropBoxEvent(sf::Event &event) {
                     if (mSceneLayers[InputBox]->getChildren().size() == 0) {
                         std::unique_ptr<InputBoxNode> newInputBox = std::make_unique<InputBoxNode>(
                             mWindow, mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(250*Constant::scaleX, 40*Constant::scaleY), 2, 
-                            sf::Vector2f(125*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 280*Constant::scaleY), 
+                            sf::Vector2f(125*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 480*Constant::scaleY), 
                             sf::Color::Black, sf::Color::White, sf::Color::Black, sf::Color::Green
                         );
                         mSceneLayers[InputBox]->attachChild(std::move(newInputBox));
 
                         std::unique_ptr<RectangleButtonNode> newButton1 = std::make_unique<RectangleButtonNode>(
                             mWindow, "Random Value", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(280*Constant::scaleX, 50*Constant::scaleY), 0,
-                            sf::Vector2f(110*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 400*Constant::scaleY),
+                            sf::Vector2f(110*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 600*Constant::scaleY),
                             sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
                             sf::Color::White, sf::Color(41, 58, 117, 255), sf::Color::White
                         );
@@ -247,15 +249,15 @@ void SettingsState::handleActionDropBoxEvent(sf::Event &event) {
 
                         std::unique_ptr<RectangleButtonNode> newButton2 = std::make_unique<RectangleButtonNode>(
                             mWindow, "Custom Value", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(280*Constant::scaleX, 50*Constant::scaleY), 0,
-                            sf::Vector2f(110*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 340*Constant::scaleY),
+                            sf::Vector2f(110*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 540*Constant::scaleY),
                             sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
                             sf::Color::White, sf::Color(41, 58, 117, 255), sf::Color::White
                         );
                         mSceneLayers[ActionButtons]->attachChild(std::move(newButton2));
 
                         std::unique_ptr<RectangleButtonNode> newButton3 = std::make_unique<RectangleButtonNode>(
-                            mWindow, "Go", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(80*Constant::scaleX, 40*Constant::scaleY), 0,
-                            sf::Vector2f(420*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 280*Constant::scaleY),
+                            mWindow, "GO", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(80*Constant::scaleX, 40*Constant::scaleY), 0,
+                            sf::Vector2f(420*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 480*Constant::scaleY),
                             sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
                             sf::Color::White, sf::Color(41, 58, 117, 255), sf::Color::White
                         );
@@ -282,14 +284,14 @@ void SettingsState::handleActionDropBoxEvent(sf::Event &event) {
                     if (mSceneLayers[InputBox]->getChildren().size() == 0) {
                         std::unique_ptr<InputBoxNode> newInputBox = std::make_unique<InputBoxNode>(
                             mWindow, mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(300*Constant::scaleX, 40*Constant::scaleY), 2, 
-                            sf::Vector2f(100*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 280*Constant::scaleY), 
+                            sf::Vector2f(100*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 480*Constant::scaleY), 
                             sf::Color::Black, sf::Color::White, sf::Color::Black, sf::Color::Green
                         );
                         mSceneLayers[InputBox]->attachChild(std::move(newInputBox));
 
                         std::unique_ptr<RectangleButtonNode> newButton1 = std::make_unique<RectangleButtonNode>(
                             mWindow, "Random", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(280*Constant::scaleX, 50*Constant::scaleY), 0,
-                            sf::Vector2f(110*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 400*Constant::scaleY),
+                            sf::Vector2f(110*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 600*Constant::scaleY),
                             sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
                             sf::Color::White, sf::Color(41, 58, 117, 255), sf::Color::White
                         );
@@ -297,15 +299,15 @@ void SettingsState::handleActionDropBoxEvent(sf::Event &event) {
 
                         std::unique_ptr<RectangleButtonNode> newButton2 = std::make_unique<RectangleButtonNode>(
                             mWindow, "Custom input: ", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(180*Constant::scaleX, 45*Constant::scaleY), 0,
-                            sf::Vector2f(100*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 330*Constant::scaleY),
+                            sf::Vector2f(100*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 530*Constant::scaleY),
                             sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
                             sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255)
                         );
                         mSceneLayers[ActionButtons]->attachChild(std::move(newButton2));
 
                         std::unique_ptr<RectangleButtonNode> newButton3 = std::make_unique<RectangleButtonNode>(
-                            mWindow, "Go", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(80*Constant::scaleX, 40*Constant::scaleY), 0,
-                            sf::Vector2f(420*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 280*Constant::scaleY),
+                            mWindow, "GO", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(80*Constant::scaleX, 40*Constant::scaleY), 0,
+                            sf::Vector2f(420*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 480*Constant::scaleY),
                             sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
                             sf::Color::White, sf::Color(41, 58, 117, 255), sf::Color::White
                         );
@@ -318,14 +320,14 @@ void SettingsState::handleActionDropBoxEvent(sf::Event &event) {
                     if (mSceneLayers[InputBox]->getChildren().size() == 0) {
                         std::unique_ptr<InputBoxNode> newInputBox = std::make_unique<InputBoxNode>(
                             mWindow, mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(250*Constant::scaleX, 40*Constant::scaleY), 2, 
-                            sf::Vector2f(125*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 230*Constant::scaleY), 
+                            sf::Vector2f(125*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 430*Constant::scaleY), 
                             sf::Color::Black, sf::Color::White, sf::Color::Black, sf::Color::Green
                         );
                         mSceneLayers[InputBox]->attachChild(std::move(newInputBox));
 
                         std::unique_ptr<RectangleButtonNode> newButton1 = std::make_unique<RectangleButtonNode>(
                             mWindow, "Random Value", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(280*Constant::scaleX, 50*Constant::scaleY), 0,
-                            sf::Vector2f(110*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 360*Constant::scaleY),
+                            sf::Vector2f(120*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 560*Constant::scaleY),
                             sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
                             sf::Color::White, sf::Color(41, 58, 117, 255), sf::Color::White
                         );
@@ -333,15 +335,15 @@ void SettingsState::handleActionDropBoxEvent(sf::Event &event) {
 
                         std::unique_ptr<RectangleButtonNode> newButton2 = std::make_unique<RectangleButtonNode>(
                             mWindow, "Value", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(130*Constant::scaleX, 50*Constant::scaleY), 0,
-                            sf::Vector2f(200*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 300*Constant::scaleY),
+                            sf::Vector2f(180*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 500*Constant::scaleY),
                             sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
                             sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255)
                         );
                         mSceneLayers[ActionButtons]->attachChild(std::move(newButton2));
 
                         std::unique_ptr<RectangleButtonNode> newButton3 = std::make_unique<RectangleButtonNode>(
-                            mWindow, "Go", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(80*Constant::scaleX, 40*Constant::scaleY), 0,
-                            sf::Vector2f(420*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 230*Constant::scaleY),
+                            mWindow, "GO", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(80*Constant::scaleX, 40*Constant::scaleY), 0,
+                            sf::Vector2f(420*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 430*Constant::scaleY),
                             sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
                             sf::Color::White, sf::Color(41, 58, 117, 255), sf::Color::White
                         );
@@ -353,8 +355,8 @@ void SettingsState::handleActionDropBoxEvent(sf::Event &event) {
                 case Action::Delete : {
                     if (mSceneLayers[InputBox]->getChildren().size() == 0) {
                         std::unique_ptr<RectangleButtonNode> newButton = std::make_unique<RectangleButtonNode>(
-                            mWindow, "Go", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(80*Constant::scaleX, 40*Constant::scaleY), 0,
-                            sf::Vector2f(420*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 360*Constant::scaleY),
+                            mWindow, "GO", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(80*Constant::scaleX, 40*Constant::scaleY), 0,
+                            sf::Vector2f(210*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 580*Constant::scaleY),
                             sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
                             sf::Color::White, sf::Color(41, 58, 117, 255), sf::Color::White
                         );
@@ -526,8 +528,9 @@ void SettingsState::handleAction(sf::Event &event) {
                                     throwError("Error: Invalid value!");
                                 } else if (mInputArr.size() >= 10) {
                                     throwError("Sorry, the maximum size is 10.");
-                                } 
-                                else {
+                                } else if (dataInput[0] < -9999 || dataInput[0] > 99999) {
+                                    throwError("Sorry, value must be in range from -9999 to 99999.");
+                                } else {
                                     resetControlBox();
                                     for (int i = 0; i < Action::ActionCount; i++) mActionActivated[i] = 0;
                                     mActionActivated[Action::Insert] = 1;
@@ -639,8 +642,9 @@ void SettingsState::handleAction(sf::Event &event) {
                                     throwError(message);
                                 } else if (dataInput.size() != 1) {
                                     throwError("Error: Invalid value!");
-                                }
-                                else {
+                                } else if (dataInput[0] < -9999 || dataInput[0] > 99999) {
+                                    throwError("Sorry, value must be in range from -9999 to 99999.");
+                                } else {
                                     resetControlBox();
                                     for (int i = 0; i < Action::ActionCount; i++) mActionActivated[i] = 0;
                                     mActionActivated[Action::Update] = 1;
@@ -684,8 +688,9 @@ void SettingsState::handleAction(sf::Event &event) {
                                     throwError("Error: List is empty! Cannot perform this action.");
                                 } else if (dataInput.size() != 1) {
                                     throwError("Error: Invalid value!");
-                                }
-                                else {
+                                } else if (dataInput[0] < -9999 || dataInput[0] > 99999) {
+                                    throwError("Sorry, value must be in range from -9999 to 99999.");
+                                } else {
                                     resetControlBox();
                                     for (int i = 0; i < Action::ActionCount; i++) mActionActivated[i] = 0;
                                     mActionActivated[Action::Search] = 1;
@@ -757,8 +762,9 @@ void SettingsState::handleAction(sf::Event &event) {
                                     throwError("Error: Invalid value!");
                                 } else if (mInputArr.size() >= 10) {
                                     throwError("Sorry, the maximum size is 10.");
-                                } 
-                                else {
+                                } else if (dataInput[0] < -9999 || dataInput[0] > 99999) {
+                                    throwError("Sorry, value must be in range from -9999 to 99999.");
+                                } else {
                                     resetControlBox();
                                     for (int i = 0; i < Action::ActionCount; i++) mActionActivated[i] = 0;
                                     mActionActivated[Action::Insert] = 1;
