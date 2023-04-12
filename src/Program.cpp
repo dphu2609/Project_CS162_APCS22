@@ -1,11 +1,11 @@
-#include <Program2.hpp>
+#include <Program.hpp>
 
-Program2::Program2() : mWindow(sf::VideoMode(sf::VideoMode::getDesktopMode().width - 35, sf::VideoMode::getDesktopMode().height - 70), "Data Visual", sf::Style::Default), 
+Program::Program() : mWindow(sf::VideoMode(sf::VideoMode::getDesktopMode().width - 35, sf::VideoMode::getDesktopMode().height - 70), "Data Visual", sf::Style::Default), 
 mMenu(mWindow), mSettings(mWindow), mSLL(mWindow), mDLL(mWindow), mCLL(mWindow), mStack(mWindow), mQueue(mWindow), mStaticArray(mWindow), mDynamicArray(mWindow) {
     mWindow.setPosition(sf::Vector2i(0, 0));
 }
 
-void Program2::run() {
+void Program::run() {
     const sf::Time dt = sf::seconds(1.0f / 144.0f);
     sf::Clock clock;    
     sf::Time timeSinceLastUpdate = sf::Time::Zero;
@@ -51,7 +51,7 @@ void Program2::run() {
     }
 }
 
-void Program2::processEvents()
+void Program::processEvents()
 {
     sf::Event event;
     while (mWindow.pollEvent(event)) {
@@ -65,7 +65,7 @@ void Program2::processEvents()
     }
 }
 
-void Program2::dataStructureDisplay(sf::Time dt, DataStructureState &dataStructure) {
+void Program::dataStructureDisplay(sf::Time dt, DataStructureState &dataStructure) {
     dataStructure.mIsReplay = mSettings.mIsReplay;
     if (mSettings.mActionActivated[Action::ResetAction]) {
         mSettings.mActionActivated[Action::ResetAction] = 0;

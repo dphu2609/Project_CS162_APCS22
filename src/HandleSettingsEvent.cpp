@@ -919,7 +919,7 @@ void SettingsState::handleControlBoxEvent(sf::Event &event) {
             if (!mIsSpeedBoxEmerged) {
                 std::unique_ptr<RectangleButtonNode> speed2x = std::make_unique<RectangleButtonNode>(
                     mWindow, "2", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(200*Constant::scaleX, 50*Constant::scaleY), 0,
-                    sf::Vector2f(sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30*Constant::scaleX)/2 + 20*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 320*Constant::scaleY)),
+                    sf::Vector2f(sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30*Constant::scaleX)/2 + 15*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 320*Constant::scaleY)),
                     sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
                     sf::Color::White, sf::Color(85, 93, 120, 255), sf::Color(41, 58, 117, 255)
                 );
@@ -927,7 +927,7 @@ void SettingsState::handleControlBoxEvent(sf::Event &event) {
 
                 std::unique_ptr<RectangleButtonNode> speed175x = std::make_unique<RectangleButtonNode>(
                     mWindow, "1.75", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(200*Constant::scaleX, 50*Constant::scaleY), 0,
-                    sf::Vector2f(sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30*Constant::scaleX)/2 + 20*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 370*Constant::scaleY)),
+                    sf::Vector2f(sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30*Constant::scaleX)/2 + 15*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 370*Constant::scaleY)),
                     sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
                     sf::Color::White, sf::Color(85, 93, 120, 255), sf::Color(41, 58, 117, 255)
                 );
@@ -935,7 +935,7 @@ void SettingsState::handleControlBoxEvent(sf::Event &event) {
 
                 std::unique_ptr<RectangleButtonNode> speed15x = std::make_unique<RectangleButtonNode>(
                     mWindow, "1.5", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(200*Constant::scaleX, 50*Constant::scaleY), 0,
-                    sf::Vector2f(sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30*Constant::scaleX)/2 + 20*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 420*Constant::scaleY)),
+                    sf::Vector2f(sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30*Constant::scaleX)/2 + 15*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 420*Constant::scaleY)),
                     sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
                     sf::Color::White, sf::Color(85, 93, 120, 255), sf::Color(41, 58, 117, 255)
                 );
@@ -943,7 +943,7 @@ void SettingsState::handleControlBoxEvent(sf::Event &event) {
 
                 std::unique_ptr<RectangleButtonNode> speed125x = std::make_unique<RectangleButtonNode>(
                     mWindow, "1.25", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(200*Constant::scaleX, 50*Constant::scaleY), 0,
-                    sf::Vector2f(sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30*Constant::scaleX)/2 + 20*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 470*Constant::scaleY)),
+                    sf::Vector2f(sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30*Constant::scaleX)/2 + 15*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 470*Constant::scaleY)),
                     sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
                     sf::Color::White, sf::Color(85, 93, 120, 255), sf::Color(41, 58, 117, 255)
                 );
@@ -951,7 +951,7 @@ void SettingsState::handleControlBoxEvent(sf::Event &event) {
 
                 std::unique_ptr<RectangleButtonNode> speed1x = std::make_unique<RectangleButtonNode>(
                     mWindow, "Normal", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(200*Constant::scaleX, 50*Constant::scaleY), 0,
-                    sf::Vector2f(sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30*Constant::scaleX)/2 + 20*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 520*Constant::scaleY)),
+                    sf::Vector2f(sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30*Constant::scaleX)/2 + 15*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 520*Constant::scaleY)),
                     sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
                     sf::Color::White, sf::Color(85, 93, 120, 255), sf::Color(41, 58, 117, 255)
                 );
@@ -959,7 +959,7 @@ void SettingsState::handleControlBoxEvent(sf::Event &event) {
 
                 std::unique_ptr<RectangleButtonNode> speed075x = std::make_unique<RectangleButtonNode>(
                     mWindow, "0.75", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(200*Constant::scaleX, 50*Constant::scaleY), 0,
-                    sf::Vector2f(sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30*Constant::scaleX)/2 + 20*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 570*Constant::scaleY)),
+                    sf::Vector2f(sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30*Constant::scaleX)/2 + 15*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 570*Constant::scaleY)),
                     sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
                     sf::Color::White, sf::Color(85, 93, 120, 255), sf::Color(41, 58, 117, 255)
                 );
@@ -967,7 +967,7 @@ void SettingsState::handleControlBoxEvent(sf::Event &event) {
 
                 std::unique_ptr<RectangleButtonNode> speed05x = std::make_unique<RectangleButtonNode>(
                     mWindow, "0.5", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(200*Constant::scaleX, 50*Constant::scaleY), 0,
-                    sf::Vector2f(sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30*Constant::scaleX)/2 + 20*Constant::scaleY, sf::VideoMode::getDesktopMode().height - 620*Constant::scaleY)),
+                    sf::Vector2f(sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30*Constant::scaleX)/2 + 15*Constant::scaleY, sf::VideoMode::getDesktopMode().height - 620*Constant::scaleY)),
                     sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
                     sf::Color::White, sf::Color(85, 93, 120, 255), sf::Color(41, 58, 117, 255)
                 );
@@ -975,21 +975,21 @@ void SettingsState::handleControlBoxEvent(sf::Event &event) {
 
                 std::unique_ptr<RectangleButtonNode> speed025x = std::make_unique<RectangleButtonNode>(
                     mWindow, "0.25", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(200*Constant::scaleX, 50*Constant::scaleY), 0,
-                    sf::Vector2f(sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30*Constant::scaleX)/2 + 20*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 670*Constant::scaleY)),
+                    sf::Vector2f(sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30*Constant::scaleX)/2 + 15*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 670*Constant::scaleY)),
                     sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
                     sf::Color::White, sf::Color(85, 93, 120, 255), sf::Color(41, 58, 117, 255)
                 );
                 mSceneLayers[ControlBoxSpeedOptions]->attachChild(std::move(speed025x));
 
                 sf::Vector2f checkMarkPos;
-                if (mSpeed == 2) checkMarkPos = sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30*Constant::scaleX)/2 + 190*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 305*Constant::scaleY);
-                else if (mSpeed == 1.75) checkMarkPos = sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30*Constant::scaleX)/2 + 190*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 355*Constant::scaleY);
-                else if (mSpeed == 1.5) checkMarkPos = sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30*Constant::scaleX)/2 + 190*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 405*Constant::scaleY);
-                else if (mSpeed == 1.25) checkMarkPos = sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30*Constant::scaleX)/2 + 190*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 455*Constant::scaleY);
-                else if (mSpeed == 1) checkMarkPos = sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30*Constant::scaleX)/2 + 190*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 505*Constant::scaleY);
-                else if (mSpeed == 0.75) checkMarkPos = sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30*Constant::scaleX)/2 + 190*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 555*Constant::scaleY);
-                else if (mSpeed == 0.5) checkMarkPos = sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30*Constant::scaleX)/2 + 190*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 605*Constant::scaleY);
-                else if (mSpeed == 0.25) checkMarkPos = sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30*Constant::scaleX)/2 + 190*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 655*Constant::scaleY);
+                if (mSpeed == 2) checkMarkPos = sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30*Constant::scaleX)/2 + 185*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 305*Constant::scaleY);
+                else if (mSpeed == 1.75) checkMarkPos = sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30*Constant::scaleX)/2 + 185*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 355*Constant::scaleY);
+                else if (mSpeed == 1.5) checkMarkPos = sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30*Constant::scaleX)/2 + 185*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 405*Constant::scaleY);
+                else if (mSpeed == 1.25) checkMarkPos = sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30*Constant::scaleX)/2 + 185*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 455*Constant::scaleY);
+                else if (mSpeed == 1) checkMarkPos = sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30*Constant::scaleX)/2 + 185*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 505*Constant::scaleY);
+                else if (mSpeed == 0.75) checkMarkPos = sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30*Constant::scaleX)/2 + 185*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 555*Constant::scaleY);
+                else if (mSpeed == 0.5) checkMarkPos = sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30*Constant::scaleX)/2 + 185*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 605*Constant::scaleY);
+                else if (mSpeed == 0.25) checkMarkPos = sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30*Constant::scaleX)/2 + 185*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 655*Constant::scaleY);
 
                 std::unique_ptr<ImageButtonNode> checkMark = std::make_unique<ImageButtonNode>(
                     mWindow, mTexturesHolder[Textures::speedCheckMark], mTexturesHolder[Textures::speedCheckMark],
@@ -1009,19 +1009,45 @@ void SettingsState::handleControlBoxEvent(sf::Event &event) {
         for (auto &child : mSceneLayers[ControlBoxSpeedOptions]->getChildren()) {
             if (child->getClickedIndex(event) == 0) {
                 mSceneLayers[ControlBoxSpeedOptions]->getChildren().clear();
+                mSceneLayers[ControlBoxSpeedDisplay]->getChildren().clear();
                 mIsSpeedBoxEmerged = 0;
+                std::string speedDisplayContent;
+                if (index == 0) {
+                    mSpeed = 2;
+                    speedDisplayContent = "2x";
+                } else if (index == 1) {
+                    mSpeed = 1.75;
+                    speedDisplayContent = "1.75x";
+                } else if (index == 2) {
+                    mSpeed = 1.5;
+                    speedDisplayContent = "1.5x";
+                } else if (index == 3) {
+                    mSpeed = 1.25;
+                    speedDisplayContent = "1.25x";
+                } else if (index == 4) {
+                    mSpeed = 1;
+                    speedDisplayContent = "Normal";
+                } else if (index == 5) {
+                    mSpeed = 0.75;
+                    speedDisplayContent = "0.75x";
+                } else if (index == 6) {
+                    mSpeed = 0.5;
+                    speedDisplayContent = "0.5x";
+                } else if (index == 7) {
+                    mSpeed = 0.25;
+                    speedDisplayContent = "0.25x";
+                }
+                std::unique_ptr<RectangleButtonNode> speedDislay = std::make_unique<RectangleButtonNode>(
+                    mWindow, speedDisplayContent, mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(200*Constant::scaleX, 50*Constant::scaleY), 0,
+                    sf::Vector2f(sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30*Constant::scaleX)/2 + 15*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 180*Constant::scaleY)),
+                    sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
+                    sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255)
+                );
+                mSceneLayers[ControlBoxSpeedDisplay]->attachChild(std::move(speedDislay));
                 break;
             }
             index++;
         }
-        if (index == 0) mSpeed = 2;
-        else if (index == 1) mSpeed = 1.75;
-        else if (index == 2) mSpeed = 1.5;
-        else if (index == 3) mSpeed = 1.25;
-        else if (index == 4) mSpeed = 1;
-        else if (index == 5) mSpeed = 0.75;
-        else if (index == 6) mSpeed = 0.5;
-        else if (index == 7) mSpeed = 0.25;
     }
 }
 

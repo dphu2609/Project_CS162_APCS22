@@ -4,9 +4,9 @@
 #include <Constant.hpp>
 
 
-class Program2 {
+class Program {
 public:
-    Program2();
+    Program();
     void run();
 private:
     void processEvents();

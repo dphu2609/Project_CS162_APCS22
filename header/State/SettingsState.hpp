@@ -73,6 +73,7 @@ private:
         ControlBoxButtons,
         ControlBoxSpeedButton,
         ControlBoxSpeedOptions,
+        ControlBoxSpeedDisplay,
         LayerCount
     };
     sf::Clock clock;

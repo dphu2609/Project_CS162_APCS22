@@ -1,7 +1,7 @@
-#include <Program2.hpp>
+#include <Program.hpp>
 
 int main() { 
-    Program2 program;
+    Program program;
     program.run();
     return 0;
 }                               

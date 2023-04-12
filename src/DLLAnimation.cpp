@@ -1149,7 +1149,7 @@ void DLLState::deleteAnimation(sf::Time dt, double speed, int deleteIndex) {
                         if (mListData.size() == 2) child->setLabel("head/tail");
                         else child->setLabel("tail");
                         mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
-                        mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({14});
+                        mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({14, 15});
                     }
                     index++;
                 }
@@ -1502,7 +1502,7 @@ void DLLState::deleteAnimationReversed(sf::Time dt, double speed, int deleteInde
                     if (!child->mIsScaling && !child->mIsDoneScaling) {
                         child->triggerScaleAnimation(dt, speed, 250*Constant::scaleX, 0, 0);
                         mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
-                        mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({14});
+                        mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({14, 15});
                     } else if (!child->mIsScaling && child->mIsDoneScaling && !mIsActionPaused) {
                         child->mIsDoneScaling = 0;
                         mAnimationOrder = 4;

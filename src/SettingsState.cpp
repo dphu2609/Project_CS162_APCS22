@@ -59,7 +59,7 @@ void SettingsState::buildScence() {
     mSceneLayers[DataDropBox]->attachChild(std::move(newDataDropBox));
 
     std::unique_ptr<ContainerNode> controlBoxContainer = std::make_unique<ContainerNode>(
-        mWindow, sf::Vector2f(700*Constant::scaleX, 130*Constant::scaleY), 0,
+        mWindow, sf::Vector2f(700*Constant::scaleX, 140*Constant::scaleY), 0,
         sf::Vector2f((sf::VideoMode::getDesktopMode().width - 700*Constant::scaleX)/2, sf::VideoMode::getDesktopMode().height - 270*Constant::scaleY + 300*Constant::scaleY), sf::Color(52, 53, 59, 255), sf::Color::Black
     );
     mSceneLayers[ControlBoxContainer]->attachChild(std::move(controlBoxContainer));
@@ -91,6 +91,15 @@ void SettingsState::buildScence() {
         sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30*Constant::scaleX)/2 + 100*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 220*Constant::scaleY + 300*Constant::scaleY)
     );
     mSceneLayers[ControlBoxSpeedButton]->attachChild(std::move(speedButton));
+
+    std::unique_ptr<RectangleButtonNode> speedDislay = std::make_unique<RectangleButtonNode>(
+        mWindow, "Normal", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(200*Constant::scaleX, 50*Constant::scaleY), 0,
+        sf::Vector2f(sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30*Constant::scaleX)/2 + 15*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 180*Constant::scaleY + 300*Constant::scaleY)),
+        sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
+        sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255)
+    );
+    mSceneLayers[ControlBoxSpeedDisplay]->attachChild(std::move(speedDislay));
+
 }
 
 void SettingsState::activeSettings(sf::Time dt) {
