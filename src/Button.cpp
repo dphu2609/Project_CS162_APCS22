@@ -59,7 +59,7 @@ void InputBox::set(sf::Font &font, sf::Vector2f boxSize, double outlineThickness
     mBox.setFillColor(boxColor);
     mBox.setOutlineColor(boxOutlineColor);
     mBox.setOutlineThickness(outlineThickness);
-    mCursor.setSize(sf::Vector2f(3, boxSize.y*0.9));
+    mCursor.setSize(sf::Vector2f(3*Constant::scaleX, boxSize.y*0.9));
     mCursor.setPosition(pos + sf::Vector2f(5 + mInputText.getLocalBounds().width, boxSize.y*0.1));
     mCursor.setFillColor(cursorColor);
 }

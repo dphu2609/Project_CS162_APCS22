@@ -30,6 +30,7 @@ void SettingsState::loadTextures() {
 
 void SettingsState::loadFonts() {
     this->mFontsHolder.load(Fonts::RobotoRegular, "resources/fonts/Roboto/Roboto-Regular.ttf");
+    this->mFontsHolder.load(Fonts::RobotoItalic, "resources/fonts/Roboto/Roboto-Italic.ttf");
 }
 
 void SettingsState::buildScence() {
@@ -50,13 +51,21 @@ void SettingsState::buildScence() {
     "Doubly Linked List", "Circular Linked List", "Stack", "Queue"}; 
     std::unique_ptr<DropBoxNode> newDataDropBox = std::make_unique<DropBoxNode>(
         mWindow, "SELECT DATA TYPE", dataTypeOptions, mFontsHolder[Fonts::RobotoRegular],
-        sf::Vector2f(320*Constant::scaleX, 50*Constant::scaleY), 0, 0, sf::Vector2f(100*Constant::scaleX, 100*Constant::scaleX), 
+        sf::Vector2f(320*Constant::scaleX, 50*Constant::scaleY), 0, 0, sf::Vector2f(100*Constant::scaleX, 100*Constant::scaleY), 
         sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
         sf::Color::White, sf::Color(85, 93, 120, 255), sf::Color(41, 58, 117, 255),
         sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color::White,
         sf::Color::White, sf::Color(41, 58, 117, 255), sf::Color::White
     );
     mSceneLayers[DataDropBox]->attachChild(std::move(newDataDropBox));
+
+    std::unique_ptr<RectangleButtonNode> darkModeButton = std::make_unique<RectangleButtonNode>(
+        mWindow, "LIGHT MODE", mFontsHolder[Fonts::RobotoRegular],
+        sf::Vector2f(300*Constant::scaleX, 50*Constant::scaleY), 0, sf::Vector2f(100*Constant::scaleX, 700*Constant::scaleY),
+        sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
+        sf::Color::White, sf::Color(85, 93, 120, 255), sf::Color(41, 58, 117, 255) 
+    );
+    mSceneLayers[DarkModeButton]->attachChild(std::move(darkModeButton));
 
     std::unique_ptr<ContainerNode> controlBoxContainer = std::make_unique<ContainerNode>(
         mWindow, sf::Vector2f(700*Constant::scaleX, 140*Constant::scaleY), 0,
@@ -186,4 +195,5 @@ void SettingsState::controlEvent(sf::Event &event) {
     handleActionDropBoxEvent(event);
     handleAction(event);
     handleControlBoxEvent(event);
+    handleDarkModeEvent(event);
 }

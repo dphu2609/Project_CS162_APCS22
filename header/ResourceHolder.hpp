@@ -33,6 +33,7 @@ namespace Fonts {
         GreatVibesRegular,
         TiltWarpRegular,
         RobotoRegular,
+        RobotoItalic,
         FiraMonoRegular
     };
 };

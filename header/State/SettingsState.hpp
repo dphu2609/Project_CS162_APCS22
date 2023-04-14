@@ -60,6 +60,8 @@ public:
     std::pair<bool, bool> mIsEndAnimation = {0, 0};
 
     double mSpeed = 1;
+
+    bool mDarkMode = 1;
 private:
     enum Layers {
         Containers,
@@ -68,6 +70,7 @@ private:
         StackQueueDropBox,
         InputBox,
         ActionButtons,
+        DarkModeButton,
         Error,
         ControlBoxContainer,
         ControlBoxButtons,
@@ -99,5 +102,7 @@ private:
     void handleDataDropBoxEvent(sf::Event &event);
     void handleActionDropBoxEvent(sf::Event &event);
     void handleControlBoxEvent(sf::Event &event);
+    void handleDarkModeEvent(sf::Event &event);
     void resetControlBox();
+    void loadFromFile();
 };

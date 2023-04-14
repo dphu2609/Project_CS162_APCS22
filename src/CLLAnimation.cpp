@@ -899,7 +899,7 @@ void CLLState::deleteAnimation(sf::Time dt, double speed, int deleteIndex) {
                     if (!child->mIsScaling && !child->mIsDoneScaling) {
                         child->triggerRotateAnimation(dt, speed, -66.4);
                         child->triggerScaleAnimation(dt, speed, ((110/std::cos(66.8*std::atan(1)*4/180)) - 55)*Constant::scaleX, 0, 0);
-                        child->triggerMoveAnimation(dt, speed, 310, 94.5);
+                        child->triggerMoveAnimation(dt, speed, 310*Constant::scaleX, 94.5);
                         mSceneLayers[Arrow]->getChildren().pop_back();
                         std::unique_ptr<ContainerNode> newCLLArrow1st = std::make_unique<ContainerNode>(
                             mWindow, sf::Vector2f(110*Constant::scaleX, 5*Constant::scaleX), 0, sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250*Constant::scaleX + (mListData.size() - 1)*250*Constant::scaleX - 130*Constant::scaleX, 305*Constant::scaleX),

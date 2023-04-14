@@ -35,7 +35,10 @@ void Program::run() {
                 mSettings.controlBoxUpdate();
             }
         }
-        mWindow.clear(sf::Color(18, 18, 18, 255));
+        if (mSettings.mDarkMode)
+            mWindow.clear(sf::Color(18, 18, 18, 255));
+        else 
+            mWindow.clear(sf::Color::White);
         if (mMenu.mIsProgramStarted) {
             if (mSettings.mStateActivated[States::StaticArray]) mStaticArray.draw();
             else if (mSettings.mStateActivated[States::DynamicArray]) mDynamicArray.draw();

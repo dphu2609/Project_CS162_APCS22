@@ -80,6 +80,31 @@ void SettingsState::handleActionDropBoxEvent(sf::Event &event) {
                             sf::Color::White, sf::Color(41, 58, 117, 255), sf::Color::White
                         );
                         mSceneLayers[ActionButtons]->attachChild(std::move(newButton3));
+
+                        std::unique_ptr<RectangleButtonNode> newButton4 = std::make_unique<RectangleButtonNode>(
+                            mWindow, "LOAD FROM FILE", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(300*Constant::scaleX, 45*Constant::scaleY), 0,
+                            sf::Vector2f(100*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 380*Constant::scaleY),
+                            sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
+                            sf::Color::White, sf::Color(41, 58, 117, 255), sf::Color::White
+                        );
+                        mSceneLayers[ActionButtons]->attachChild(std::move(newButton4));
+
+                        std::unique_ptr<RectangleButtonNode> newButton5 = std::make_unique<RectangleButtonNode>(
+                            mWindow, "Note: data is taken from\ndata/input.txt in the program folder.", mFontsHolder[Fonts::RobotoItalic], sf::Vector2f(180*Constant::scaleX, 40*Constant::scaleY), 0,
+                            sf::Vector2f(200*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 300*Constant::scaleY),
+                            sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
+                            sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255)
+                        );
+                        mSceneLayers[ActionButtons]->attachChild(std::move(newButton5));
+
+                        std::unique_ptr<RectangleButtonNode> newButton6 = std::make_unique<RectangleButtonNode>(
+                            mWindow, "Note: data must be in correct format.\nEx: -61 23 15 90", mFontsHolder[Fonts::RobotoItalic], sf::Vector2f(180*Constant::scaleX, 40*Constant::scaleY), 0,
+                            sf::Vector2f(200*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 230*Constant::scaleY),
+                            sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
+                            sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255)
+                        );
+                        mSceneLayers[ActionButtons]->attachChild(std::move(newButton6));
+                        createRandomList();
                         mActionActivated[Action::Create] = 1;
                     }
                     break;
@@ -312,6 +337,31 @@ void SettingsState::handleActionDropBoxEvent(sf::Event &event) {
                             sf::Color::White, sf::Color(41, 58, 117, 255), sf::Color::White
                         );
                         mSceneLayers[ActionButtons]->attachChild(std::move(newButton3));
+
+                        std::unique_ptr<RectangleButtonNode> newButton4 = std::make_unique<RectangleButtonNode>(
+                            mWindow, "LOAD FROM FILE", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(300*Constant::scaleX, 45*Constant::scaleY), 0,
+                            sf::Vector2f(100*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 380*Constant::scaleY),
+                            sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
+                            sf::Color::White, sf::Color(41, 58, 117, 255), sf::Color::White
+                        );
+                        mSceneLayers[ActionButtons]->attachChild(std::move(newButton4));
+
+                        std::unique_ptr<RectangleButtonNode> newButton5 = std::make_unique<RectangleButtonNode>(
+                            mWindow, "Note: data is taken from\ndata/input.txt in the program folder.", mFontsHolder[Fonts::RobotoItalic], sf::Vector2f(180*Constant::scaleX, 40*Constant::scaleY), 0,
+                            sf::Vector2f(200*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 300*Constant::scaleY),
+                            sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
+                            sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255)
+                        );
+                        mSceneLayers[ActionButtons]->attachChild(std::move(newButton5));
+
+                        std::unique_ptr<RectangleButtonNode> newButton6 = std::make_unique<RectangleButtonNode>(
+                            mWindow, "Note: data must be in correct format.\nEx: -61 23 15 90", mFontsHolder[Fonts::RobotoItalic], sf::Vector2f(180*Constant::scaleX, 40*Constant::scaleY), 0,
+                            sf::Vector2f(200*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 230*Constant::scaleY),
+                            sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
+                            sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255)
+                        );
+                        mSceneLayers[ActionButtons]->attachChild(std::move(newButton6));
+                        createRandomList();
                         mActionActivated[Action::Create] = 1;
                     }
                     break;
@@ -442,6 +492,50 @@ void SettingsState::throwError(const std::string &errorMessage) {
     mSceneLayers[Error]->attachChild(std::move(newError));
 }
 
+void SettingsState::loadFromFile() {
+    std::ifstream fin;
+    fin.open("data/input.txt");
+    bool isValid = 1;
+    std::string str;
+    std::getline(fin, str);
+    for (int i = 0; i < str.size(); i++) {
+        if (!((str[i] >= '0' && str[i] <= '9') || (str[i] == '-') || (str[i] == ' '))) {
+            throwError("The data is not in the correct format, please try again.");
+            isValid = 0;
+        }
+    }
+    fin.close();
+    if (!isValid) return;
+    fin.open("data/input.txt");
+    if (!fin.is_open()) {
+        throwError("Error: input.txt not found! Please check whether it is deleted or renamed.");
+    } else {
+        mInputArr.clear();
+        int index = 0;
+        while (!fin.eof()) {
+            int x;
+            fin >> x;
+            mInputArr.push_back(x);
+            if (mInputArr.size() > 10) {
+                throwError("Sorry, the maximum size is 10.");
+                isValid = 0;
+                break;
+            } else if (x > 99999 || x < -99999) {
+                std::string str = "Sorry, value at index " + std::to_string(index) + "must be in range from -9999 to 99999.";
+                throwError(str);
+                isValid = 0;
+                break;
+            }
+            index++;
+        }
+    }
+    fin.close();
+    if (mInputArr.size() <= 10 && mInputArr.size() > 0 && isValid) {
+        mActionActivated[Action::Play] = 1;
+        mIsReplay = 0;
+    }
+}
+
 void SettingsState::handleAction(sf::Event &event) {
     int index = 0;
     for (int i = 1; i < Action::ActionCount; i++) {
@@ -471,6 +565,13 @@ void SettingsState::handleAction(sf::Event &event) {
                                     mActionActivated[Action::Play] = 1;
                                     mIsReplay = 0;
                                 }
+                            }
+                            break;
+                        }
+
+                        case 3: {
+                            if (child->getClickedIndex(event) == 0) {
+                                loadFromFile();
                             }
                             break;
                         }
@@ -1060,5 +1161,31 @@ void SettingsState::controlBoxUpdate() {
         );
         mSceneLayers[ControlBoxButtons]->getChildren()[0] = std::move(replayButton);
         mIsEndAnimation.second = 1;
+    }
+}
+
+void SettingsState::handleDarkModeEvent(sf::Event &event) {
+    for (auto &child : mSceneLayers[DarkModeButton]->getChildren()) {
+        if (child->getClickedIndex(event) == 0) {
+            if (!mDarkMode) {
+                mDarkMode = 1;
+                std::unique_ptr<RectangleButtonNode> darkModeButton = std::make_unique<RectangleButtonNode>(
+                    mWindow, "LIGHT MODE", mFontsHolder[Fonts::RobotoRegular],
+                    sf::Vector2f(300*Constant::scaleX, 50*Constant::scaleY), 0, sf::Vector2f(100*Constant::scaleX, 700*Constant::scaleY),
+                    sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
+                    sf::Color::White, sf::Color(85, 93, 120, 255), sf::Color(41, 58, 117, 255) 
+                );
+                mSceneLayers[DarkModeButton]->getChildren()[0] = std::move(darkModeButton);
+            } else {
+                mDarkMode = 0;
+                std::unique_ptr<RectangleButtonNode> darkModeButton = std::make_unique<RectangleButtonNode>(
+                    mWindow, "DARK MODE", mFontsHolder[Fonts::RobotoRegular],
+                    sf::Vector2f(300*Constant::scaleX, 50*Constant::scaleY), 0, sf::Vector2f(100*Constant::scaleX, 700*Constant::scaleY),
+                    sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
+                    sf::Color::White, sf::Color(85, 93, 120, 255), sf::Color(41, 58, 117, 255) 
+                );
+                mSceneLayers[DarkModeButton]->getChildren()[0] = std::move(darkModeButton);
+            }
+        }
     }
 }
