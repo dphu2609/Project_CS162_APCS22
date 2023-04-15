@@ -1,21 +1,31 @@
-#include <DataStructure.h>
+#include <DataStructure.hpp>
 
 void GraphicalNode::set(std::string string, sf::Font &font, double size , sf::Vector2f pos, sf::Color numColor, sf::Color boxColor, sf::Color boxOutlineColor) {
+    number.setFont(font);
+    number.setString(string);
+    number.setCharacterSize(size);
+    number.setPosition(pos);
+    number.setFillColor(numColor);
     switch (string.size()) {
     case 1:
-        anm::setText(number, font, string, size*0.8, pos.x + size*0.4, pos.y + size*0.06, numColor);
+        number.setCharacterSize(size*0.8);
+        number.setPosition(pos.x + size*0.4, pos.y + size*0.06);
         break;
     case 2:
-        anm::setText(number, font, string, size*0.8, pos.x + size*0.2, pos.y + size*0.06, numColor);
+        number.setCharacterSize(size*0.8);
+        number.setPosition(pos.x + size*0.2, pos.y + size*0.06);
         break;
     case 3:
-        anm::setText(number, font, string, size*0.7, pos.x + size*0.08, pos.y + size*0.14, numColor);
+        number.setCharacterSize(size*0.7);
+        number.setPosition(pos.x + size*0.08, pos.y + size*0.14);
         break;
     case 4:
-        anm::setText(number, font, string, size*0.5, pos.x + size*0.08, pos.y + size*0.26, numColor);
+        number.setCharacterSize(size*0.5);
+        number.setPosition(pos.x + size*0.08, pos.y + size*0.26);
         break;
     case 5:
-        anm::setText(number, font, string, size*0.4, pos.x + size*0.08, pos.y + size*0.33, numColor);
+        number.setCharacterSize(size*0.4);
+        number.setPosition(pos.x + size*0.08, pos.y + size*0.33);
         break;
     };
     this->box.setFillColor(boxColor);

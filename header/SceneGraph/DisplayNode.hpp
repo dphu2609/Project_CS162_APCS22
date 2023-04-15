@@ -1,6 +1,5 @@
 #pragma once
 #include <SceneGraph/SceneNode.hpp>
-#include <DataStructure.h>
 
 class DisplayNode : public SceneNode {
 public: 

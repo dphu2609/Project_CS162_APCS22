@@ -3,8 +3,6 @@
 #include <SFML/Graphics.hpp>
 #include <bits/stdc++.h>
 
-#include <Animation.h>
-
 class GraphicalNode {
 public:
     sf::Text number;

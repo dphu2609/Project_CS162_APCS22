@@ -13,6 +13,7 @@ void StaticArrayState::createDataStructure(std::vector<int> list) {
         mSceneLayers[BlankNode]->attachChild(std::move(blankNode));
     }
     if (list.size() == 0) return;
+    mActivateInsertAt0 = 0;
     if (mIsReplay && mInsertActivated) {
         for (int i = mActionIndex; i < mListData.size() - 1; i++) {
             mTempListData[i] = mTempListData[i + 1];
@@ -171,7 +172,7 @@ void StaticArrayState::insertAnimation(sf::Time dt, double speed, int insertInde
                     } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
                         child->mIsDoneColoring = 0;
                     }
-                }
+                } 
                 index++;
             }
             break;
@@ -451,6 +452,10 @@ void StaticArrayState::deleteAnimation(sf::Time dt, double speed, int deleteInde
             break;
         }
         case 2: {
+            if (deleteIndex == mListData.size() - 1) {
+                mAnimationOrder = 4;
+                break;
+            }
             int index = 0;
             for (auto &child : mSceneLayers[Nodes]->getChildren()) {
                 if (index == deleteIndex) {
@@ -464,7 +469,8 @@ void StaticArrayState::deleteAnimation(sf::Time dt, double speed, int deleteInde
                         mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({1, 2, 3});
                     } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
                         child->mIsDoneColoring = 0;
-                        mAnimationOrder = 3;
+                        if (deleteIndex != mTempListData.size() - 1) mAnimationOrder = 3;
+                        else mAnimationOrder = 4;
                     } 
                 }
                 index++;
@@ -526,8 +532,10 @@ void StaticArrayState::deleteAnimation(sf::Time dt, double speed, int deleteInde
         case 5: {
             if (!mIsEndAnimation) {
                 mIsEndAnimation = 1;
-                for (int i = deleteIndex; i < mTempListData.size() - 1; i++) {
-                    mTempListData[i] = mTempListData[i + 1];
+                if (deleteIndex != mListData.size() - 1) {
+                    for (int i = deleteIndex; i < mTempListData.size() - 1; i++) {
+                        mTempListData[i] = mTempListData[i + 1];
+                    }
                 }
                 mListData.erase(mListData.begin() + deleteIndex);
             }
@@ -539,10 +547,12 @@ void StaticArrayState::deleteAnimationReversed(sf::Time dt, double speed, int de
     mIsEndAnimation = 0;
     switch(mAnimationOrder) {
         case 5: {
-            for (int i = mTempListData.size() - 1; i > deleteIndex; i--) {
-                mTempListData[i] = mTempListData[i - 1];
-            }
             mListData.insert(mListData.begin() + deleteIndex, deleteValue);
+            if (deleteIndex != mListData.size() - 1) {
+                for (int i = mTempListData.size() - 1; i > deleteIndex; i--) {
+                    mTempListData[i] = mTempListData[i - 1];
+                }
+            }
             if (mListData.size() == 1) {
                 std::unique_ptr<ContainerNode> arrayBorder = std::make_unique<ContainerNode>(
                     mWindow, sf::Vector2f(0, 120*Constant::scaleX), 10*Constant::scaleX, 
@@ -565,7 +575,8 @@ void StaticArrayState::deleteAnimationReversed(sf::Time dt, double speed, int de
                     mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({1, 2, 3});
                 } else if (!child->mIsScaling && child->mIsDoneScaling && !mIsActionPaused) {
                     child->mIsDoneScaling = 0;
-                    mAnimationOrder = 3;
+                    if (deleteIndex != mListData.size() - 1) mAnimationOrder = 3;
+                    else mAnimationOrder = 1;
                 }
             }
             break;

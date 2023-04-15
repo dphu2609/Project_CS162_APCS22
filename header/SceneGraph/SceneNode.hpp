@@ -2,7 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <bits/stdc++.h>
-#include <DataStructure.h>
+#include <DataStructure.hpp>
 #include <Button.hpp>
 #include <Event.hpp>
 #include <Constant.hpp>
