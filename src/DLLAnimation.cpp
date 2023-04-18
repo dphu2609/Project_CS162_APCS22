@@ -1439,7 +1439,6 @@ void DLLState::deleteAnimationReversed(sf::Time dt, double speed, int deleteInde
                         }
                     } else if (index == 1) {
                         if (mListData.size() != 2) child->setLabel("");
-                        else if (mListData.size() == 1)
                         else child->setLabel("tail");
                         break;
                     }

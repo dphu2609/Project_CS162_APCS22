@@ -12,7 +12,7 @@ void StaticArrayState::createDataStructure(std::vector<int> list) {
         );
         mSceneLayers[BlankNode]->attachChild(std::move(blankNode));
     }
-    if (list.size() == 0) return;
+    if (list.size() == 0 && mTempListData.size() == 0) return;
     mActivateInsertAt0 = 0;
     if (mIsReplay && mInsertActivated) {
         for (int i = mActionIndex; i < mListData.size() - 1; i++) {
@@ -54,12 +54,14 @@ void StaticArrayState::createDataStructure(std::vector<int> list) {
             mSceneLayers[Nodes]->attachChild(std::move(arrayNode));
         }
     } 
-    std::unique_ptr<ContainerNode> arrayBorder = std::make_unique<ContainerNode>(
-        mWindow, sf::Vector2f((120*mListData.size() + 10*(mListData.size() - 1))*Constant::scaleX, 120*Constant::scaleX), 10*Constant::scaleX, 
-        sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - 645*Constant::scaleX, 250*Constant::scaleX),
-        sf::Color::Transparent, sf::Color(201, 16, 16, 255)
-    );
-    mSceneLayers[ArrayBoder]->attachChild(std::move(arrayBorder)); 
+    if (mListData.size() != 0) {
+        std::unique_ptr<ContainerNode> arrayBorder = std::make_unique<ContainerNode>(
+            mWindow, sf::Vector2f((120*mListData.size() + 10*(mListData.size() - 1))*Constant::scaleX, 120*Constant::scaleX), 10*Constant::scaleX, 
+            sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - 645*Constant::scaleX, 250*Constant::scaleX),
+            sf::Color::Transparent, sf::Color(201, 16, 16, 255)
+        );
+        mSceneLayers[ArrayBoder]->attachChild(std::move(arrayBorder)); 
+    }
 }
 
 void StaticArrayState::insertAnimation(sf::Time dt, double speed, int insertIndex, int insertValue) {
@@ -101,13 +103,16 @@ void StaticArrayState::insertAnimation(sf::Time dt, double speed, int insertInde
         }
         case 2: {
             int index = 0;
-            if (mListData.size() == 0) {
+            if (mListData.size() == 0 && mTempListData.size() == 0) {
                 std::unique_ptr<DisplayNode> arrayNode = std::make_unique<DisplayNode>(
                     insertValue, mFontsHolder[Fonts::FiraSansRegular], 100*Constant::scaleX, 
                     sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - 645*Constant::scaleX + 130*mListData.size()*Constant::scaleX, 250*Constant::scaleX),
                     sf::Color(237, 139, 26, 255), sf::Color::White, sf::Color(237, 139, 26, 255)
                 );
                 mSceneLayers[Nodes]->attachChild(std::move(arrayNode));
+                mAnimationOrder = 4;
+                break;
+            } else if (mListData.size() == 0 && mTempListData.size() != 0) {
                 mAnimationOrder = 4;
                 break;
             } else if (insertIndex == mListData.size()) {
@@ -158,6 +163,16 @@ void StaticArrayState::insertAnimation(sf::Time dt, double speed, int insertInde
                                 sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
                             );
                             mSceneLayers[Nodes]->attachChild(std::move(arrayNode));
+                        } 
+                        else {
+                            int tmpIndex = 0;
+                            for (auto &lastNode : mSceneLayers[Nodes]->getChildren()) {
+                                if (tmpIndex == mListData.size()) {
+                                    lastNode->triggerChangeContent(std::to_string(mListData.back()));
+                                    break;
+                                }
+                                tmpIndex++;
+                            }
                         }
                         if (mListData.size() == 1 || insertIndex == mListData.size() - 1) mAnimationOrder = 4;
                         else mAnimationOrder = 3;
@@ -518,7 +533,8 @@ void StaticArrayState::deleteAnimation(sf::Time dt, double speed, int deleteInde
         case 4: {
             for (auto &child : mSceneLayers[ArrayBoder]->getChildren()) {
                 if (!child->mIsScaling && !child->mIsDoneScaling) {
-                    child->triggerScaleAnimation(dt, speed, -130*Constant::scaleX, 0, 0);
+                    if (mListData.size() != 1) child->triggerScaleAnimation(dt, speed, -130*Constant::scaleX, 0, 0);
+                    else child->triggerScaleAnimation(dt, speed, -120*Constant::scaleX, 0, 0);
                     mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
                     mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({4});
                 } else if (!child->mIsScaling && child->mIsDoneScaling) {

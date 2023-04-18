@@ -932,12 +932,22 @@ void SettingsState::handleAction(sf::Event &event) {
 void SettingsState::handleControlBoxEvent(sf::Event &event) {
     int index = 0;
     if (mActionActivated[Action::Play] && !mActionActivated[Action::Create]) {
-        std::unique_ptr<ImageButtonNode> pauseButton = std::make_unique<ImageButtonNode>(
-            mWindow, mTexturesHolder[Textures::pauseButton], mTexturesHolder[Textures::pauseButtonHoverred],
-            sf::Vector2f(30*Constant::scaleX, 30*Constant::scaleX), 
-            sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30*Constant::scaleX)/2 - 100*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 220*Constant::scaleY + 300*Constant::scaleY)
-        );
-        mSceneLayers[ControlBoxButtons]->getChildren()[0] = std::move(pauseButton);
+        if (!mIsControlBoxEmerged) {
+            std::unique_ptr<ImageButtonNode> pauseButton = std::make_unique<ImageButtonNode>(
+                mWindow, mTexturesHolder[Textures::pauseButton], mTexturesHolder[Textures::pauseButtonHoverred],
+                sf::Vector2f(30*Constant::scaleX, 30*Constant::scaleX), 
+                sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30*Constant::scaleX)/2 - 100*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 220*Constant::scaleY + 300*Constant::scaleY)
+            );
+            mSceneLayers[ControlBoxButtons]->getChildren()[0] = std::move(pauseButton);
+        }
+        else {
+            std::unique_ptr<ImageButtonNode> pauseButton = std::make_unique<ImageButtonNode>(
+                mWindow, mTexturesHolder[Textures::pauseButton], mTexturesHolder[Textures::pauseButtonHoverred],
+                sf::Vector2f(30*Constant::scaleX, 30*Constant::scaleX), 
+                sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30*Constant::scaleX)/2 - 100*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 220*Constant::scaleY)
+            );
+            mSceneLayers[ControlBoxButtons]->getChildren()[0] = std::move(pauseButton);
+        }
     }
     for (auto &child : mSceneLayers[ControlBoxButtons]->getChildren()) {
         switch (index) {
