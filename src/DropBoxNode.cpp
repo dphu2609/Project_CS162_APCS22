@@ -33,22 +33,22 @@ int DropBoxNode::size() {
 }
 
 void DropBoxNode::drawCurrent(sf::RenderTarget &target, sf::RenderStates states) const {
-    if (!evn::isHoverred(this->mWindow, this->mLabel.mBox)) {
+    if (!evn::isHovered(this->mWindow, this->mLabel.mBox)) {
         target.draw(this->mLabel.mBox);
         target.draw(this->mLabel.mText);
     } else {
-        target.draw(this->mLabel.mBoxHoverred);
-        target.draw(this->mLabel.mTextHoverred);
+        target.draw(this->mLabel.mBoxHovered);
+        target.draw(this->mLabel.mTextHovered);
     }
 
     if (this->mIsDropped) {
         for (auto &option : this->mOptions) {
-            if (!evn::isHoverred(this->mWindow, option.mBox)) {
+            if (!evn::isHovered(this->mWindow, option.mBox)) {
                 target.draw(option.mBox);
                 target.draw(option.mText);
             } else {
-                target.draw(option.mBoxHoverred);
-                target.draw(option.mTextHoverred);
+                target.draw(option.mBoxHovered);
+                target.draw(option.mTextHovered);
             }
         }
     }
@@ -58,10 +58,15 @@ void DropBoxNode::handleCurrentEvent(sf::Event &event) {
     if (evn::isLeftClicked(this->mWindow, event, this->mLabel.mBox)) {
         if (!this->mIsDropped) {
             this->mLabel.mText.setString(mLabelContent);
-            this->mLabel.mTextHoverred.setString(mLabelContent);
-            sf::Vector2f newLabelPos = this->mLabel.mBox.getPosition() + sf::Vector2f((this->mLabel.mBox.getSize().x - this->mLabel.mText.getLocalBounds().width)/2, this->mLabel.mBox.getSize().y*0.1);
+            this->mLabel.mTextHovered.setString(mLabelContent);
+            sf::Vector2f newLabelPos = 
+                this->mLabel.mBox.getPosition() + 
+                sf::Vector2f(
+                    (this->mLabel.mBox.getSize().x - this->mLabel.mText.getLocalBounds().width)/2, 
+                    this->mLabel.mBox.getSize().y*0.1
+                );
             this->mLabel.mText.setPosition(newLabelPos);
-            this->mLabel.mTextHoverred.setPosition(newLabelPos);
+            this->mLabel.mTextHovered.setPosition(newLabelPos);
             this->mIsDropped = 1;
         }
         else this->mIsDropped = 0;
@@ -74,10 +79,15 @@ void DropBoxNode::handleCurrentEvent(sf::Event &event) {
                     std::transform(str.begin(), str.end(), str.begin(), ::toupper);  
                 }
                 this->mLabel.mText.setString(str);
-                this->mLabel.mTextHoverred.setString(str);
-                sf::Vector2f newLabelPos = this->mLabel.mBox.getPosition() + sf::Vector2f((this->mLabel.mBox.getSize().x - this->mLabel.mText.getLocalBounds().width)/2, this->mLabel.mBox.getSize().y*0.1);
+                this->mLabel.mTextHovered.setString(str);
+                sf::Vector2f newLabelPos = 
+                    this->mLabel.mBox.getPosition() + 
+                    sf::Vector2f(
+                        (this->mLabel.mBox.getSize().x - this->mLabel.mText.getLocalBounds().width)/2, 
+                        this->mLabel.mBox.getSize().y*0.1
+                    );
                 this->mLabel.mText.setPosition(newLabelPos);
-                this->mLabel.mTextHoverred.setPosition(newLabelPos);
+                this->mLabel.mTextHovered.setPosition(newLabelPos);
             }
         }
     }

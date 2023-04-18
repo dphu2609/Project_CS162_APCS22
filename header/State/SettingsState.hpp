@@ -35,15 +35,17 @@ public:
     void activeSettings(sf::Time dt);
     void controlEvent(sf::Event &event);
     void controlBoxUpdate();
+    //animation variables
     std::vector<bool> mStateActivated = {};
     std::vector<bool> mActionActivated = {};
-    std::vector<int> mInputArr = {};
+    std::vector<int> mInputArr = {};    
     int mActionIndex;
     int mActionValue;
     int mPrevActionValue;
+    //--------------------------------
 
+    //control box variables
     int mTypeOfAction = 0;
-
     bool mIsActionPaused = 0;
     bool mIsPrev = 0;
     bool mIsNext = 0;
@@ -55,12 +57,11 @@ public:
     int mAnimationOrder = 1;
     int mPrevColorIndex = 0;
     int mColorIndex = 0;
+    std::pair<bool, bool> mIsEndAnimation = {0, 0};
+    double mSpeed = 1;
+    //--------------------------------
 
     bool mIsReplay = 0;
-    std::pair<bool, bool> mIsEndAnimation = {0, 0};
-
-    double mSpeed = 1;
-
     bool mDarkMode = 1;
 private:
     enum Layers {
@@ -93,6 +94,7 @@ private:
 private:
     void createRandomList();
     void createRandomValue();
+    void loadFromFile();
     void throwError(const std::string &errorMessage);
     void settingsIn(sf::Time dt);
     void settingsOut(sf::Time dt);
@@ -104,5 +106,4 @@ private:
     void handleControlBoxEvent(sf::Event &event);
     void handleDarkModeEvent(sf::Event &event);
     void resetControlBox();
-    void loadFromFile();
 };

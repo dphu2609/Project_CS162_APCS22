@@ -791,7 +791,10 @@ void CLLState::deleteAnimation(sf::Time dt, double speed, int deleteIndex) {
                         else child->setLabel("head");
                         child->mIsDoneColoring = 0;
                         this->mColorIndex++;
-                        if (this->mColorIndex >= deleteIndex) child->setLabel("cur");
+                        if (this->mColorIndex >= deleteIndex) {
+                            if (deleteIndex != 1) child->setLabel("cur");
+                            else child->setLabel("head/cur");
+                        }
                     }
                 } else if (index == this->mColorIndex) {
                     if (!child->mIsColoring && !child->mIsDoneColoring) {
@@ -825,7 +828,7 @@ void CLLState::deleteAnimation(sf::Time dt, double speed, int deleteIndex) {
                             child->triggerColorAnimation(
                                 dt, speed, 
                                 sf::Color::White, sf::Color(237, 139, 26, 255), sf::Color(237, 139, 26, 255),
-                                sf::Color(237, 139, 26, 255), sf::Color::White, sf::Color(237, 139, 26, 255)
+                                sf::Color::White, sf::Color(237, 139, 26, 255), sf::Color(237, 139, 26, 255)
                             );
                             mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
                             mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({2, 3, 4});

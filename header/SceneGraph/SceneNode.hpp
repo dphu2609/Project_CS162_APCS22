@@ -9,31 +9,47 @@
 
 class SceneNode : public sf::Transformable, public sf::Drawable, private sf::NonCopyable{
 public:
+    //Base functions
     typedef std::unique_ptr<SceneNode> Ptr;
     SceneNode();
     void attachChild(Ptr child);
-    Ptr detachChild(const SceneNode& node);
     void draw(sf::RenderTarget &target, sf::RenderStates states) const;
     void update (sf::Time dt);
     void handleEvent(sf::Event &event);
     std::vector<std::unique_ptr<SceneNode>>& getChildren() { return mChildren; }
+    //----------------------------------------------------------------------------
+
+    //Function for animations
     virtual void triggerMoveAnimation(sf::Time dt, double speed, double movingDistance, double angleMovement) {}
     virtual void triggerRotateAnimation(sf::Time dt, double speed, double rotatingDistance) {}
-    virtual void triggerScaleAnimation(sf::Time dt, double lengthSpeed, double scalingLengthDistance, double widthSpeed, double scalingWidthDistance) {}
+    virtual void triggerScaleAnimation(
+        sf::Time dt, double lengthSpeed, double scalingLengthDistance, 
+        double widthSpeed, double scalingWidthDistance
+    ) {}
     virtual void triggerColorAnimation(
         sf::Time dt, double speed, 
         sf::Color textColorWhenChange, sf::Color boxColorWhenChange, sf::Color outlineColorWhenChange, 
         sf::Color textColorAfterChange, sf::Color boxColorAfterChange, sf::Color outlineColorAfterChange
     ) {}
     virtual void triggerChangeContent(std::string string) {}
-    virtual int getClickedIndex(sf::Event &event) {return 0;}
-    virtual void resetContent(const std::string &str) {}
+    virtual void setLabel(std::string text) {}
     virtual std::string getStringData() {return "";}
+    //------------------------------------------------------------------
+
+    //Function for buttons
+    virtual int getClickedIndex(sf::Event &event) {return 0;}
+    //-------------------------------------------------------------------
+
+    //Functions for input box
+    virtual void setContent(const std::string &str) {}
     virtual std::vector<int> getIntArrayData() {return {};}
     virtual bool isActivated() {return 0;};
+    //----------------------------------------------
+
+    //Functions for code box
     virtual void changeCodeBoxColor(std::vector<int> index) {}
-    virtual void resetCodeBoxColor() {}
-    virtual void setLabel(std::string text) {}
+    virtual void resetCodeBoxColor() {} 
+    //-------------------------------------------------
 private:
     virtual void drawCurrent(sf::RenderTarget &target, sf::RenderStates states) const {}
     virtual void updateCurrent(sf::Time dt) {}

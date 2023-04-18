@@ -6,8 +6,6 @@ InputBoxNode::InputBoxNode(
     sf::Color boxColor, sf::Color boxOutlineColor, sf::Color cursorColor
 ) : mWindow(window) {
     this->mInputBox.set(font, boxSize, outlineThickness, pos, textColor, boxColor, boxOutlineColor, cursorColor);
-    this->mIsActivated = 0;
-    this->mOverBoundChar = 0;
 }
 
 void InputBoxNode::drawCurrent(sf::RenderTarget &target, sf::RenderStates states) const {
@@ -55,9 +53,9 @@ void InputBoxNode::handleCurrentEvent(sf::Event &event) {
     }
     if (this->mIsActivated) {
         if (event.type == sf::Event::TextEntered) {
-            if (event.text.unicode < 128 && event.text.unicode != 8 && this->mInputBox.mContent.size() < 150) {
+            if (event.text.unicode < 128 && event.text.unicode != 8 && this->mInputBox.mContent.size() < 100) {
                 this->mInputBox.mContent += static_cast<char>(event.text.unicode);
-                if ((this->mInputBox.mInputText.getLocalBounds().width >= this->mInputBox.mBox.getSize().x - this->mInputBox.mInputText.getCharacterSize()*1)) {
+                if (this->mInputBox.mInputText.getLocalBounds().width >= this->mInputBox.mBox.getSize().x - this->mInputBox.mInputText.getCharacterSize()*1) {
                     mOverBoundChar++;
                     std::string str = "";
                     for (int i = mOverBoundChar; i < this->mInputBox.mContent.size(); i++) {
@@ -73,7 +71,7 @@ void InputBoxNode::handleCurrentEvent(sf::Event &event) {
         } else if (event.type == sf::Event::KeyPressed) {
             if (event.key.code == sf::Keyboard::Backspace && this->mInputBox.mInputText.getString().getSize() > 0) {
                 this->mInputBox.mContent.erase(this->mInputBox.mContent.size() - 1);
-                if ((this->mInputBox.mInputText.getLocalBounds().width >= this->mInputBox.mBox.getSize().x - this->mInputBox.mInputText.getCharacterSize()*1.5)) {
+                if (this->mInputBox.mInputText.getLocalBounds().width >= this->mInputBox.mBox.getSize().x - this->mInputBox.mInputText.getCharacterSize()*1.5) {
                     if (mOverBoundChar > 0) mOverBoundChar--;
                     std::string str = "";
                     for (int i = mOverBoundChar; i < this->mInputBox.mContent.size(); i++) {
@@ -101,7 +99,7 @@ void InputBoxNode::triggerMoveAnimation(sf::Time dt, double speed, double moveDi
     this->mIsDoneMoving = 0;
 }
 
-void InputBoxNode::resetContent(const std::string &str) {
+void InputBoxNode::setContent(const std::string &str) {
     std::string temp = "";
     this->mInputBox.mContent = str;
     mOverBoundChar = 0;

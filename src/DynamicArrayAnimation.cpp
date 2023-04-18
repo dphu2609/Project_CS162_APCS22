@@ -537,7 +537,7 @@ void DynamicArrayState::deleteAnimation(sf::Time dt, double speed, int deleteInd
                         child->triggerColorAnimation(
                             dt, speed, 
                             sf::Color::White, sf::Color(150, 0, 25, 255), sf::Color(150, 0, 25, 255),
-                            sf::Color(150, 0, 25, 255), sf::Color::White, sf::Color(150, 0, 25, 255)
+                            sf::Color::White, sf::Color(150, 0, 25, 255), sf::Color(150, 0, 25, 255)
                         );
                     } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
                         mColorIndex++;
@@ -552,6 +552,7 @@ void DynamicArrayState::deleteAnimation(sf::Time dt, double speed, int deleteInd
         }
         case 5: {
             if (deleteIndex == mListData.size() - 1) {
+                mSceneLayers[BlankNode]->getChildren().clear();
                 mAnimationOrder = 6;
                 break;
             }
@@ -584,7 +585,7 @@ void DynamicArrayState::deleteAnimation(sf::Time dt, double speed, int deleteInd
                     } else if (!child->mIsColoring && child->mIsDoneColoring) {
                         if (mColorIndex == mSceneLayers[NewArray]->getChildren().size() + 1) {
                             std::unique_ptr<DisplayNode> arrayNode = std::make_unique<DisplayNode>(
-                                mListData[index], mFontsHolder[Fonts::FiraSansRegular], 100*Constant::scaleX, 
+                                mListData[index + 1], mFontsHolder[Fonts::FiraSansRegular], 100*Constant::scaleX, 
                                 sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - 645*Constant::scaleX + 140*index*Constant::scaleX, 625*Constant::scaleX),
                                 sf::Color(237, 139, 26, 255), sf::Color::White, sf::Color(237, 139, 26, 255)
                             );

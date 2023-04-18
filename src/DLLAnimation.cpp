@@ -309,8 +309,8 @@ void DLLState::insertAnimation(sf::Time dt, double speed, int insertIndex, int i
                         }
                     } 
                     else if (!child->mIsScaling && child->mIsDoneScaling && !mIsActionPaused) {
-                        child->mIsDoneScaling = 0;
                         child->mIsDoneRotating = 0;
+                        child->mIsDoneScaling = 0;
                         if (insertIndex == mListData.size()) {
                             mSceneLayers[DLLArrow]->getChildren().pop_back();
                             std::unique_ptr<SpriteNode> newDLLArrow = std::make_unique<SpriteNode>(
@@ -354,8 +354,6 @@ void DLLState::insertAnimation(sf::Time dt, double speed, int insertIndex, int i
                             child->triggerMoveAnimation(dt, speed*2, 25*Constant::scaleX, -150);
                         } else if (!child->mIsScaling && child->mIsDoneScaling) {
                             child->mIsDoneMoving = 0;
-                            child->mIsDoneScaling = 0;
-                            child->mIsDoneRotating = 0;
                         }
                         break;
                     }
@@ -443,6 +441,8 @@ void DLLState::insertAnimation(sf::Time dt, double speed, int insertIndex, int i
                 else if (insertIndex == mListData.size()) str = "tail";
                 else str = "newNode";
             } else str = "head/tail";
+
+            if (insertIndex == mListData.size()) mSceneLayers[Nodes]->getChildren().back()->setLabel("");
 
             std::unique_ptr<DisplayNode> addedNode = std::make_unique<DisplayNode>(
                 insertValue, mFontsHolder[Fonts::FiraSansRegular], 100*Constant::scaleX, str, 50*Constant::scaleX,
@@ -894,7 +894,8 @@ void DLLState::deleteAnimation(sf::Time dt, double speed, int deleteIndex) {
                         child->mIsDoneColoring = 0;
                         this->mColorIndex++;
                         if (mColorIndex == deleteIndex) {
-                            child->setLabel("cur");
+                            if (deleteIndex != 1) child->setLabel("cur");
+                            else child->setLabel("head/cur");
                         }
                     }
                 } else if (index == this->mColorIndex) {
@@ -1259,8 +1260,10 @@ void DLLState::deleteAnimation(sf::Time dt, double speed, int deleteIndex) {
         case 8: {
             if (!mIsEndAnimation) {
                 mSceneLayers[Nodes]->getChildren().erase(mSceneLayers[Nodes]->getChildren().begin() + deleteIndex);
-                if (mListData.size() != 1) mSceneLayers[Arrow]->getChildren().erase(mSceneLayers[Arrow]->getChildren().begin() + deleteIndex);
-                mSceneLayers[DLLArrow]->getChildren().erase(mSceneLayers[DLLArrow]->getChildren().begin() + deleteIndex);
+                if (mListData.size() != 1) {
+                    mSceneLayers[Arrow]->getChildren().erase(mSceneLayers[Arrow]->getChildren().begin() + deleteIndex);
+                    mSceneLayers[DLLArrow]->getChildren().erase(mSceneLayers[DLLArrow]->getChildren().begin() + deleteIndex);
+                }
                 mListData.erase(mListData.begin() + deleteIndex);
                 mIsEndAnimation = 1;
             }
@@ -1436,6 +1439,7 @@ void DLLState::deleteAnimationReversed(sf::Time dt, double speed, int deleteInde
                         }
                     } else if (index == 1) {
                         if (mListData.size() != 2) child->setLabel("");
+                        else if (mListData.size() == 1)
                         else child->setLabel("tail");
                         break;
                     }
@@ -1723,7 +1727,8 @@ void DLLState::deleteAnimationReversed(sf::Time dt, double speed, int deleteInde
                         child->mIsDoneColoring = 0;
                         if (deleteIndex != 0) this->mColorIndex--;
                         else mAnimationOrder = 1;
-                        if (mListData.size() == 2) {
+                        if (mListData.size() == 1) mSceneLayers[Nodes]->getChildren().front()->setLabel("head/tail");
+                        else if (mListData.size() == 2) {
                             mSceneLayers[Nodes]->getChildren().front()->setLabel("head");
                             mSceneLayers[Nodes]->getChildren().back()->setLabel("tail");
                         }

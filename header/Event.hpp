@@ -4,7 +4,7 @@
 
 namespace evn {
     template <typename Data>
-    bool isHoverred(sf::RenderWindow &window, Data &data);
+    bool isHovered(sf::RenderWindow &window, Data &data);
 
     template <typename Data>
     bool isLeftClicked(sf::RenderWindow &window, sf::Event &event, Data &data);

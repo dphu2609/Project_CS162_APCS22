@@ -130,5 +130,9 @@ std::string DisplayNode::getStringData() {
 
 void DisplayNode::setLabel(std::string text) {
     this->mLabel.setString(text);
-    this->mLabel.setPosition(this->mNode.box.getPosition() + sf::Vector2f(this->mNode.box.getSize().x*0.5, this->mNode.box.getSize().y + 20) - sf::Vector2f(this->mLabel.getLocalBounds().width/2 + this->mNode.box.getOutlineThickness(), 0));
+    this->mLabel.setPosition(
+        this->mNode.box.getPosition() + 
+        sf::Vector2f(this->mNode.box.getSize().x*0.5, this->mNode.box.getSize().y + 20) - 
+        sf::Vector2f(this->mLabel.getLocalBounds().width/2 + this->mNode.box.getOutlineThickness(), 0)
+    );
 }

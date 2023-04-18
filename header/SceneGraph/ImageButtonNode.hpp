@@ -1,15 +1,12 @@
 #pragma once
 #include <SceneGraph/SceneNode.hpp>
 
-namespace ButtonType {
-    enum ID {
-        Create
-    };
-};
-
 class ImageButtonNode : public SceneNode {
 public:
-    ImageButtonNode(sf::RenderWindow &window, sf::Texture &originalButtonTexture, sf::Texture &hoverredButtonTexture, sf::Vector2f size, sf::Vector2f pos);
+    ImageButtonNode(
+        sf::RenderWindow &window, sf::Texture &originalButtonTexture, 
+        sf::Texture &hoveredButtonTexture, sf::Vector2f size, sf::Vector2f pos
+    );
     virtual int getClickedIndex(sf::Event &event);
     virtual void triggerMoveAnimation(sf::Time dt, double speed, double movingDistance, double angleMovement);
 private:

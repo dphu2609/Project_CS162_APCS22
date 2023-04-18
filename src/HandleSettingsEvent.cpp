@@ -454,7 +454,7 @@ void SettingsState::createRandomList() {
             str += std::to_string(mInputArr[i]) + ", ";
         }
         str += std::to_string(mInputArr.back());
-        child->resetContent(str);
+        child->setContent(str);
         break;
     }
 }
@@ -467,14 +467,14 @@ void SettingsState::createRandomValue() {
     }
     if (mSceneLayers[InputBox]->getChildren().size() == 1) {
         for (auto &child : mSceneLayers[InputBox]->getChildren()) {
-            child->resetContent(std::to_string(val));
+            child->setContent(std::to_string(val));
             break;
         }
     } else if (mSceneLayers[InputBox]->getChildren().size() == 2) {
         int index = 0;
         for (auto &child : mSceneLayers[InputBox]->getChildren()) {
             if (index == 1) {
-                child->resetContent(std::to_string(val));
+                child->setContent(std::to_string(val));
             }
             index++;
         }
@@ -561,6 +561,12 @@ void SettingsState::handleAction(sf::Event &event) {
                                 for (auto &child : mSceneLayers[InputBox]->getChildren()) {
                                     mInputArr = child->getIntArrayData();
                                 }
+                                for (auto &child : mInputArr) {
+                                    if (child > 99999 || child < -9999) {
+                                        throwError("Sorry, value must be in range from -9999 to 99999.");
+                                        break;
+                                    }
+                                }
                                 if (mInputArr.size() <= 10 && mInputArr.size() > 0) {
                                     mActionActivated[Action::Play] = 1;
                                     mIsReplay = 0;
@@ -589,7 +595,7 @@ void SettingsState::handleAction(sf::Event &event) {
                             if (child->getClickedIndex(event) == 0) {
                                 mActionIndex = 0;
                                 for (auto &child : mSceneLayers[InputBox]->getChildren()) {
-                                    child->resetContent("0");
+                                    child->setContent("0");
                                     break;
                                 }
                             }
@@ -599,7 +605,7 @@ void SettingsState::handleAction(sf::Event &event) {
                             if (child->getClickedIndex(event) == 0) {
                                 mActionIndex = mInputArr.size();
                                 for (auto &child : mSceneLayers[InputBox]->getChildren()) {
-                                    child->resetContent(std::to_string(mActionIndex));
+                                    child->setContent(std::to_string(mActionIndex));
                                     break;
                                 }
                             }
@@ -662,7 +668,7 @@ void SettingsState::handleAction(sf::Event &event) {
                             if (child->getClickedIndex(event) == 0) {
                                 mActionIndex = 0;
                                 for (auto &child : mSceneLayers[InputBox]->getChildren()) {
-                                    child->resetContent("0");
+                                    child->setContent("0");
                                     break;
                                 }
                             }
@@ -672,7 +678,7 @@ void SettingsState::handleAction(sf::Event &event) {
                             if (child->getClickedIndex(event) == 0) {
                                 mActionIndex = mInputArr.size() - 1;
                                 for (auto &child : mSceneLayers[InputBox]->getChildren()) {
-                                    child->resetContent(std::to_string(mActionIndex));
+                                    child->setContent(std::to_string(mActionIndex));
                                     break;
                                 }
                             }
@@ -830,6 +836,12 @@ void SettingsState::handleAction(sf::Event &event) {
                                 for (auto &child : mSceneLayers[InputBox]->getChildren()) {
                                     mInputArr = child->getIntArrayData();
                                 }
+                                for (auto &child : mInputArr) {
+                                    if (child > 99999 || child < -9999) {
+                                        throwError("Sorry, value must be in range from -9999 to 99999.");
+                                        break;
+                                    }
+                                }
                                 if (mInputArr.size() <= 10 && mInputArr.size() > 0) {
                                     mActionActivated[Action::Play] = 1;
                                     mIsReplay = 0;
@@ -919,6 +931,14 @@ void SettingsState::handleAction(sf::Event &event) {
 
 void SettingsState::handleControlBoxEvent(sf::Event &event) {
     int index = 0;
+    if (mActionActivated[Action::Play] && !mActionActivated[Action::Create]) {
+        std::unique_ptr<ImageButtonNode> pauseButton = std::make_unique<ImageButtonNode>(
+            mWindow, mTexturesHolder[Textures::pauseButton], mTexturesHolder[Textures::pauseButtonHoverred],
+            sf::Vector2f(30*Constant::scaleX, 30*Constant::scaleX), 
+            sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30*Constant::scaleX)/2 - 100*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 220*Constant::scaleY + 300*Constant::scaleY)
+        );
+        mSceneLayers[ControlBoxButtons]->getChildren()[0] = std::move(pauseButton);
+    }
     for (auto &child : mSceneLayers[ControlBoxButtons]->getChildren()) {
         switch (index) {
             case 0: {
@@ -1157,7 +1177,10 @@ void SettingsState::controlBoxUpdate() {
         std::unique_ptr<ImageButtonNode> replayButton = std::make_unique<ImageButtonNode>(
             mWindow, mTexturesHolder[Textures::replayButton], mTexturesHolder[Textures::replayButtonHoverred],
             sf::Vector2f(30*Constant::scaleX, 30*Constant::scaleY), 
-            sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30*Constant::scaleX)/2 - 100*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 220*Constant::scaleY)
+            sf::Vector2f(
+                (sf::VideoMode::getDesktopMode().width - 30*Constant::scaleX)/2 - 100*Constant::scaleX, 
+                sf::VideoMode::getDesktopMode().height - 220*Constant::scaleY
+            )
         );
         mSceneLayers[ControlBoxButtons]->getChildren()[0] = std::move(replayButton);
         mIsEndAnimation.second = 1;

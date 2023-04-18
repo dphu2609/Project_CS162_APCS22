@@ -25,7 +25,10 @@ CodeBlockNode::CodeBlockNode(
         mLineActivated.push_back(0);
     }
 
-    sf::Vector2f initialPos(sf::VideoMode::getDesktopMode().width - maxWidth - 35 - 150*Constant::scaleX, sf::VideoMode::getDesktopMode().height - textSize/0.5*codeContent.size() - 70 - 50*Constant::scaleY);
+    sf::Vector2f initialPos(
+        sf::VideoMode::getDesktopMode().width - maxWidth - 35 - 150*Constant::scaleX, 
+        sf::VideoMode::getDesktopMode().height - textSize/0.5*codeContent.size() - 70 - 50*Constant::scaleY
+    );
 
     for (int i = 0; i < codeContent.size(); i++) {
         mBox[i].setSize(sf::Vector2f(maxWidth + 100*Constant::scaleX, textSize/0.5));

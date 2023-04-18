@@ -345,6 +345,8 @@ void SLLState::insertAnimation(sf::Time dt, double speed, int insertIndex, int i
                 else str = "newNode";
             } else str = "head/tail";
 
+            if (insertIndex == mListData.size()) mSceneLayers[Nodes]->getChildren().back()->setLabel("");
+
             std::unique_ptr<DisplayNode> addedNode = std::make_unique<DisplayNode>(
                 insertValue, mFontsHolder[Fonts::FiraSansRegular], 100*Constant::scaleX, str, 50*Constant::scaleX,
                 sf::Vector2f(sf::VideoMode::getDesktopMode().width/2 - (mListData.size()/2)*250*Constant::scaleX + (insertIndex)*250*Constant::scaleX, 250*Constant::scaleX), 
@@ -689,7 +691,8 @@ void SLLState::deleteAnimation(sf::Time dt, double speed, int deleteIndex) {
                         child->mIsDoneColoring = 0;
                         this->mColorIndex++;
                         if (mColorIndex == deleteIndex) {
-                            child->setLabel("cur");
+                            if (deleteIndex != 1) child->setLabel("cur");
+                            else child->setLabel("head/cur");
                         }
                     }
                 } else if (index == this->mColorIndex) {
@@ -1031,7 +1034,7 @@ void SLLState::deleteAnimationReversed(sf::Time dt, double speed, int deleteInde
         }
 
         case 7: {
-            if (deleteIndex == 0 && mListData.size()%2 != 0 && mListData.size() == 1) {
+            if (deleteIndex == 0 && mListData.size()%2 != 0 && mListData.size() != 1) {
                 int index = 0;
                 for (auto &child : mSceneLayers[Nodes]->getChildren()) {
                     if (index > 0) {
@@ -1309,7 +1312,8 @@ void SLLState::deleteAnimationReversed(sf::Time dt, double speed, int deleteInde
                         child->mIsDoneColoring = 0;
                         if (deleteIndex != 0) this->mColorIndex--;
                         else mAnimationOrder = 1;
-                        if (mListData.size() == 2) {
+                        if (mListData.size() == 1) mSceneLayers[Nodes]->getChildren().front()->setLabel("head/tail");
+                        else if (mListData.size() == 2) {
                             mSceneLayers[Nodes]->getChildren().front()->setLabel("head");
                             mSceneLayers[Nodes]->getChildren().back()->setLabel("tail");
                         }

@@ -3,9 +3,15 @@
 
 class ContainerNode : public SceneNode {
 public:
-    ContainerNode(sf::RenderWindow &window, sf::Vector2f size, double outlineSize, sf::Vector2f pos, sf::Color boxColor, sf::Color boxOutlineColor);
+    ContainerNode(
+        sf::RenderWindow &window, sf::Vector2f size, double outlineSize, sf::Vector2f pos, 
+        sf::Color boxColor, sf::Color boxOutlineColor
+    );
     virtual void triggerMoveAnimation(sf::Time dt, double speed, double movingDistance, double angleMovement);
-    virtual void triggerScaleAnimation(sf::Time dt, double lengthSpeed, double scalingLengthDistance, double widthSpeed, double scalingWidthDistance);
+    virtual void triggerScaleAnimation(
+        sf::Time dt, double lengthSpeed, double scalingLengthDistance, 
+        double widthSpeed, double scalingWidthDistance
+    );
     virtual void triggerRotateAnimation(sf::Time dt, double speed, double rotatingDistance);
     virtual void triggerColorAnimation(
         sf::Time dt, double speed, 

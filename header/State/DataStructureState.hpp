@@ -29,7 +29,7 @@ public:
     int mActionValue;
     bool mIsInsertOnce = 0;
     std::vector<int> mListData = {};
-    std::vector<int> mTempListData = {};
+    std::vector<int> mTempListData = {};    
     void resetNodeState();
     bool isProcessing();
     bool mIsReplay = 0;

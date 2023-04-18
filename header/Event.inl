@@ -1,5 +1,5 @@
 template <typename Data>
-bool evn::isHoverred(sf::RenderWindow &window, Data &data) {
+bool evn::isHovered(sf::RenderWindow &window, Data &data) {
     sf::Vector2i localPosition(sf::Mouse::getPosition(window));
     sf::Vector2f localPositionF(static_cast<float>(localPosition.x), static_cast<float>(localPosition.y));
     localPositionF = window.mapPixelToCoords(localPosition);
@@ -16,11 +16,11 @@ bool evn::isHoverred(sf::RenderWindow &window, Data &data) {
 
 template <typename Data>
 bool evn::isLeftClicked(sf::RenderWindow &window, sf::Event &event, Data &data) {
-    return (evn::isHoverred(window, data) && sf::Mouse::isButtonPressed(sf::Mouse::Left) && event.type == sf::Event::MouseButtonPressed);
+    return (evn::isHovered(window, data) && sf::Mouse::isButtonPressed(sf::Mouse::Left) && event.type == sf::Event::MouseButtonPressed);
 }
 
 template <typename Data>    
 bool evn::isRightClicked(sf::RenderWindow &window,sf::Event &event, Data &data) {
-    return (evn::isHoverred(window, data) && sf::Mouse::isButtonPressed(sf::Mouse::Right) && event.type == sf::Event::MouseButtonPressed);
+    return (evn::isHovered(window, data) && sf::Mouse::isButtonPressed(sf::Mouse::Right) && event.type == sf::Event::MouseButtonPressed);
 }
 

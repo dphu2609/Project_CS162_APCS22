@@ -127,7 +127,7 @@ void StaticArrayState::insertAnimation(sf::Time dt, double speed, int insertInde
                     if (!child->mIsColoring && !child->mIsDoneColoring) {
                         child->triggerColorAnimation(
                             dt, speed, 
-                            sf::Color::White, sf::Color(237, 139, 26, 255), sf::Color(237, 139, 26, 255),
+                            sf::Color::White, sf::Color(237, 139, 26, 255), sf::Color(145, 174, 226, 255),
                             sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
                         );
                         mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
@@ -139,7 +139,7 @@ void StaticArrayState::insertAnimation(sf::Time dt, double speed, int insertInde
                                     if (!blankNode->mIsColoring && !blankNode->mIsDoneColoring) {
                                         blankNode->triggerColorAnimation(
                                             dt, speed,
-                                            sf::Color::White, sf::Color(237, 139, 26, 255), sf::Color(237, 139, 26, 255),
+                                            sf::Color::White, sf::Color(237, 139, 26, 255), sf::Color(145, 174, 226, 255),
                                             sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
                                         );
                                     } else if (!blankNode->mIsColoring && blankNode->mIsDoneColoring) {
@@ -159,14 +159,14 @@ void StaticArrayState::insertAnimation(sf::Time dt, double speed, int insertInde
                             );
                             mSceneLayers[Nodes]->attachChild(std::move(arrayNode));
                         }
-                        if (mListData.size() == 1) mAnimationOrder = 4;
+                        if (mListData.size() == 1 || insertIndex == mListData.size() - 1) mAnimationOrder = 4;
                         else mAnimationOrder = 3;
                     }
                 } else if (index == mListData.size() && mTempListData.size() != mListData.size()) {
                     if (!child->mIsColoring && !child->mIsDoneColoring) {
                         child->triggerColorAnimation(
                             dt, speed, 
-                            sf::Color::White, sf::Color(237, 139, 26, 255), sf::Color(237, 139, 26, 255),
+                            sf::Color::White, sf::Color(237, 139, 26, 255), sf::Color(145, 174, 226, 255),
                             sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
                         );
                     } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
@@ -188,7 +188,7 @@ void StaticArrayState::insertAnimation(sf::Time dt, double speed, int insertInde
                     if (!child->mIsColoring && !child->mIsDoneColoring) {
                         child->triggerColorAnimation(
                             dt, speed, 
-                            sf::Color::White, sf::Color(237, 139, 26, 255), sf::Color(237, 139, 26, 255),
+                            sf::Color::White, sf::Color(237, 139, 26, 255), sf::Color(145, 174, 226, 255),
                             sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
                         );
                     } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
@@ -204,7 +204,7 @@ void StaticArrayState::insertAnimation(sf::Time dt, double speed, int insertInde
                     if (!child->mIsColoring && !child->mIsDoneColoring) {
                         child->triggerColorAnimation(
                             dt, speed, 
-                            sf::Color::White, sf::Color(237, 139, 26, 255), sf::Color(237, 139, 26, 255),
+                            sf::Color::White, sf::Color(237, 139, 26, 255), sf::Color(145, 174, 226, 255),
                             sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
                         );
                     } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
@@ -222,7 +222,7 @@ void StaticArrayState::insertAnimation(sf::Time dt, double speed, int insertInde
                     if (!child->mIsColoring && !child->mIsDoneColoring) {
                         child->triggerColorAnimation(
                             dt, speed, 
-                            sf::Color::White, sf::Color(31, 224, 205, 255), sf::Color(31, 224, 205, 255),
+                            sf::Color::White, sf::Color(31, 224, 205, 255), sf::Color(145, 174, 226, 255),
                             sf::Color(31, 224, 205, 255), sf::Color::White, sf::Color(145, 174, 226, 255)
                         );
                         mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
@@ -327,7 +327,7 @@ void StaticArrayState::insertAnimationReversed(sf::Time dt, double speed, int in
                     } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
                         child->mIsDoneColoring = 0;
                         child->triggerChangeContent(std::to_string(mListData[insertIndex]));
-                        if (mListData.size() <= 1) mAnimationOrder = 2;
+                        if (mListData.size() <= 1 || insertIndex == mListData.size() - 1) mAnimationOrder = 2;
                         else if (insertIndex == mListData.size()) {
                             if (!mIsInsertOnce) mSceneLayers[Nodes]->getChildren().pop_back();
                             else child->setLabel(std::to_string(mTempListData[insertIndex]));
@@ -462,8 +462,8 @@ void StaticArrayState::deleteAnimation(sf::Time dt, double speed, int deleteInde
                     if (!child->mIsColoring && !child->mIsDoneColoring) {
                         child->triggerColorAnimation(
                             dt, speed, 
-                            sf::Color::White, sf::Color(150, 0, 25, 255), sf::Color(150, 0, 25, 255),
-                            sf::Color::White, sf::Color(150, 0, 25, 255), sf::Color(150, 0, 25, 255)
+                            sf::Color::White, sf::Color(150, 0, 25, 255), sf::Color(145, 174, 226, 255),
+                            sf::Color(150, 0, 25, 255), sf::Color::White, sf::Color(145, 174, 226, 255)
                         );
                         mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
                         mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({1, 2, 3});
@@ -487,7 +487,7 @@ void StaticArrayState::deleteAnimation(sf::Time dt, double speed, int deleteInde
                     if (!child->mIsColoring && !child->mIsDoneColoring) {
                         child->triggerColorAnimation(
                             dt, speed, 
-                            sf::Color::White, sf::Color(237, 139, 26, 255), sf::Color(237, 139, 26, 255),
+                            sf::Color::White, sf::Color(237, 139, 26, 255), sf::Color(145, 174, 226, 255),
                             sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
                         );
                     } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
@@ -503,7 +503,7 @@ void StaticArrayState::deleteAnimation(sf::Time dt, double speed, int deleteInde
                     if (!child->mIsColoring && !child->mIsDoneColoring) {
                         child->triggerColorAnimation(
                             dt, speed, 
-                            sf::Color::White, sf::Color(237, 139, 26, 255), sf::Color(237, 139, 26, 255),
+                            sf::Color::White, sf::Color(237, 139, 26, 255), sf::Color(145, 174, 226, 255),
                             sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
                         );
                     } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
@@ -533,7 +533,7 @@ void StaticArrayState::deleteAnimation(sf::Time dt, double speed, int deleteInde
             if (!mIsEndAnimation) {
                 mIsEndAnimation = 1;
                 if (deleteIndex != mListData.size() - 1) {
-                    for (int i = deleteIndex; i < mTempListData.size() - 1; i++) {
+                    for (int i = deleteIndex; i < mListData.size() - 1; i++) {
                         mTempListData[i] = mTempListData[i + 1];
                     }
                 }
@@ -549,7 +549,7 @@ void StaticArrayState::deleteAnimationReversed(sf::Time dt, double speed, int de
         case 5: {
             mListData.insert(mListData.begin() + deleteIndex, deleteValue);
             if (deleteIndex != mListData.size() - 1) {
-                for (int i = mTempListData.size() - 1; i > deleteIndex; i--) {
+                for (int i = mListData.size() - 1; i > deleteIndex; i--) {
                     mTempListData[i] = mTempListData[i - 1];
                 }
             }
@@ -588,7 +588,7 @@ void StaticArrayState::deleteAnimationReversed(sf::Time dt, double speed, int de
                     if (!child->mIsColoring && !child->mIsDoneColoring) {
                         child->triggerColorAnimation(
                             dt, speed, 
-                            sf::Color::White, sf::Color(237, 139, 26, 255), sf::Color(237, 139, 26, 255),
+                            sf::Color::White, sf::Color(237, 139, 26, 255), sf::Color(145, 174, 226, 255),
                             sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
                         );
                     } else if (!child->mIsColoring && child->mIsDoneColoring) {
@@ -607,7 +607,7 @@ void StaticArrayState::deleteAnimationReversed(sf::Time dt, double speed, int de
                     if (!child->mIsColoring && !child->mIsDoneColoring) {
                         child->triggerColorAnimation(
                             dt, speed, 
-                            sf::Color::White, sf::Color(237, 139, 26, 255), sf::Color(237, 139, 26, 255),
+                            sf::Color::White, sf::Color(237, 139, 26, 255), sf::Color(145, 174, 226, 255),
                             sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
                         );
                     } else if (!child->mIsColoring && child->mIsDoneColoring) {
@@ -630,7 +630,7 @@ void StaticArrayState::deleteAnimationReversed(sf::Time dt, double speed, int de
                     if (!child->mIsColoring && !child->mIsDoneColoring) {
                         child->triggerColorAnimation(
                             dt, 1, 
-                            sf::Color::White, sf::Color(150, 0, 25, 255), sf::Color(150, 0, 25, 255),
+                            sf::Color::White, sf::Color(150, 0, 25, 255), sf::Color(145, 174, 226, 255),
                             sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
                         );
                     } else if (!child->mIsColoring && child->mIsDoneColoring) {
@@ -788,7 +788,7 @@ void StaticArrayState::searchAnimation(sf::Time dt, double speed, int searchValu
                     if (!child->mIsColoring && !child->mIsDoneColoring) {
                         child->triggerColorAnimation(
                             dt, speed, 
-                            sf::Color::White, sf::Color(237, 139, 26, 255), sf::Color(237, 139, 26, 255),
+                            sf::Color::White, sf::Color(237, 139, 26, 255), sf::Color(145, 174, 226, 255),
                             sf::Color(237, 139, 26, 255), sf::Color::White, sf::Color(237, 139, 26, 255)
                         );
                         mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
@@ -817,8 +817,8 @@ void StaticArrayState::searchAnimation(sf::Time dt, double speed, int searchValu
                     if (!child->mIsColoring && !child->mIsDoneColoring) {
                         child->triggerColorAnimation(
                             dt, speed, 
-                            sf::Color::White, sf::Color(221, 99, 230, 255), sf::Color(221, 99, 230, 255),
-                            sf::Color(221, 99, 230, 255), sf::Color::White, sf::Color(221, 99, 230, 255)
+                            sf::Color::White, sf::Color(221, 99, 230, 255), sf::Color(145, 174, 226, 255),
+                            sf::Color(221, 99, 230, 255), sf::Color::White, sf::Color(145, 174, 226, 255)
                         );
                         mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
                         mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({2});
@@ -865,8 +865,8 @@ void StaticArrayState::searchAnimationReversed(sf::Time dt, double speed, int se
                     if (!child->mIsColoring && !child->mIsDoneColoring) {
                         child->triggerColorAnimation(
                             dt, speed, 
-                            sf::Color::White, sf::Color(221, 99, 230, 255), sf::Color(221, 99, 230, 255),
-                            sf::Color(237, 139, 26, 255), sf::Color::White, sf::Color(237, 139, 26, 255)
+                            sf::Color::White, sf::Color(221, 99, 230, 255), sf::Color(145, 174, 226, 255),
+                            sf::Color(237, 139, 26, 255), sf::Color::White, sf::Color(145, 174, 226, 255)
                         );
                     } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {
                         child->mIsDoneColoring = 0;
@@ -886,7 +886,7 @@ void StaticArrayState::searchAnimationReversed(sf::Time dt, double speed, int se
                     if (!child->mIsColoring && !child->mIsDoneColoring) {
                         child->triggerColorAnimation(
                             dt, speed, 
-                            sf::Color::White, sf::Color(237, 139, 26, 255), sf::Color(237, 139, 26, 255),
+                            sf::Color::White, sf::Color(237, 139, 26, 255), sf::Color(145, 174, 226, 255),
                             sf::Color::Black, sf::Color::White, sf::Color(145, 174, 226, 255)
                         );
                     } else if (!child->mIsColoring && child->mIsDoneColoring && !mIsActionPaused) {

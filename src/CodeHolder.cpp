@@ -294,7 +294,7 @@ void CodeHolder::load() {
     };      
 
     mCodeMap[Code::CircularLinkedListDeleteHead] = {
-        "void deleteAtHead(Node*& head, int index) {",            // 0    
+        "void deleteAtHead(Node*& head, int index) {",      // 0    
         "   Node* cur = head;",                             // 1
         "   while (cur->next != head) {",                   // 2 
         "       cur = cur->next;",                          // 3

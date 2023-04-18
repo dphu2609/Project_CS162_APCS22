@@ -8,9 +8,9 @@ RectangleButtonNode::RectangleButtonNode(sf::RenderWindow &window, const std::st
 }
 
 void RectangleButtonNode::drawCurrent(sf::RenderTarget &target, sf::RenderStates states) const {
-    if (evn::isHoverred(this->mWindow, this->mButton.mBox)) {   
-        target.draw(this->mButton.mBoxHoverred);
-        target.draw(this->mButton.mTextHoverred);
+    if (evn::isHovered(this->mWindow, this->mButton.mBox)) {   
+        target.draw(this->mButton.mBoxHovered);
+        target.draw(this->mButton.mTextHovered);
     }
     else {
         target.draw(this->mButton.mBox);

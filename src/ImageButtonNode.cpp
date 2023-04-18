@@ -1,12 +1,12 @@
 #include <SceneGraph/ImageButtonNode.hpp>
 
-ImageButtonNode::ImageButtonNode(sf::RenderWindow &window, sf::Texture &originalButtonTexture, sf::Texture &hoverredButtonTexture, sf::Vector2f size, sf::Vector2f pos) : mWindow(window) {
-    this->mButton.set(originalButtonTexture, hoverredButtonTexture, size.x, size.y, pos);
+ImageButtonNode::ImageButtonNode(sf::RenderWindow &window, sf::Texture &originalButtonTexture, sf::Texture &hoveredButtonTexture, sf::Vector2f size, sf::Vector2f pos) : mWindow(window) {
+    this->mButton.set(originalButtonTexture, hoveredButtonTexture, size.x, size.y, pos);
 }
 
 void ImageButtonNode::drawCurrent(sf::RenderTarget &target, sf::RenderStates states) const {
-    if (evn::isHoverred(this->mWindow, this->mButton.originalButton)) {
-        target.draw(this->mButton.hoverredButton);
+    if (evn::isHovered(this->mWindow, this->mButton.originalButton)) {
+        target.draw(this->mButton.hoveredButton);
     }
     else target.draw(this->mButton.originalButton);
 }
@@ -18,7 +18,7 @@ void ImageButtonNode::updateCurrent(sf::Time dt) {
             this->mStartPos.y + (-std::pow(this->mCurrentPos, 4) + this->mMovingDistance)*std::sin(this->mAngleMovement*std::atan(1)*4/180)
         );
         this->mButton.originalButton.setPosition(newPos);
-        this->mButton.hoverredButton.setPosition(newPos);
+        this->mButton.hoveredButton.setPosition(newPos);
         if (this->mCurrentPos > 0) this->mCurrentPos -= this->mMovingStep;
         else {
             this->mAnimationType["move"] = 0;

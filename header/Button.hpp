@@ -3,24 +3,23 @@
 #include <SFML/Graphics.hpp>
 #include <Constant.hpp>
 
-class Button {
-public:
-};
-
-class ImageButton : public Button {
+class ImageButton {
 public:
     sf::Sprite originalButton;
-    sf::Sprite hoverredButton;
+    sf::Sprite hoveredButton;
 public:
-    void set(sf::Texture &originalButtonTexture, sf::Texture &hoverredButtonTexture, double width, double height, sf::Vector2f pos);
+    void set(
+        sf::Texture &originalButtonTexture, sf::Texture &hoveredButtonTexture, 
+        double width, double height, sf::Vector2f pos
+    );
 };
 
-class RectangleButton :  public Button {
+class RectangleButton {
 public:
     sf::RectangleShape mBox;
     sf::Text mText; 
-    sf::RectangleShape mBoxHoverred;
-    sf::Text mTextHoverred;
+    sf::RectangleShape mBoxHovered;
+    sf::Text mTextHovered;
 public:
     void set(const std::string text , const sf::Font &font, sf::Vector2f boxSize, 
         double outlineSize, sf::Vector2f pos, sf::Color textColor, sf::Color boxColor, 
@@ -35,6 +34,11 @@ public:
     sf::Text mInputText;
     sf::RectangleShape mBox;
     sf::RectangleShape mCursor;
-    void set(sf::Font &font, sf::Vector2f boxSize, double outlineThickness, sf::Vector2f pos, sf::Color textColor, sf::Color boxColor, sf::Color boxOutlineColor, sf::Color cursorColor);
+public:
+    void set(
+        sf::Font &font, sf::Vector2f boxSize, double outlineThickness, 
+        sf::Vector2f pos, sf::Color textColor, 
+        sf::Color boxColor, sf::Color boxOutlineColor, sf::Color cursorColor
+    );
     void setPostion(sf::Vector2f pos);
 };

@@ -114,6 +114,7 @@ void Program::dataStructureDisplay(sf::Time dt, DataStructureState &dataStructur
         mSettings.mIsEndAnimation.first = 0;
         mSettings.mIsPrev = 0;
         mSettings.mIsNext = 0;
+        mSettings.mIsEndAnimation = {0, 0};
         mSettings.mActionActivated[Action::Play] = 0;
     }
     if (dataStructure.mInsertActivated || dataStructure.mDeleteActivated || dataStructure.mUpdateActivated || dataStructure.mSearchActivated) {

@@ -8,7 +8,6 @@
 #include <CodeHolder.hpp>
 #include <Constant.hpp>
 
-
 class State : private sf::NonCopyable {
 public:
     explicit State(sf::RenderWindow &window);
