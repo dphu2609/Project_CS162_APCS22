@@ -1,32 +1,32 @@
 # Project_CS162_APCS22: VisualGo clone in C++
 
-A visualization tool for common data structures, written in C++ using the SFML library.
-
-## Table of Contents
-
-- [Introduction](#introduction)
-- [Installation](#installation)
-- [Supported Data Structures](#supported-data-structures)
-- [License](#license)
+This project is a clone version from [VisualGo](https://visualgo.net/en) with basic data structures.
 
 ## Introduction
 
 Data Structure Visualization is a program that allows users to visualize the behavior of common data structures such as linked lists, stacks, queues. This program is written in C++ and uses the SFML library for graphics rendering.
 
 ## Features
-
-- Users can select from seven different data structures to visualize: array, linked list, doubly linked list, queue, stack, binary search tree, and AVL tree.
-- Users can customize the data structure by selecting the size of the data structure and the values to be included.
-- Users can insert, delete, search, and update values in the data structure.
-- The program includes animations of the algorithms responsible for inserting, deleting, searching, and updating values in the data structure.
-- Users can control the speed of the animations and play or pause the animations.
+This program currently supports the following data structures:
+- Static Array
+- Dynamic Array (resize one element each insertion or deletion only)
+- Singly Linked List
+- Doubly Linked List
+- Circular Linked List
+- Stack
+- Queue
+Main features included:
+- Smooth animations of the algorithms responsible for inserting, deleting, searching, and updating values in the data structure.
+- Control the speed of the animations and play, pause or reverse the animations.
+- Step-by-step code highlight
+- Create random, user defined or load-from-file list.
 
 ## Installation
 
 ### Prerequisites
 
 - C++ compiler (such as g++ or clang++)
-- SFML library (installation instructions available on the [SFML website](https://www.sfml-dev.org/download.php)
+- SFML library installation instructions available on the [SFML website](https://www.sfml-dev.org/download.php)
 
 ### Building
 
@@ -50,19 +50,7 @@ or move the DataVisual.exe file in the "src/" folder to its parent folder and do
 
 ## Credits
 
-This program was created by Le Duc Phu (dphu2609) as a project for CS162 - Introduction to Computer Science II at VNU - University of Science.
-
-## Supported Data Structures
-
-This program currently supports the following data structures:
-
-- Static Array
-- Dynamic Array
-- Singly Linked List
-- Doubly Linked List
-- Circular Linked List
-- Stack
-- Queue
+This program was created by 22125074 - Le Duc Phu (dphu2609) as a project for CS162 - Introduction to Computer Science II at VNU - University of Science.
 
 ## License
 
