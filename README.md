@@ -52,7 +52,7 @@ or move the DataVisual.exe file in the "src/" folder to its parent folder and do
 
 ## Credits
 
-This program was created by 22125074 - Le Duc Phu (dphu2609) as a project for CS162 - Introduction to Computer Science II at VNU - University of Science.
+This program was created by 22125074 - Le Duc Phu (dphu2609) as a project for CS162 - Introduction to Computer Science 2 at VNU - University of Science.
 
 ## License
 
