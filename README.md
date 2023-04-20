@@ -50,6 +50,10 @@ g++ -fdiagnostics-color=always -g *.cpp -o DataVisual.exe -Ipath_to_SFML/include
 ```
 or move the DataVisual.exe file in the "src/" folder to its parent folder and double-click it.
 
+## Demo Video
+
+[Here is the demo video](https://youtu.be/XL3D9DG7r-0)
+
 ## Credits
 
 This program was created by 22125074 - Le Duc Phu (dphu2609) as a project for CS162 - Introduction to Computer Science 2 at VNU - University of Science.
