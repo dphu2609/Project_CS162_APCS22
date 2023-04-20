@@ -15,6 +15,8 @@ This program currently supports the following data structures:
 - Circular Linked List
 - Stack
 - Queue
+
+
 Main features included:
 - Smooth animations of the algorithms responsible for inserting, deleting, searching, and updating values in the data structure.
 - Control the speed of the animations and play, pause or reverse the animations.
