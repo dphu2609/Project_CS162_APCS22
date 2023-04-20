@@ -63,6 +63,7 @@ public:
 
     bool mIsReplay = 0;
     bool mDarkMode = 1;
+    bool mIsPrevButtonClicked = 0;
 private:
     enum Layers {
         Containers,

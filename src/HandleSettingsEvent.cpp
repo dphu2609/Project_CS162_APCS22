@@ -950,6 +950,15 @@ void SettingsState::handleControlBoxEvent(sf::Event &event) {
             mSceneLayers[ControlBoxButtons]->getChildren()[0] = std::move(pauseButton);
         }
     }
+    if (mIsPrev && !mIsPrevButtonClicked) {
+        std::unique_ptr<ImageButtonNode> playButton = std::make_unique<ImageButtonNode>(
+            mWindow, mTexturesHolder[Textures::playButton], mTexturesHolder[Textures::playButtonHoverred],
+            sf::Vector2f(30*Constant::scaleX, 30*Constant::scaleX), 
+            sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30*Constant::scaleX)/2 - 100*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 220*Constant::scaleY)
+        );
+        mSceneLayers[ControlBoxButtons]->getChildren()[0] = std::move(playButton);
+        mIsPrevButtonClicked = 1;
+    }
     for (auto &child : mSceneLayers[ControlBoxButtons]->getChildren()) {
         switch (index) {
             case 0: {
@@ -975,6 +984,7 @@ void SettingsState::handleControlBoxEvent(sf::Event &event) {
                         mIsEndAnimation.second = 0;
                         mIsEndAnimation.first = 0;
                         mIsActionPaused = 1;
+                        mIsPrevButtonClicked = 0;
                     }
                     if (!mIsActionPaused) {
                         mIsActionPaused = 1;
@@ -987,6 +997,7 @@ void SettingsState::handleControlBoxEvent(sf::Event &event) {
                         mIsNext = 0;
                         mIsPrev = 0;
                         mIsPlay = 1;
+                        mIsPrevButtonClicked = 0;
                     }
                     if (mIsActionPaused) {
                         std::unique_ptr<ImageButtonNode> playButton = std::make_unique<ImageButtonNode>(
