@@ -1,6 +1,6 @@
-# Project_CS162_APCS22: VisualGo clone in C++
+# Project_CS162_APCS22: Data Structure Visulization
 
-This project is a clone version from [VisualGo](https://visualgo.net/en) with basic data structures.
+The main idea is from [VisualGo](https://visualgo.net/en)
 
 ## Introduction
 
@@ -9,7 +9,7 @@ Data Structure Visualization is a program that allows users to visualize the beh
 ## Features
 This program currently supports the following data structures:
 - Static Array
-- Dynamic Array (resize one element each insertion or deletion only)
+- Dynamic Array (resize one element for each insertion or deletion only)
 - Singly Linked List
 - Doubly Linked List
 - Circular Linked List
