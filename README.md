@@ -25,7 +25,7 @@ Main features included:
 
 ### Prerequisites
 
-- C++ compiler (such as g++ or clang++)
+- C++ compiler: g++
 - SFML library installation instructions available on the [SFML website](https://www.sfml-dev.org/download.php)
 
 ### Building
