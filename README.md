@@ -1,7 +1,5 @@
 # Project_CS162_APCS22: Data Structure Visulization
 
-The main idea is from [VisualGo](https://visualgo.net/en)
-
 ## Introduction
 
 Data Structure Visualization is a program that allows users to visualize the behavior of common data structures such as linked lists, stacks, queues. This program is written in C++ and uses the SFML library for graphics rendering.
