@@ -94,16 +94,15 @@ private:
 private:
     void createRandomList();
     void createRandomValue();
-    void loadFromFile();
     void throwError(const std::string &errorMessage);
+    void loadFromFile();
     void settingsIn(sf::Time dt);
     void settingsOut(sf::Time dt);
     void controlBoxOut(sf::Time dt);
     void controlBoxIn(sf::Time dt); 
-    void handleAction(sf::Event &event);
     void handleDataDropBoxEvent(sf::Event &event);
     void handleActionDropBoxEvent(sf::Event &event);
+    void handleAction(sf::Event &event);
     void handleControlBoxEvent(sf::Event &event);
     void handleDarkModeEvent(sf::Event &event);
-    void resetControlBox();
 };

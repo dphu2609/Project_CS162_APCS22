@@ -1,7 +1,13 @@
 #include <Program.hpp>
 
-Program::Program() : mWindow(sf::VideoMode(sf::VideoMode::getDesktopMode().width - 35, sf::VideoMode::getDesktopMode().height - 70), "Data Visual", sf::Style::Default), 
-mMenu(mWindow), mSettings(mWindow), mSLL(mWindow), mDLL(mWindow), mCLL(mWindow), mStack(mWindow), mQueue(mWindow), mStaticArray(mWindow), mDynamicArray(mWindow) {
+Program::Program() : 
+    mWindow(sf::VideoMode(
+        sf::VideoMode::getDesktopMode().width - 35, sf::VideoMode::getDesktopMode().height - 70), 
+        "Data Visual", sf::Style::Default 
+    ), 
+    mMenu(mWindow), mSettings(mWindow), mSLL(mWindow), mDLL(mWindow), mCLL(mWindow), 
+    mStack(mWindow), mQueue(mWindow), mStaticArray(mWindow), mDynamicArray(mWindow) 
+{
     mWindow.setPosition(sf::Vector2i(0, 0));
 }
 
@@ -54,15 +60,14 @@ void Program::run() {
     }
 }
 
-void Program::processEvents()
-{
+void Program::processEvents() {
     sf::Event event;
     while (mWindow.pollEvent(event)) {
         if (!mMenu.mIsProgramStarted) mMenu.handleMenuEvent(event);
         else {
             mSettings.handleEvent(event);
             mSettings.controlEvent(event);
-        }
+        }   
         if (event.type == sf::Event::Closed)
             mWindow.close();
     }

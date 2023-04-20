@@ -42,7 +42,7 @@ void MenuState::buildScence() {
         sf::Vector2f(1000*Constant::scaleX, 300*Constant::scaleY), 0,
         sf::Vector2f((sf::VideoMode::getDesktopMode().width - 35)/2 - 500*Constant::scaleX, 800*Constant::scaleY),
         sf::Color(179, 201, 230, 255), sf::Color::Transparent, sf::Color::Transparent,
-        sf::Color(111, 140, 179, 255), sf::Color::Transparent, sf::Color::Transparent   
+        sf::Color(230, 179, 190, 255), sf::Color::Transparent, sf::Color::Transparent   
     );
     mSceneLayers[Buttons]->attachChild(std::move(button1));
 
@@ -51,7 +51,7 @@ void MenuState::buildScence() {
         sf::Vector2f(1000*Constant::scaleX, 300*Constant::scaleY), 0,
         sf::Vector2f((sf::VideoMode::getDesktopMode().width - 35)/2 - 500*Constant::scaleX, 1100*Constant::scaleY),
         sf::Color(179, 201, 230, 255), sf::Color::Transparent, sf::Color::Transparent,
-        sf::Color(111, 140, 179, 255), sf::Color::Transparent, sf::Color::Transparent   
+        sf::Color(230, 179, 190, 255), sf::Color::Transparent, sf::Color::Transparent   
     );
     mSceneLayers[Buttons]->attachChild(std::move(button2));
 }

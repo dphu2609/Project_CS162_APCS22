@@ -232,7 +232,7 @@ void SettingsState::handleActionDropBoxEvent(sf::Event &event) {
                             mWindow, "Index", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(130*Constant::scaleX, 50*Constant::scaleY), 0,
                             sf::Vector2f(110*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 620*Constant::scaleY),
                             sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
-                            sf::Color::White, sf::Color(41, 58, 117, 255), sf::Color::White
+                            sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255)
                         );
                         mSceneLayers[ActionButtons]->attachChild(std::move(newButton1));
 
@@ -240,7 +240,7 @@ void SettingsState::handleActionDropBoxEvent(sf::Event &event) {
                             mWindow, "Value", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(130*Constant::scaleX, 50*Constant::scaleY), 0,
                             sf::Vector2f(250*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 620*Constant::scaleY),
                             sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
-                            sf::Color::White, sf::Color(41, 58, 117, 255), sf::Color::White
+                            sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255)
                         );
                         mSceneLayers[ActionButtons]->attachChild(std::move(newButton2));
 
@@ -276,7 +276,7 @@ void SettingsState::handleActionDropBoxEvent(sf::Event &event) {
                             mWindow, "Custom Value", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(280*Constant::scaleX, 50*Constant::scaleY), 0,
                             sf::Vector2f(110*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 540*Constant::scaleY),
                             sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
-                            sf::Color::White, sf::Color(41, 58, 117, 255), sf::Color::White
+                            sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255)
                         );
                         mSceneLayers[ActionButtons]->attachChild(std::move(newButton2));
 
@@ -430,17 +430,6 @@ void SettingsState::handleActionDropBoxEvent(sf::Event &event) {
     }
 }
 
-void SettingsState::resetControlBox() {
-    if (mIsControlBoxEmerged) {
-        std::unique_ptr<ImageButtonNode> pauseButton = std::make_unique<ImageButtonNode>(
-            mWindow, this->mTexturesHolder[Textures::pauseButton], this->mTexturesHolder[Textures::pauseButtonHoverred],
-            sf::Vector2f(30*Constant::scaleX, 30*Constant::scaleX), 
-            sf::Vector2f((sf::VideoMode::getDesktopMode().width - 30*Constant::scaleX)/2 - 100*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 220*Constant::scaleY)
-        );
-        mSceneLayers[ControlBoxButtons]->getChildren()[0] = std::move(pauseButton);
-    }
-}
-
 void SettingsState::createRandomList() {
     srand((unsigned int)time(NULL));
     int size = rand() % 4 + 3;
@@ -484,8 +473,12 @@ void SettingsState::createRandomValue() {
 void SettingsState::throwError(const std::string &errorMessage) {
     mSceneLayers[Error]->getChildren().clear();
     std::unique_ptr<RectangleButtonNode> newError = std::make_unique<RectangleButtonNode>(
-        mWindow, errorMessage, mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(errorMessage.size()*25*Constant::scaleX, 60*Constant::scaleY), 0,
-        sf::Vector2f((sf::VideoMode::getDesktopMode().width - errorMessage.size()*25*Constant::scaleX - 35*Constant::scaleX)/2, (sf::VideoMode::getDesktopMode().height - 70*Constant::scaleY)/2 - 30*Constant::scaleY),
+        mWindow, errorMessage, mFontsHolder[Fonts::RobotoRegular], 
+        sf::Vector2f(errorMessage.size()*25*Constant::scaleX, 60*Constant::scaleY), 0,
+        sf::Vector2f(
+            (sf::VideoMode::getDesktopMode().width - errorMessage.size()*25*Constant::scaleX - 35*Constant::scaleX)/2, 
+            (sf::VideoMode::getDesktopMode().height - 70*Constant::scaleY)/2 - 30*Constant::scaleY
+        ),
         sf::Color(201, 52, 112, 255), sf::Color(52, 53, 59, 255), sf::Color::White,
         sf::Color(201, 52, 112, 255), sf::Color(41, 58, 117, 255), sf::Color::White
     );
@@ -493,15 +486,26 @@ void SettingsState::throwError(const std::string &errorMessage) {
 }
 
 void SettingsState::loadFromFile() {
+    bool isValid = 1;
     std::ifstream fin;
     fin.open("data/input.txt");
-    bool isValid = 1;
-    std::string str;
-    std::getline(fin, str);
-    for (int i = 0; i < str.size(); i++) {
-        if (!((str[i] >= '0' && str[i] <= '9') || (str[i] == '-') || (str[i] == ' '))) {
-            throwError("The data is not in the correct format, please try again.");
-            isValid = 0;
+    if (!fin.is_open()) {
+        throwError("Error: input.txt not found! Please check whether it is deleted or renamed.");
+    } else {
+        while (!fin.eof()) {
+            std::string str;
+            std::getline(fin, str);
+            for (int i = 0; i < str.size(); i++) {
+                if (
+                    !((str[i] >= '0' && str[i] <= '9') || (str[i] == '-') || (str[i] == ' ')) || 
+                    (str[i] == '-' && (str[i + 1] < '0' && str[i + 1] > '9'))
+                ) {
+                    throwError("The data is not in the correct format, please try again.");
+                    isValid = 0;
+                    break;
+                }
+            }
+            if (!isValid) break;
         }
     }
     fin.close();
@@ -520,7 +524,7 @@ void SettingsState::loadFromFile() {
                 throwError("Sorry, the maximum size is 10.");
                 isValid = 0;
                 break;
-            } else if (x > 99999 || x < -99999) {
+            } else if (x > 99999 || x < -9999) {
                 std::string str = "Sorry, value at index " + std::to_string(index) + "must be in range from -9999 to 99999.";
                 throwError(str);
                 isValid = 0;
@@ -530,7 +534,7 @@ void SettingsState::loadFromFile() {
         }
     }
     fin.close();
-    if (mInputArr.size() <= 10 && mInputArr.size() > 0 && isValid) {
+    if (mInputArr.size() > 0 && isValid) {
         mActionActivated[Action::Play] = 1;
         mIsReplay = 0;
     }
@@ -557,24 +561,25 @@ void SettingsState::handleAction(sf::Event &event) {
                             break;
                         }
                         case 2 : {
-                            if (child->getClickedIndex(event) == 0) {
+                             if (child->getClickedIndex(event) == 0) {
+                                bool isValid = 1;
                                 for (auto &child : mSceneLayers[InputBox]->getChildren()) {
                                     mInputArr = child->getIntArrayData();
                                 }
                                 for (auto &child : mInputArr) {
                                     if (child > 99999 || child < -9999) {
                                         throwError("Sorry, value must be in range from -9999 to 99999.");
+                                        isValid = 0;
                                         break;
                                     }
                                 }
-                                if (mInputArr.size() <= 10 && mInputArr.size() > 0) {
+                                if (mInputArr.size() <= 10 && mInputArr.size() > 0 && isValid) {
                                     mActionActivated[Action::Play] = 1;
                                     mIsReplay = 0;
                                 }
                             }
                             break;
                         }
-
                         case 3: {
                             if (child->getClickedIndex(event) == 0) {
                                 loadFromFile();
@@ -638,7 +643,6 @@ void SettingsState::handleAction(sf::Event &event) {
                                 } else if (dataInput[0] < -9999 || dataInput[0] > 99999) {
                                     throwError("Sorry, value must be in range from -9999 to 99999.");
                                 } else {
-                                    resetControlBox();
                                     for (int i = 0; i < Action::ActionCount; i++) mActionActivated[i] = 0;
                                     mActionActivated[Action::Insert] = 1;
                                     mActionActivated[Action::Play] = 1;
@@ -701,7 +705,6 @@ void SettingsState::handleAction(sf::Event &event) {
                                     throwError("Error: List is empty! Can not perform this action.");
                                 }
                                 else {
-                                    resetControlBox();
                                     for (int i = 0; i < Action::ActionCount; i++) mActionActivated[i] = 0;
                                     mActionActivated[Action::Delete] = 1;
                                     mActionActivated[Action::Play] = 1;
@@ -752,7 +755,6 @@ void SettingsState::handleAction(sf::Event &event) {
                                 } else if (dataInput[0] < -9999 || dataInput[0] > 99999) {
                                     throwError("Sorry, value must be in range from -9999 to 99999.");
                                 } else {
-                                    resetControlBox();
                                     for (int i = 0; i < Action::ActionCount; i++) mActionActivated[i] = 0;
                                     mActionActivated[Action::Update] = 1;
                                     mActionActivated[Action::Play] = 1;
@@ -798,7 +800,6 @@ void SettingsState::handleAction(sf::Event &event) {
                                 } else if (dataInput[0] < -9999 || dataInput[0] > 99999) {
                                     throwError("Sorry, value must be in range from -9999 to 99999.");
                                 } else {
-                                    resetControlBox();
                                     for (int i = 0; i < Action::ActionCount; i++) mActionActivated[i] = 0;
                                     mActionActivated[Action::Search] = 1;
                                     mActionActivated[Action::Play] = 1;
@@ -833,16 +834,18 @@ void SettingsState::handleAction(sf::Event &event) {
                         }
                         case 2 : {
                             if (child->getClickedIndex(event) == 0) {
+                                bool isValid = 1;
                                 for (auto &child : mSceneLayers[InputBox]->getChildren()) {
                                     mInputArr = child->getIntArrayData();
                                 }
                                 for (auto &child : mInputArr) {
                                     if (child > 99999 || child < -9999) {
                                         throwError("Sorry, value must be in range from -9999 to 99999.");
+                                        isValid = 0;
                                         break;
                                     }
                                 }
-                                if (mInputArr.size() <= 10 && mInputArr.size() > 0) {
+                                if (mInputArr.size() <= 10 && mInputArr.size() > 0 && isValid) {
                                     mActionActivated[Action::Play] = 1;
                                     mIsReplay = 0;
                                 }
@@ -878,7 +881,6 @@ void SettingsState::handleAction(sf::Event &event) {
                                 } else if (dataInput[0] < -9999 || dataInput[0] > 99999) {
                                     throwError("Sorry, value must be in range from -9999 to 99999.");
                                 } else {
-                                    resetControlBox();
                                     for (int i = 0; i < Action::ActionCount; i++) mActionActivated[i] = 0;
                                     mActionActivated[Action::Insert] = 1;
                                     mActionActivated[Action::Play] = 1;
@@ -908,7 +910,6 @@ void SettingsState::handleAction(sf::Event &event) {
                             throwError("Error: List is empty! Can not perform this action.");
                         }
                         else {
-                            resetControlBox();
                             for (int i = 0; i < Action::ActionCount; i++) mActionActivated[i] = 0;
                             mActionActivated[Action::Delete] = 1;
                             mActionActivated[Action::Play] = 1;

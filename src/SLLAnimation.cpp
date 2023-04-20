@@ -170,10 +170,6 @@ void SLLState::insertAnimation(sf::Time dt, double speed, int insertIndex, int i
                         sf::Color(31, 224, 205, 255), sf::Color::White, sf::Color(31, 224, 205, 255)
                     );
                     mSceneLayers[NewNode]->attachChild(std::move(addedNode));
-                    if (mListData.size() == 0) {
-                        mAnimationOrder = 7;
-                        break;
-                    }
                 }
             }
             for (auto &child : this->mSceneLayers[NewNode]->getChildren()) {
@@ -189,7 +185,8 @@ void SLLState::insertAnimation(sf::Time dt, double speed, int insertIndex, int i
                     }
                 } else if (!child->mIsMoving && child->mIsDoneMoving && !mIsActionPaused) {
                     child->mIsDoneMoving = 0;
-                    if (insertIndex != mListData.size()) mAnimationOrder = 4;
+                    if (mListData.size() == 0) mAnimationOrder = 7;
+                    else if (insertIndex != mListData.size()) mAnimationOrder = 4;
                     else mAnimationOrder = 5;
                 }
             }
@@ -274,7 +271,7 @@ void SLLState::insertAnimation(sf::Time dt, double speed, int insertIndex, int i
                             child->triggerMoveAnimation(dt, speed*2, 25*Constant::scaleX, -150);
                             mSceneLayers[CodeBox]->getChildren()[0]->resetCodeBoxColor();
                             mSceneLayers[CodeBox]->getChildren()[0]->changeCodeBoxColor({14});
-                        } {
+                        } else if (!child->mIsScaling && child->mIsDoneScaling) {
                             child->mIsDoneMoving = 0;
                         }
                         break;
@@ -345,7 +342,7 @@ void SLLState::insertAnimation(sf::Time dt, double speed, int insertIndex, int i
                 else str = "newNode";
             } else str = "head/tail";
 
-            if (insertIndex == mListData.size()) mSceneLayers[Nodes]->getChildren().back()->setLabel("");
+            if (insertIndex == mListData.size() && mListData.size() != 0) mSceneLayers[Nodes]->getChildren().back()->setLabel("");
 
             std::unique_ptr<DisplayNode> addedNode = std::make_unique<DisplayNode>(
                 insertValue, mFontsHolder[Fonts::FiraSansRegular], 100*Constant::scaleX, str, 50*Constant::scaleX,
@@ -432,9 +429,11 @@ void SLLState::insertAnimationReversed(sf::Time dt, double speed, int insertInde
 
             mListData.erase(mListData.begin() + insertIndex);
 
-            if (mListData.size() == 1) mSceneLayers[Nodes]->getChildren().front()->setLabel("head/tail");
-            else if (insertIndex == 0) mSceneLayers[Nodes]->getChildren().front()->setLabel("head");
-            else if (insertIndex == mListData.size()) mSceneLayers[Nodes]->getChildren().back()->setLabel("tail");
+            if (mListData.size() != 0) {
+                if (mListData.size() == 1) mSceneLayers[Nodes]->getChildren().front()->setLabel("head/tail");
+                else if (insertIndex == 0) mSceneLayers[Nodes]->getChildren().front()->setLabel("head");
+                else if (insertIndex == mListData.size()) mSceneLayers[Nodes]->getChildren().back()->setLabel("tail");
+            }
 
             std::unique_ptr<DisplayNode> addedNode = std::make_unique<DisplayNode>(
                 insertValue, mFontsHolder[Fonts::FiraSansRegular], 100*Constant::scaleX, "newNode", 50*Constant::scaleX,
