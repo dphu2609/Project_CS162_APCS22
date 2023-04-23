@@ -1,6 +1,4 @@
-# Project_CS162_APCS22: VisualGo clone in C++
-
-This project is a clone version from [VisualGo](https://visualgo.net/en) with basic data structures.
+# Project_CS162_APCS22: Data Structure Visulization
 
 ## Introduction
 
@@ -9,7 +7,7 @@ Data Structure Visualization is a program that allows users to visualize the beh
 ## Features
 This program currently supports the following data structures:
 - Static Array
-- Dynamic Array (resize one element each insertion or deletion only)
+- Dynamic Array (resize one element for each insertion or deletion only)
 - Singly Linked List
 - Doubly Linked List
 - Circular Linked List
@@ -20,14 +18,14 @@ This program currently supports the following data structures:
 Main features included:
 - Smooth animations of the algorithms responsible for inserting, deleting, searching, and updating values in the data structure.
 - Control the speed of the animations and play, pause or reverse the animations.
-- Step-by-step code highlight
+- Step-by-step code highlight.
 - Create random, user defined or load-from-file list.
 
 ## Installation
 
 ### Prerequisites
 
-- C++ compiler (such as g++ or clang++)
+- C++ compiler: g++
 - SFML library installation instructions available on the [SFML website](https://www.sfml-dev.org/download.php)
 
 ### Building
@@ -49,6 +47,10 @@ g++ -fdiagnostics-color=always -g *.cpp -o DataVisual.exe -Ipath_to_SFML/include
 ./src/DataVisual.exe
 ```
 or move the DataVisual.exe file in the "src/" folder to its parent folder and double-click it.
+
+## Demo Video
+
+[Here is the demo video](https://youtu.be/XL3D9DG7r-0)
 
 ## Credits
 
