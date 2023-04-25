@@ -1,6 +1,6 @@
 #include <State/StackState.hpp>
 
-void StackState::createDataStructure(std::vector<int> list) {
+void StackState::createDataStructure(SinglyLinkedList<int> &list) {
     for (int i = 0; i < LayerCount; i++) {
         mSceneLayers[i]->getChildren().clear();
     }

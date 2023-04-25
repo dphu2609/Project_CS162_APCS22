@@ -7,6 +7,7 @@
 #include <Event.hpp>
 #include <CodeHolder.hpp>
 #include <Constant.hpp>
+#include <SinglyLinkedList.hpp>
 
 class State : private sf::NonCopyable {
 public:

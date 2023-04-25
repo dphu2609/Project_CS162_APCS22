@@ -1,6 +1,6 @@
 #include <State/SLLState.hpp>
 
-void SLLState::createDataStructure(std::vector<int> list) {
+void SLLState::createDataStructure(SinglyLinkedList<int> &list) {
     for (int i = 0; i < LayerCount; i++) {
         mSceneLayers[i]->getChildren().clear();
     }

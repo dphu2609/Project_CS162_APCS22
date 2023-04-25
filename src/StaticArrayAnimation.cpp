@@ -1,6 +1,6 @@
 #include <State/StaticArrayState.hpp>
 
-void StaticArrayState::createDataStructure(std::vector<int> list) {
+void StaticArrayState::createDataStructure(SinglyLinkedList<int> &list) {
     for (int i = 0; i < LayerCount; i++) {
         mSceneLayers[i]->getChildren().clear();
     }
@@ -283,7 +283,7 @@ void StaticArrayState::insertAnimation(sf::Time dt, double speed, int insertInde
             }
             if (!mIsEndAnimation) {
                 mIsEndAnimation = 1;
-                if (mTempListData.size() == mListData.size()) mTempListData.resize(mTempListData.size() + 1);
+                if (mTempListData.size() == mListData.size()) mTempListData.push_back(mTempListData.back());
                 for (int i = mListData.size() - 1; i >= insertIndex; i--) {
                     mTempListData[i + 1] = mTempListData[i];
                 }

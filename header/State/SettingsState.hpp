@@ -38,7 +38,8 @@ public:
     //animation variables
     std::vector<bool> mStateActivated = {};
     std::vector<bool> mActionActivated = {};
-    std::vector<int> mInputArr = {};    
+    SinglyLinkedList<int> mInputArr;
+    bool mResertInputArr = 0;
     int mActionIndex;
     int mActionValue;
     int mPrevActionValue;

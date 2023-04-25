@@ -1,6 +1,6 @@
 #include <State/QueueState.hpp>
 
-void QueueState::createDataStructure(std::vector<int> list) {
+void QueueState::createDataStructure(SinglyLinkedList<int> &list) {
     for (int i = 0; i < LayerCount; i++) {
         mSceneLayers[i]->getChildren().clear();
     }

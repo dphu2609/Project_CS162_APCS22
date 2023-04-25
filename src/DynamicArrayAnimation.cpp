@@ -1,6 +1,6 @@
 #include <State/DynamicArrayState.hpp>
 
-void DynamicArrayState::createDataStructure(std::vector<int> list) {
+void DynamicArrayState::createDataStructure(SinglyLinkedList<int> &list) {
     for (int i = 0; i < LayerCount; i++) {
     mSceneLayers[i]->getChildren().clear();
     }

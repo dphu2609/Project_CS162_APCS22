@@ -121,6 +121,7 @@ void Program::dataStructureDisplay(sf::Time dt, DataStructureState &dataStructur
         mSettings.mIsNext = 0;
         mSettings.mIsEndAnimation = {0, 0};
         mSettings.mActionActivated[Action::Play] = 0;
+        mSettings.mResertInputArr = 0;
     }
     if (dataStructure.mInsertActivated || dataStructure.mDeleteActivated || dataStructure.mUpdateActivated || dataStructure.mSearchActivated) {
         if (mSettings.mIsNext) {
@@ -163,12 +164,14 @@ void Program::dataStructureDisplay(sf::Time dt, DataStructureState &dataStructur
             else if (dataStructure.mUpdateActivated) dataStructure.updateAnimation(dt, mSettings.mSpeed, mSettings.mActionIndex, mSettings.mActionValue);
             else if (dataStructure.mSearchActivated) dataStructure.searchAnimation(dt, mSettings.mSpeed, mSettings.mActionValue);
         }
+        if (dataStructure.mIsEndAnimation && !mSettings.mResertInputArr) {
+            mSettings.mInputArr = dataStructure.mListData;
+        }
     }
     mSettings.mAnimationOrder = dataStructure.mAnimationOrder;
     mSettings.mColorIndex = dataStructure.mColorIndex;
     dataStructure.mIsActionPaused = mSettings.mIsActionPaused;
     mSettings.mIsEndAnimation.first = dataStructure.mIsEndAnimation;
-    mSettings.mInputArr = dataStructure.mListData;
     dataStructure.mIsReplay = mSettings.mIsReplay;
     dataStructure.mActionIndex = mSettings.mActionIndex;
     dataStructure.mActionValue = mSettings.mActionValue;

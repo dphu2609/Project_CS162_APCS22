@@ -566,8 +566,8 @@ void SettingsState::handleAction(sf::Event &event) {
                                 for (auto &child : mSceneLayers[InputBox]->getChildren()) {
                                     mInputArr = child->getIntArrayData();
                                 }
-                                for (auto &child : mInputArr) {
-                                    if (child > 99999 || child < -9999) {
+                                for (int i = 0; i < mInputArr.size(); i++) {
+                                    if (mInputArr[i] > 99999 || mInputArr[i] < -9999) {
                                         throwError("Sorry, value must be in range from -9999 to 99999.");
                                         isValid = 0;
                                         break;
@@ -838,8 +838,8 @@ void SettingsState::handleAction(sf::Event &event) {
                                 for (auto &child : mSceneLayers[InputBox]->getChildren()) {
                                     mInputArr = child->getIntArrayData();
                                 }
-                                for (auto &child : mInputArr) {
-                                    if (child > 99999 || child < -9999) {
+                                for (int i = 0; i < mInputArr.size(); i++) {
+                                    if (mInputArr[i] > 99999 || mInputArr[i] < -9999) {
                                         throwError("Sorry, value must be in range from -9999 to 99999.");
                                         isValid = 0;
                                         break;

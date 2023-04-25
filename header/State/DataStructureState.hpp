@@ -6,7 +6,7 @@ class DataStructureState : public State {
 public:
     DataStructureState(sf::RenderWindow &window);
 
-    virtual void createDataStructure(std::vector<int> list) = 0;
+    virtual void createDataStructure(SinglyLinkedList<int> &list) = 0;
     virtual void insertAnimation(sf::Time dt, double speed, int insertIndex, int insertValue) {}
     virtual void insertAnimationReversed(sf::Time dt, double speed, int insertIndex, int insertValue) {}
     virtual void deleteAnimation(sf::Time dt, double speed, int deleteIndex) {}
@@ -28,8 +28,8 @@ public:
     int mActionIndex;
     int mActionValue;
     bool mIsInsertOnce = 0;
-    std::vector<int> mListData = {};
-    std::vector<int> mTempListData = {};    
+    SinglyLinkedList<int> mListData;
+    SinglyLinkedList<int> mTempListData;    
     void resetNodeState();
     bool isProcessing();
     bool mIsReplay = 0;
