@@ -433,9 +433,10 @@ void SettingsState::handleActionDropBoxEvent(sf::Event &event) {
 void SettingsState::createRandomList() {
     srand((unsigned int)time(NULL));
     int size = rand() % 4 + 3;
-    mInputArr.resize(size);
+    mInputArr.clear();
     for (int i = 0; i < size; i++) {
-        mInputArr[i] = 1 + rand() % 99;
+        int newRanNum = 1 + rand() % 99;
+        mInputArr.push_back(newRanNum);
     }
     for (auto &child : mSceneLayers[InputBox]->getChildren()) {
         std::string str = "";
@@ -564,7 +565,8 @@ void SettingsState::handleAction(sf::Event &event) {
                              if (child->getClickedIndex(event) == 0) {
                                 bool isValid = 1;
                                 for (auto &child : mSceneLayers[InputBox]->getChildren()) {
-                                    mInputArr = child->getIntArrayData();
+                                    std::vector<int> tempVector = child->getIntArrayData();
+                                    mInputArr = tempVector;
                                 }
                                 for (int i = 0; i < mInputArr.size(); i++) {
                                     if (mInputArr[i] > 99999 || mInputArr[i] < -9999) {
@@ -836,7 +838,8 @@ void SettingsState::handleAction(sf::Event &event) {
                             if (child->getClickedIndex(event) == 0) {
                                 bool isValid = 1;
                                 for (auto &child : mSceneLayers[InputBox]->getChildren()) {
-                                    mInputArr = child->getIntArrayData();
+                                    std::vector<int> tempVector = child->getIntArrayData();
+                                    mInputArr = tempVector;
                                 }
                                 for (int i = 0; i < mInputArr.size(); i++) {
                                     if (mInputArr[i] > 99999 || mInputArr[i] < -9999) {
