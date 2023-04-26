@@ -20,6 +20,7 @@ public:
     bool mDeleteActivated = 0;
     bool mUpdateActivated = 0;
     bool mSearchActivated = 0;
+    bool mAccessActivated = 0;
     int mAnimationOrder = 0;
     bool mIsActionPaused = 0;
     int mAnimationStep = 0;

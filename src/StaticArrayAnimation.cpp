@@ -663,19 +663,36 @@ void StaticArrayState::deleteAnimationReversed(sf::Time dt, double speed, int de
     }
 }
 void StaticArrayState::updateAnimation(sf::Time dt, double speed, int updateIndex, int updateValue) {
-    if (mSceneLayers[CodeBox]->getChildren().size() == 0 || 
-    (mSceneLayers[CodeBox]->getChildren().size() == 1 && !mCodeHolder.mStateActivated[Code::StaticArrayUpdate])
-    ) {
-        mSceneLayers[CodeBox]->getChildren().clear();
-        std::unique_ptr<CodeBlockNode> codeBlock = std::make_unique<CodeBlockNode>(
-            mWindow, mCodeHolder[Code::StaticArrayUpdate], mFontsHolder[Fonts::FiraMonoRegular], 25*Constant::scaleX,
-            sf::Color::Black, sf::Color(145, 174, 226, 255), sf::Color::Black, sf::Color(86, 114, 163, 255)
-        );
-        mSceneLayers[CodeBox]->attachChild(std::move(codeBlock));
-        for (int i = 0; i < mCodeHolder.mStateActivated.size(); i++) {
-            mCodeHolder.mStateActivated[i] = 0;
+    if (!mAccessActivated) {
+        if (mSceneLayers[CodeBox]->getChildren().size() == 0 || 
+        (mSceneLayers[CodeBox]->getChildren().size() == 1 && !mCodeHolder.mStateActivated[Code::DynamicArrayUpdate])
+        ) {
+            mSceneLayers[CodeBox]->getChildren().clear();
+            std::unique_ptr<CodeBlockNode> codeBlock = std::make_unique<CodeBlockNode>(
+                mWindow, mCodeHolder[Code::DynamicArrayUpdate], mFontsHolder[Fonts::FiraMonoRegular], 25*Constant::scaleX,
+                sf::Color::Black, sf::Color(145, 174, 226, 255), sf::Color::Black, sf::Color(86, 114, 163, 255)
+            );
+            mSceneLayers[CodeBox]->attachChild(std::move(codeBlock));
+            for (int i = 0; i < mCodeHolder.mStateActivated.size(); i++) {
+                mCodeHolder.mStateActivated[i] = 0;
+            }
+            mCodeHolder.mStateActivated[Code::DynamicArrayUpdate] = 1;
         }
-        mCodeHolder.mStateActivated[Code::StaticArrayUpdate] = 1;
+    } else {
+        if (mSceneLayers[CodeBox]->getChildren().size() == 0 || 
+        (mSceneLayers[CodeBox]->getChildren().size() == 1 && !mCodeHolder.mStateActivated[Code::ArrayAccess])
+        ) {
+            mSceneLayers[CodeBox]->getChildren().clear();
+            std::unique_ptr<CodeBlockNode> codeBlock = std::make_unique<CodeBlockNode>(
+                mWindow, mCodeHolder[Code::ArrayAccess], mFontsHolder[Fonts::FiraMonoRegular], 25*Constant::scaleX,
+                sf::Color::Black, sf::Color(145, 174, 226, 255), sf::Color::Black, sf::Color(86, 114, 163, 255)
+            );
+            mSceneLayers[CodeBox]->attachChild(std::move(codeBlock));
+            for (int i = 0; i < mCodeHolder.mStateActivated.size(); i++) {
+                mCodeHolder.mStateActivated[i] = 0;
+            }
+            mCodeHolder.mStateActivated[Code::ArrayAccess] = 1;
+        }
     }
     switch (mAnimationOrder) {
         case 1: {

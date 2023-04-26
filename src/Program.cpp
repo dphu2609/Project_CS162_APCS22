@@ -90,6 +90,7 @@ void Program::dataStructureDisplay(sf::Time dt, DataStructureState &dataStructur
         dataStructure.mDeleteActivated = 0;
         dataStructure.mUpdateActivated = 0;
         dataStructure.mSearchActivated = 0;
+        dataStructure.mAccessActivated = 0;
         switch(index) {
             case Action::Create : {
                 dataStructure.mListData.clear();
@@ -110,6 +111,10 @@ void Program::dataStructureDisplay(sf::Time dt, DataStructureState &dataStructur
             case Action::Search : {
                 dataStructure.mSearchActivated = 1;
                 break;
+            }
+            case Action::Access : {
+                dataStructure.mUpdateActivated = 1;
+                dataStructure.mAccessActivated = 1;
             }
         }
         dataStructure.createDataStructure(mSettings.mInputArr);

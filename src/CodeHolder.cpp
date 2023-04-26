@@ -155,6 +155,12 @@ void CodeHolder::load() {
         "}"                                                            // 2
     };
 
+    mCodeMap[Code::ArrayAccess] = {
+        "void access(int *arr, int index) {",   // 0
+        "    return arr[index]",                                    // 1
+        "}"
+    };
+
     mCodeMap[Code::StaticArraySearch] = {
         "int search(int *arr, int size, int value) {",     // 0
         "    for (int i = 0; i < size; i++) {",             // 1

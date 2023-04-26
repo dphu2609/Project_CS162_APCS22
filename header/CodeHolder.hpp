@@ -32,6 +32,7 @@ namespace Code {
         DynamicArrayDelete,
         DynamicArrayUpdate,
         DynamicArraySearch,
+        ArrayAccess,
         CodeCount
     };
 };

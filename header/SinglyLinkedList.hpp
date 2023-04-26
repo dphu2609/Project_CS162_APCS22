@@ -16,13 +16,13 @@ public:
     ~SinglyLinkedList();
     void insert(int index, T data);
     void erase(int index);
-    int size();
-    int begin();
-    T back();
-    T front();
     void clear();
     void push_back(T data);
     void pop_back();
+    T back();
+    T front();
+    int begin();
+    int size();
     T& operator[] (int index);
     void operator= (SinglyLinkedList<T> &list);
     void operator= (std::vector<T> &list);

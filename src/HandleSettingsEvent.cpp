@@ -25,7 +25,21 @@ void SettingsState::handleDataDropBoxEvent(sf::Event &event) {
                 sf::Color::White, sf::Color(41, 58, 117, 255), sf::Color::White
             );
             mSceneLayers[ActionDropBox]->attachChild(std::move(newActionDropBox));
-        } else if (optionIndex != -1) {
+        } else if (optionIndex == States::StaticArray || optionIndex == States::DynamicArray) {
+            mSceneLayers[ActionDropBox]->getChildren().clear();
+            std::vector<std::string> actionOptions = {"Create", "Insert", "Delete", "Update", "Search", "Access"}; 
+            std::unique_ptr<DropBoxNode> newActionDropBox = std::make_unique<DropBoxNode>(
+                mWindow, "ACTION", actionOptions, mFontsHolder[Fonts::RobotoRegular],
+                sf::Vector2f(180*Constant::scaleX, 50*Constant::scaleY), 0, 0, 
+                sf::Vector2f(160*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 700*Constant::scaleY), 
+                sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
+                sf::Color::White, sf::Color(85, 93, 120, 255), sf::Color(41, 58, 117, 255),
+                sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color::White,
+                sf::Color::White, sf::Color(41, 58, 117, 255), sf::Color::White
+            );
+            mSceneLayers[ActionDropBox]->attachChild(std::move(newActionDropBox));
+        }
+         else if (optionIndex != -1) {
             mSceneLayers[ActionDropBox]->getChildren().clear();
             std::vector<std::string> actionOptions = {"Create", "Insert", "Delete", "Update", "Search"}; 
             std::unique_ptr<DropBoxNode> newActionDropBox = std::make_unique<DropBoxNode>(
@@ -288,6 +302,34 @@ void SettingsState::handleActionDropBoxEvent(sf::Event &event) {
                         );
                         mSceneLayers[ActionButtons]->attachChild(std::move(newButton3));
                         mActionActivated[Action::Search] = 1;
+                    }
+                    break;
+                }
+                case Action::Access : {
+                    if (mSceneLayers[InputBox]->getChildren().size() == 0) {
+                        std::unique_ptr<InputBoxNode> newInputBox = std::make_unique<InputBoxNode>(
+                            mWindow, mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(250*Constant::scaleX, 40*Constant::scaleY), 2, 
+                            sf::Vector2f(125*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 430*Constant::scaleY), 
+                            sf::Color::Black, sf::Color::White, sf::Color::Black, sf::Color::Green
+                        );
+                        mSceneLayers[InputBox]->attachChild(std::move(newInputBox));
+
+                        std::unique_ptr<RectangleButtonNode> newButton1 = std::make_unique<RectangleButtonNode>(
+                            mWindow, "Index", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(280*Constant::scaleX, 50*Constant::scaleY), 0,
+                            sf::Vector2f(110*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 500*Constant::scaleY),
+                            sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
+                            sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255)
+                        );
+                        mSceneLayers[ActionButtons]->attachChild(std::move(newButton1));
+
+                        std::unique_ptr<RectangleButtonNode> newButton2 = std::make_unique<RectangleButtonNode>(
+                            mWindow, "GO", mFontsHolder[Fonts::RobotoRegular], sf::Vector2f(80*Constant::scaleX, 40*Constant::scaleY), 0,
+                            sf::Vector2f(420*Constant::scaleX, sf::VideoMode::getDesktopMode().height - 430*Constant::scaleY),
+                            sf::Color::White, sf::Color(52, 53, 59, 255), sf::Color(41, 58, 117, 255),
+                            sf::Color::White, sf::Color(41, 58, 117, 255), sf::Color::White
+                        );
+                        mSceneLayers[ActionButtons]->attachChild(std::move(newButton2));
+                        mActionActivated[Action::Access] = 1;
                     }
                     break;
                 }
@@ -807,6 +849,46 @@ void SettingsState::handleAction(sf::Event &event) {
                                     mActionActivated[Action::Play] = 1;
                                     mTypeOfAction = Action::Search;
                                     mActionValue = dataInput[0];
+                                    mSceneLayers[Error]->getChildren().clear();
+                                    mIsPrev = 0;
+                                    mIsNext = 0;
+                                    mIsActionPaused = 0;
+                                    mIsReplay = 0;
+                                }
+                            }
+                            break;
+                        }   
+                    }
+                    btnIndex++;
+                }
+                break;
+            }
+            case Action::Access : {
+                int btnIndex = 0;
+                for (auto &child : mSceneLayers[ActionButtons]->getChildren()) {
+                    switch (btnIndex) {
+                        case 1: {
+                            if (child->getClickedIndex(event) == 0) {
+                                std::vector<int> indexInput;
+                                int inputBoxIndex = 0;
+                                for (auto &child : mSceneLayers[InputBox]->getChildren()) {
+                                    indexInput = child->getIntArrayData();
+                                } 
+                                if (indexInput.size() != 1) {
+                                    throwError("Error: Invalid index!");
+                                } else if (indexInput[0] > mInputArr.size() - 1 || indexInput[0] < 0) {
+                                    std::string message = "";
+                                    if (mInputArr.size() == 0) message = "Error: List is empty! Cannot perform this action.";
+                                    else message = "Error: Index must be in range from 0 to " + std::to_string(mInputArr.size() - 1) + "!";
+                                    throwError(message);
+                                } else {
+                                    for (int i = 0; i < Action::ActionCount; i++) mActionActivated[i] = 0;
+                                    mActionActivated[Action::Access] = 1;
+                                    mActionActivated[Action::Play] = 1;
+                                    mTypeOfAction = Action::Update;
+                                    mActionIndex = indexInput[0];
+                                    mActionValue = mInputArr[mActionIndex];
+                                    mPrevActionValue = mInputArr[mActionIndex];
                                     mSceneLayers[Error]->getChildren().clear();
                                     mIsPrev = 0;
                                     mIsNext = 0;

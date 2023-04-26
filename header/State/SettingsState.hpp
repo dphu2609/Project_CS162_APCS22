@@ -24,6 +24,7 @@ namespace Action {
         Delete,
         Update,
         Search,
+        Access,
         Play,
         ActionCount
     };
