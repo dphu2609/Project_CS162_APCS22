@@ -156,7 +156,7 @@ void CodeHolder::load() {
     };
 
     mCodeMap[Code::ArrayAccess] = {
-        "void access(int *arr, int index) {",   // 0
+        "int access(int *arr, int index) {",   // 0
         "    return arr[index]",                                    // 1
         "}"
     };

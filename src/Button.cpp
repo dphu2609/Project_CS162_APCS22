@@ -69,3 +69,114 @@ void InputBox::setPostion(sf::Vector2f pos) {
     mInputText.setPosition(pos + sf::Vector2f(5, mBox.getSize().y*0.05));
     mCursor.setPosition(pos + sf::Vector2f(5 + mInputText.getLocalBounds().width, mBox.getSize().y*0.05));
 }
+
+void GraphicalNode::set(std::string string, sf::Font &font, double size , sf::Vector2f pos, sf::Color numColor, sf::Color boxColor, sf::Color boxOutlineColor) {
+    number.setFont(font);
+    number.setString(string);
+    number.setCharacterSize(size);
+    number.setPosition(pos);
+    number.setFillColor(numColor);
+    switch (string.size()) {
+    case 1:
+        number.setCharacterSize(size*0.8);
+        number.setPosition(pos.x + size*0.4, pos.y + size*0.06);
+        break;
+    case 2:
+        number.setCharacterSize(size*0.8);
+        number.setPosition(pos.x + size*0.2, pos.y + size*0.06);
+        break;
+    case 3:
+        number.setCharacterSize(size*0.7);
+        number.setPosition(pos.x + size*0.08, pos.y + size*0.14);
+        break;
+    case 4:
+        number.setCharacterSize(size*0.5);
+        number.setPosition(pos.x + size*0.08, pos.y + size*0.26);
+        break;
+    case 5:
+        number.setCharacterSize(size*0.4);
+        number.setPosition(pos.x + size*0.08, pos.y + size*0.33);
+        break;
+    };
+    this->box.setFillColor(boxColor);
+    this->box.setSize(sf::Vector2f(size*1.2, size*1.2));
+    this->box.setPosition(pos);
+    this->box.setOutlineColor(boxOutlineColor);
+    this->box.setOutlineThickness(0.1*size);
+}
+
+void GraphicalNode::setPos(sf::Vector2f pos) {
+    std::string str = this->number.getString();
+    switch (str.size()) {
+    case 1:
+        this->box.setPosition(pos);
+        this->number.setPosition(pos.x + (box.getSize().x/1.2)*0.4, pos.y + (box.getSize().x/1.2)*0.06);
+        break;
+    case 2:
+        this->box.setPosition(pos);
+        this->number.setPosition(pos.x + (box.getSize().x/1.2)*0.2, pos.y + (box.getSize().x/1.2)*0.06);
+        break;
+    case 3:
+        this->box.setPosition(pos);
+        this->number.setPosition(pos.x + (box.getSize().x/1.2)*0.08, pos.y + (box.getSize().x/1.2)*0.14);
+        break;
+    case 4:
+        this->box.setPosition(pos);
+        this->number.setPosition(pos.x + (box.getSize().x/1.2)*0.08, pos.y + (box.getSize().x/1.2)*0.26);
+        break;
+    case 5:
+        this->box.setPosition(pos);
+        this->number.setPosition(pos.x + (box.getSize().x/1.2)*0.08, pos.y + (box.getSize().x/1.2)*0.33);
+        break;
+    };
+}
+
+void GraphicalNode::setColor(sf::Color textColor, sf::Color boxColor, sf::Color outlineColor) {
+    this->number.setFillColor(textColor);
+    this->box.setFillColor(boxColor);
+    this->box.setOutlineColor(outlineColor);
+}
+
+void GraphicalNode::setSize(double size) {
+    std::string string = this->number.getString();
+    double oldSize = this->box.getSize().x/1.2;
+    sf::Vector2f newPos = this->box.getPosition() + sf::Vector2f((oldSize - size)*1.2/2, (oldSize - size)*1.2/2);
+    this->box.setSize(sf::Vector2f(size*1.2, size*1.2));
+    this->box.setPosition(newPos);
+    this->box.setOutlineThickness(size*0.1);
+    double textSize;
+    switch (string.size()) {
+    case 1:
+        textSize = size*0.8;
+        newPos.x += size*0.4;
+        newPos.y += size*0.06;  
+        break;
+    case 2:
+        textSize = size*0.8;
+        newPos.x += size*0.2;
+        newPos.y += size*0.06;
+        break;
+    case 3:
+        textSize = size*0.7;
+        newPos.x += size*0.08;
+        newPos.y += size*0.14;
+        break;
+    case 4:
+        textSize = size*0.5;
+        newPos.x += size*0.08;
+        newPos.y += size*0.26;
+        break;
+    case 5:
+        textSize = size*0.4;
+        newPos.x += size*0.08;
+        newPos.y += size*0.33;
+        break;
+    };
+    this->number.setPosition(newPos);
+    this->number.setCharacterSize(textSize);
+}
+
+void GraphicalNode::setString(std::string string) {
+    this->number.setString(string);
+    setSize(this->box.getSize().x/1.2);
+}
