@@ -37,8 +37,8 @@ public:
     void controlEvent(sf::Event &event);
     void controlBoxUpdate();
     //animation variables
-    std::vector<bool> mStateActivated = {};
-    std::vector<bool> mActionActivated = {};
+    SinglyLinkedList<bool> mStateActivated;
+    SinglyLinkedList<bool> mActionActivated;
     SinglyLinkedList<int> mInputArr;
     bool mResertInputArr = 0;
     int mActionIndex;

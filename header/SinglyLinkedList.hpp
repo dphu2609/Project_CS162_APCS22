@@ -19,8 +19,8 @@ public:
     void clear();
     void push_back(T data);
     void pop_back();
-    T back();
-    T front();
+    T& back();
+    T& front();
     int begin();
     int size();
     T& operator[] (int index);

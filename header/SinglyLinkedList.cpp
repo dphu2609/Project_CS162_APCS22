@@ -109,12 +109,12 @@ void SinglyLinkedList<T>::operator= (std::vector<T> &list) {
 
 
 template <class T>
-T SinglyLinkedList<T>::back() {
+T& SinglyLinkedList<T>::back() {
     return tail->data;
 }
 
 template <class T>
-T SinglyLinkedList<T>::front() {
+T& SinglyLinkedList<T>::front() {
     return head->data;
 }
 
