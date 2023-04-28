@@ -1,40 +1,27 @@
 template <class T>
-SinglyLinkedList<T>::SinglyLinkedList() {
-    head = nullptr;
-    tail = nullptr;
-    Size = 0;
-}
+SinglyLinkedList<T>::SinglyLinkedList() : head(nullptr), tail(nullptr), Size(0) {}
 
 template <class T>
 SinglyLinkedList<T>::~SinglyLinkedList() {
-    Node* current = head;
-    while (current != nullptr) {
-        Node* next = current->next;
-        delete current;
-        current = next;
-    }
+    clear();
 }
 
 template <class T>
-void SinglyLinkedList<T>::insert(int index, T data) {
-    if (index < 0 || index > Size) {
-        throw std::out_of_range("Index out of range");
-    }
-    Node* newNode = new Node;
-    newNode->data = data;
-    if (index == 0) {
+void SinglyLinkedList<T>::insert(const Iterator& pos, const T& data) {
+    Node* newNode = new Node(data);
+    if (pos.getNode() == head) {
         newNode->next = head;
         head = newNode;
         if (Size == 0) {
             tail = newNode;
         }
-    } else if (index == Size) {
+    } else if (pos.getNode() == nullptr) {
         tail->next = newNode;
         tail = newNode;
-        newNode->next = nullptr;
+        newNode->next = nullptr;    
     } else {
         Node* current = head;
-        for (int i = 0; i < index - 1; i++) {
+        while (current->next != pos.getNode()) {
             current = current->next;
         }
         newNode->next = current->next;
@@ -44,25 +31,27 @@ void SinglyLinkedList<T>::insert(int index, T data) {
 }
 
 template <class T>
-void SinglyLinkedList<T>::erase(int index) {
-    if (index < 0 || index >= Size) {
-        throw std::out_of_range("Index out of range");
+ void SinglyLinkedList<T>::erase(const Iterator& pos) {
+    if (pos.getNode() == nullptr) {
+        throw std::out_of_range("Invalid iterator");
     }
-    if (index == 0) {
-        Node* temp = head;
+    if (pos.getNode() == head) {
+        Node* oldNode = head;
         head = head->next;
-        delete temp;
+        delete oldNode;
+        if (Size == 1) {
+            tail = nullptr;
+        }
     } else {
         Node* current = head;
-        for (int i = 0; i < index - 1; i++) {
+        while (current->next != pos.getNode()) {
             current = current->next;
         }
-        Node* temp = current->next;
-        current->next = current->next->next;
-        delete temp;
-        if (index == Size - 1) {
+        current->next = pos.getNode()->next;
+        if (pos.getNode() == tail) {
             tail = current;
         }
+        delete pos.getNode();
     }
     Size--;
 }
@@ -73,8 +62,8 @@ int SinglyLinkedList<T>::size() {
 }
 
 template <class T>
-int SinglyLinkedList<T>::begin() {
-    return 0;
+const int SinglyLinkedList<T>::size() const {
+    return Size;
 }
 
 template <class T>
@@ -90,11 +79,23 @@ T& SinglyLinkedList<T>::operator[] (int index) {
 }
 
 template <class T>
+const T& SinglyLinkedList<T>::operator[] (int index) const {
+    Node* current = head;
+    for (int i = 0; i < index && current != nullptr; i++) {
+        current = current->next;
+    }
+    if (current == nullptr) {
+        throw std::out_of_range("Index out of range");
+    }
+    return current->data;
+}
+
+template <class T>
 void SinglyLinkedList<T>::operator= (SinglyLinkedList<T> &list) {
     clear();
     Node* current = list.head;
     while (current != nullptr) {
-        insert(Size, current->data);
+        insert(nullptr, current->data);
         current = current->next;
     }
 }
@@ -103,7 +104,7 @@ template <class T>
 void SinglyLinkedList<T>::operator= (std::vector<T> &list) {
     clear();
     for (int i = 0; i < list.size(); i++) {
-        insert(Size, list[i]);
+        insert(nullptr, list[i]);
     }
 }
 
@@ -120,23 +121,68 @@ T& SinglyLinkedList<T>::front() {
 
 template <class T>
 void SinglyLinkedList<T>::clear() {
-    Node* current = head;
-    while (current != nullptr) {
-        Node* next = current->next;
-        delete current;
-        current = next;
+    while (head != nullptr) {
+        Node* oldNode = head;
+        head = head->next;
+        delete oldNode;
     }
-    head = nullptr;
     tail = nullptr;
     Size = 0;
 }
 
 template <class T>
-void SinglyLinkedList<T>::push_back(T data) {
-    insert(Size, data);
+void SinglyLinkedList<T>::push_back(const T& data) {
+    insert(nullptr, data);
+}
+
+template <typename T>
+void SinglyLinkedList<T>::pop_back() {
+    erase(tail);
 }
 
 template <class T>
-void SinglyLinkedList<T>::pop_back() {
-    erase(Size - 1);
+typename SinglyLinkedList<T>::Iterator SinglyLinkedList<T>::begin() const {
+    return Iterator(head);
+}
+
+template <class T>
+typename SinglyLinkedList<T>::Iterator SinglyLinkedList<T>::end() const {
+    return Iterator(nullptr);
+}
+
+template <class T>
+void SinglyLinkedList<T>::resize(int newSize) {
+    if (newSize < 0) {
+        throw std::invalid_argument("Invalid size");
+    }
+    if (newSize == 0) {
+        clear();
+        return;
+    }
+    if (newSize < Size) {
+        Node* current = head;
+        for (int i = 0; i < newSize - 1; i++) {
+            current = current->next;
+        }
+        tail = current;
+        Node* oldNode = current->next;
+        current->next = nullptr;
+        while (oldNode != nullptr) {
+            Node* nextNode = oldNode->next;
+            delete oldNode;
+            oldNode = nextNode;
+        }
+    } else {
+        Node* current = head;
+        for (int i = 0; i < Size - 1; i++) {
+            current = current->next;
+        }
+        for (int i = 0; i < newSize - Size; i++) {
+            Node* newNode = new Node(T());
+            current->next = newNode;
+            current = newNode;
+        }
+        tail = current;
+    }
+    Size = newSize;
 }
