@@ -9,6 +9,11 @@ Program::Program() :
     mStack(mWindow), mQueue(mWindow), mStaticArray(mWindow), mDynamicArray(mWindow) 
 {
     mWindow.setPosition(sf::Vector2i(0, 0));
+    sf::Image icon;
+    icon.loadFromFile("resources/img/icon.png");
+    mWindow.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
+    mWindow.setFramerateLimit(144);
+    mWindow.setVerticalSyncEnabled(true);
 }
 
 void Program::run() {

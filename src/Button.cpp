@@ -160,7 +160,7 @@ void GraphicalNode::setSize(double size) {
         textSize = size*0.7;
         newPos.x += size*0.08;
         newPos.y += size*0.14;
-        break;
+        break;  
     case 4:
         textSize = size*0.5;
         newPos.x += size*0.08;

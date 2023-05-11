@@ -154,6 +154,7 @@ template <class T>
 void SinglyLinkedList<T>::resize(int newSize) {
     if (newSize < 0) {
         throw std::invalid_argument("Invalid size");
+        return;
     }
     if (newSize == 0) {
         clear();
@@ -181,6 +182,9 @@ void SinglyLinkedList<T>::resize(int newSize) {
             Node* newNode = new Node(T());
             current->next = newNode;
             current = newNode;
+            if (i == 0 && Size == 0) {
+                head = newNode;
+            }
         }
         tail = current;
     }
